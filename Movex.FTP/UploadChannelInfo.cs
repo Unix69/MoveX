@@ -23,8 +23,8 @@ namespace Movex.FTP
             mEnd_index = end_index;
         }
 
-        public UploadChannelInfo(ref UploadChannel uchans) {
-            mUchan = uchans;
+        public UploadChannelInfo(ref UploadChannel uchan) {
+            mUchan = uchan;
         }
 
         public void Switch_upload() {
