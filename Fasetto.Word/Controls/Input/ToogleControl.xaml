@@ -1,0 +1,82 @@
+﻿ <UserControl x:Class="Movex.View.ToggleControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Movex.View"
+			 xmlns:core="clr-namespace:Movex.View.Core;assembly=Movex.View.Core"
+             mc:Ignorable="d">
+
+	<UserControl.Resources>
+		<Style x:Key="ContentStyle" TargetType="{x:Type ContentControl}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type ContentControl}">
+
+						<Border BorderBrush="{StaticResource BackgroundVeryLightBrush}"
+			BorderThickness="0 0 0 0.2"
+			Padding="3">
+
+		<Grid Background="{StaticResource ForegroundLightBrush}">
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<!-- Label -->
+			<StackPanel Width="250" HorizontalAlignment="Left">
+				
+				<!-- Name -->
+				<TextBlock  Text="{Binding Name}"
+							Foreground="{StaticResource BackgroundVeryLightBrush}"
+							Margin="15 12"
+							VerticalAlignment="Center"
+							FontFamily="{StaticResource LatoRegular}"
+							/>
+				
+				<!-- Explanation -->
+				<StackPanel Orientation="Vertical">
+					<TextBlock  Text="{Binding Explanation}"
+								Foreground="{StaticResource ForegroundMainBrush}"
+								Margin="15 0 0 12"
+								FontFamily="{StaticResource LatoRegular}"
+								TextWrapping="Wrap"
+								TextTrimming="CharacterEllipsis"
+								/>
+				</StackPanel>
+
+
+			</StackPanel>
+				
+			<!-- Edit button converter -->
+			<Grid Grid.Column="1"
+				  Margin="12 15" >
+
+				<CheckBox Grid.Column="1"
+						Margin="0 0 0 0"
+                        Width="20"
+                        Height="20"
+                        IsChecked="{Binding Active}"
+						Command="{Binding SaveActiveStatusCommand}"/>
+
+			</Grid>
+
+		</Grid>
+
+	</Border>
+
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Resources>
+
+	<ContentControl d:DataContext="{x:Static core:ToggleDesignModel.Instance}"
+                    Style="{StaticResource ContentStyle}" />
+
+
+
+
+
+</UserControl>

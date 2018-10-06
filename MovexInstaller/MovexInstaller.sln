@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MovexInstaller", "MovexInstaller\MovexInstaller.vdproj", "{299940E6-0821-4914-A2B3-C38130386BDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{299940E6-0821-4914-A2B3-C38130386BDC}.Debug|Default.ActiveCfg = Debug
+		{299940E6-0821-4914-A2B3-C38130386BDC}.Debug|Default.Build.0 = Debug
+		{299940E6-0821-4914-A2B3-C38130386BDC}.Release|Default.ActiveCfg = Release
+		{299940E6-0821-4914-A2B3-C38130386BDC}.Release|Default.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

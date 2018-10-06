@@ -1,0 +1,79 @@
+﻿<local:BasePage x:TypeArguments="core:LoginViewModel" x:Class="Movex.View.BrowsePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Movex.View"
+      xmlns:core="clr-namespace:Movex.View.Core;assembly=Movex.View.Core"
+      mc:Ignorable="d" 
+      x:Name="Page"
+      d:DesignHeight="700" d:DesignWidth="700"
+      >
+
+    <Grid>
+
+		<Grid.RowDefinitions>
+
+			<!-- Title bar -->
+			<RowDefinition Height="Auto" />
+
+			<!-- Browse Folders & Files -->
+			<RowDefinition Height="Auto" />
+
+			<!-- Send Button -->
+			<RowDefinition Height="*" />
+			
+		</Grid.RowDefinitions>
+
+		<!-- Title bar -->
+		<Grid Height="50">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+
+			</Grid.ColumnDefinitions>
+		</Grid>
+
+		<StackPanel Grid.Row="1" Orientation="Vertical" Margin="30 0 30 30">
+			
+			<!-- Brose Folders -->
+			<TextBlock 
+                    Foreground="{StaticResource ForegroundLightBrush}"
+                    FontSize="{StaticResource FontSizeLarge}"
+                    FontFamily="{StaticResource LatoRegular}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+					Text="Seleziona una o più cartelle"
+			/>
+			<Button Style="{StaticResource ScanButton}"
+					HorizontalAlignment="Left"
+					Click="ScanButton_BrowseFolders"
+			/>
+			
+			<!-- Browse Files -->
+			<TextBlock
+					Margin="0 10 0 0"  
+                    Foreground="{StaticResource ForegroundLightBrush}"
+                    FontSize="{StaticResource FontSizeLarge}"
+                    FontFamily="{StaticResource LatoRegular}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+					Text="Seleziona uno o più file"
+			/>
+			<Button Style="{StaticResource ScanButton}"
+					HorizontalAlignment="Left"
+					Click="ScanButton_BrowseFiles"
+			/>
+			
+		</StackPanel>
+
+		<StackPanel Grid.Row="2" Margin="30 30 30 30" VerticalAlignment="Bottom">
+			<Button Style="{StaticResource SendButton}"
+					HorizontalAlignment="Right"
+					Click="SendButton_Click"
+			/>
+		</StackPanel>
+
+	</Grid>
+	
+</local:BasePage>
