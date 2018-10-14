@@ -82,15 +82,18 @@ namespace Movex.View
         {
             mIsExit = true;
             MainWindow.Close();
-
-            // Stop the WindowDispatcher
+            
             mWindowDispatcher.Stop();
-
             mNotifyIcon.Visible = false;
             mNotifyIcon.Dispose();
             mNotifyIcon = null;
+
+            IoC.Dispose();
         }
 
+        /// <summary>
+        /// Handle application events to show-up the Main Window Application
+        /// </summary>
         public void ShowMainWindow()
         {
             if (MainWindow.IsVisible)

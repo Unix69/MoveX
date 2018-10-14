@@ -51,7 +51,7 @@ namespace Movex.View.Core
                 if (ItemsStore != null)
                 foreach(var item in ItemsStore)
                 {
-                    Items.Add(item);
+                     Items.Add(item);
                 }
 
                 // Inser the ModelData to the Items object

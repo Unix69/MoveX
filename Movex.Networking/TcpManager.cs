@@ -142,13 +142,12 @@ namespace Movex.Network
             // Get the listener that handles the client request.
             var listener = (TcpListener)ar.AsyncState;
 
-            // End the operation and get the client request.
-            var client = listener.EndAcceptTcpClient(ar);
+            try {
 
-            try
-            {
+                // End the operation and get the client request.
+                var client = listener.EndAcceptTcpClient(ar);
+
                 // Get the stream
-                
                 var stream = client.GetStream();
 
                 /*      THE FORMAT OF THE CONTENT IS:
@@ -215,11 +214,14 @@ namespace Movex.Network
                    }
                }
             }
+            catch (ObjectDisposedException obe)
+            {
+                return;
+            }
             catch (Exception e)
             {
                 // Show ErrorView with error message
                 MessageBox.Show(e.ToString());
-
             }
 
             // Signal the calling thread to continue.

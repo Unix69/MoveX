@@ -34,11 +34,12 @@ namespace Movex.View.Core
 
         #region Destructor
 
-        void Shutdown()
+        public void Shutdown()
         {
 
-            mServerThread.Join();
-            mServerThread.Interrupt();
+            // mServerThread.Abort();
+            // mServerThread.Join();
+            // mServerThread.Interrupt();
             mServerThread = null;
 
         }

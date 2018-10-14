@@ -172,6 +172,14 @@ namespace Movex.View.Core
         {
             mUser.SearchForFriends();
         }
+
+        /// <summary>
+        /// Release the resources associated to the User
+        /// </summary>
+        public void Release()
+        {
+            mUser.Release();
+        }
         #endregion
     }
 

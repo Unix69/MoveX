@@ -52,15 +52,13 @@ namespace Movex.View.Core
         /// <summary>
         /// The method to terminate the application active threads.
         /// </summary>
-        public void CloseApplication() {
+        public void Close() {
 
             // Stop the updater for the User Design Model
-            UserDesignModelUpdater.Join();
-            UserDesignModelUpdater.Interrupt();
+            UserDesignModelUpdater.Abort();
+            // UserDesignModelUpdater.Join();
+            // UserDesignModelUpdater.Interrupt();
             UserDesignModelUpdater = null;
-
-            // Stop the listener for TCP Connection (FTP Server)
-
 
         }
 

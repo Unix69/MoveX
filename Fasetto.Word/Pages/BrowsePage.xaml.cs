@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using Movex.View.Windows;
 using System.Threading;
+using System;
 
 namespace Movex.View
 {
@@ -89,20 +90,28 @@ namespace Movex.View
 
             dialog.ShowDialog();
 
-            var count = 0;
-            using (var enumerator = dialog.FileNames.GetEnumerator())
+            
+            try
             {
-                while (enumerator.MoveNext())
-                    count++;
-            }
-
-            if (count > 0)
-            {
-                foreach (var item in dialog.FileNames)
+                var count = 0;
+                using (var enumerator = dialog.FileNames.GetEnumerator())
                 {
-                    builder.AppendLine(item);
-                    mFilepaths.Add(item);
+                    while (enumerator.MoveNext())
+                        count++;
                 }
+
+                if (count > 0)
+                {
+                    foreach (var item in dialog.FileNames)
+                    {
+                        builder.AppendLine(item);
+                        mFilepaths.Add(item);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return;
             }
         }
         #endregion

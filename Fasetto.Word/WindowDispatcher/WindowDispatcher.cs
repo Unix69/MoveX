@@ -46,17 +46,13 @@ namespace Movex.View.WindowDispatcher
             mInternaThread.Start();
         }
         public void Stop() {
-
-            mLooper.Join();
-            mLooper.Interrupt();
-
-            mInternaThread.Join();
-            mInternaThread.Interrupt();
-
+            mLooper.Abort();
+            mInternaThread.Abort();
             mWindows.Clear();
             mLooper = null;
             mInternaThread = null;
         }
+
         private void Loop()
         {
             mLooper = new Thread(() =>
@@ -107,13 +103,8 @@ namespace Movex.View.WindowDispatcher
                         WhereWindowThread.Start();
                         break;
 
-                        break;
-
                     default:
                         break;
-
-                        
-
                 }
                 
                 goto waitForRequest;

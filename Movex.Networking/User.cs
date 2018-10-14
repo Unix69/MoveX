@@ -86,7 +86,7 @@ namespace Movex.Network
         /// </summary>
         public void ListenForFriends()
         {
-            mListenThread = new Thread(() => mConnManager.ReceiveMessage())
+            mListenThread = new Thread(() => mConnManager.StartReceiveMessages())
             {
                 Priority = ThreadPriority.Highest
             };
@@ -98,11 +98,6 @@ namespace Movex.Network
         /// </summary>
         public void GetForFriend()
         {
-            for (var i = 0; i < 250; i++)
-            {
-                Thread.Sleep(1);
-            }
-
             mFriendList = mConnManager.GetRestrictedUsers();
         }
 
@@ -152,7 +147,10 @@ namespace Movex.Network
             mConnManager.SetPrivateMode(v);
         }
 
-
+        public void SayByeToFriends()
+        {
+            mConnManager.SendByeMessage();
+        }
 
         /// <summary>
         /// Jsonify the object to send its information over the network
@@ -191,6 +189,21 @@ namespace Movex.Network
         public List<RestrictedUser> GetFriendList()
         {
             return mFriendList;
+        }
+
+        /// <summary>
+        /// Release all the resources of the User Object
+        /// </summary>
+        public void Release()
+        {
+            // Initialize the release
+            SayByeToFriends();
+
+            // Release all the resources
+            mConnManager.Release();
+            mListenThread.Join();
+            mListenThread.Interrupt();
+            mListenThread = null;
         }
 
     }

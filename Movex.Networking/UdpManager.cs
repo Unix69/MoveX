@@ -104,104 +104,106 @@ namespace Movex.Network
             var u = (UdpClient)((UdpState)(ar.AsyncState)).mU;
             var state = new UdpState(e, u);
 
-            var receivedBytes = u.EndReceive(ar, ref e);
-            u.BeginReceive(new AsyncCallback(ReceiveCallback), (object)state);
-            
+            try {
+                var receivedBytes = u.EndReceive(ar, ref e);
+                u.BeginReceive(new AsyncCallback(ReceiveCallback), (object)state);
 
-            var receivedString = Encoding.Unicode.GetString(receivedBytes);
-            var messageReceived = Unjsonify(receivedString);
-            var ipSender = e.Address;
-            
-            // Ignore the messages that I receive by myself
-            if (!(ipSender.Equals(mIP)))
-            {
-                if (messageReceived.GetMessageType().Equals(Message.MSG_ERROR))
+                var receivedString = Encoding.Unicode.GetString(receivedBytes);
+                var messageReceived = Unjsonify(receivedString);
+                var ipSender = e.Address;
+
+                // Ignore the messages that I receive by myself
+                if (!(ipSender.Equals(mIP)))
                 {
-                    // Record the operation to the Network Log
-                    mNetworkLogPathMutex.WaitOne();
-                    using (var streamWriter = File.AppendText(NetworkLogPath))
+                    if (messageReceived.GetMessageType().Equals(Message.MSG_ERROR))
                     {
-                        var currentTime = DateTime.Now.ToString("h: mm:ss tt");
-                        streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_ERROR + ".");
-                        streamWriter.Close();
-                    }
-                    mNetworkLogPathMutex.ReleaseMutex();
+                        // Record the operation to the Network Log
+                        mNetworkLogPathMutex.WaitOne();
+                        using (var streamWriter = File.AppendText(NetworkLogPath))
+                        {
+                            var currentTime = DateTime.Now.ToString("h: mm:ss tt");
+                            streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_ERROR + ".");
+                            streamWriter.Close();
+                        }
+                        mNetworkLogPathMutex.ReleaseMutex();
 
-                    // Do nothing
-                }
-                else if (messageReceived.GetMessageType().Equals(Message.MSG_DISCOVERY))
-                {
-                    // Record the operation to the Network Log
-                    mNetworkLogPathMutex.WaitOne();
-                    using (var streamWriter = File.AppendText(NetworkLogPath))
+                        // Do nothing
+                    }
+                    else if (messageReceived.GetMessageType().Equals(Message.MSG_DISCOVERY))
                     {
-                        var currentTime = DateTime.Now.ToString("h: mm:ss tt");
-                        streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_DISCOVERY + ".");
-                        streamWriter.Close();
-                    }
-                    mNetworkLogPathMutex.ReleaseMutex();
-                    if (mPrivateMode) return;
+                        // Record the operation to the Network Log
+                        mNetworkLogPathMutex.WaitOne();
+                        using (var streamWriter = File.AppendText(NetworkLogPath))
+                        {
+                            var currentTime = DateTime.Now.ToString("h: mm:ss tt");
+                            streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_DISCOVERY + ".");
+                            streamWriter.Close();
+                        }
+                        mNetworkLogPathMutex.ReleaseMutex();
+                        if (mPrivateMode) return;
 
-                    // Reply with a message of presentation
-                    var message = new Message(Message.MSG_PRESENTATION, mRestrictedUser);
-                    SendMessage(Jsonify(message), ipSender);
-                }
-                else if (messageReceived.GetMessageType().Equals(Message.MSG_PRESENTATION))
-                {
-                    // Record the operation to the Network Log
-                    mNetworkLogPathMutex.WaitOne();
-                    using (var streamWriter = File.AppendText(NetworkLogPath))
+                        // Reply with a message of presentation
+                        var message = new Message(Message.MSG_PRESENTATION, mRestrictedUser);
+                        SendMessage(Jsonify(message), ipSender);
+                    }
+                    else if (messageReceived.GetMessageType().Equals(Message.MSG_PRESENTATION))
                     {
-                        var currentTime = DateTime.Now.ToString("h: mm:ss tt");
-                        streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_PRESENTATION + ".");
-                        streamWriter.Close();
+                        // Record the operation to the Network Log
+                        mNetworkLogPathMutex.WaitOne();
+                        using (var streamWriter = File.AppendText(NetworkLogPath))
+                        {
+                            var currentTime = DateTime.Now.ToString("h: mm:ss tt");
+                            streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_PRESENTATION + ".");
+                            streamWriter.Close();
+                        }
+                        mNetworkLogPathMutex.ReleaseMutex();
+
+                        //mMut.WaitOne();
+                        mRestrictedUsers.Add(messageReceived.GetRestrictedUser());
+                        //mMut.ReleaseMutex();
+
+                        if (mPrivateMode) return;
+
+                        // Reply with an acknoledge message and store the new user                    
+                        var message = new Message(Message.MSG_ACKNOWLEDGE, mRestrictedUser);
+                        SendMessage(Jsonify(message), ipSender);
+                        SendProfilePicture(ipSender, mRestrictedUser.mProfilePictureFilename);
+
                     }
-                    mNetworkLogPathMutex.ReleaseMutex();
-
-                    //mMut.WaitOne();
-                    mRestrictedUsers.Add(messageReceived.GetRestrictedUser());
-                    //mMut.ReleaseMutex();
-
-                    if (mPrivateMode) return;
-
-                    // Reply with an acknoledge message and store the new user                    
-                    var message = new Message(Message.MSG_ACKNOWLEDGE, mRestrictedUser);
-                    SendMessage(Jsonify(message), ipSender);
-                    SendProfilePicture(ipSender, mRestrictedUser.mProfilePictureFilename);
-                    
-                }
-                else if (messageReceived.GetMessageType().Equals(Message.MSG_ACKNOWLEDGE))
-                {
-                    // Record the operation to the Network Log
-                    mNetworkLogPathMutex.WaitOne();
-                    using (var streamWriter = File.AppendText(NetworkLogPath))
+                    else if (messageReceived.GetMessageType().Equals(Message.MSG_ACKNOWLEDGE))
                     {
-                        var currentTime = DateTime.Now.ToString("h: mm:ss tt");
-                        streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_ACKNOWLEDGE + ".");
-                        streamWriter.Close();
-                    }
-                    mNetworkLogPathMutex.ReleaseMutex();
+                        // Record the operation to the Network Log
+                        mNetworkLogPathMutex.WaitOne();
+                        using (var streamWriter = File.AppendText(NetworkLogPath))
+                        {
+                            var currentTime = DateTime.Now.ToString("h: mm:ss tt");
+                            streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_ACKNOWLEDGE + ".");
+                            streamWriter.Close();
+                        }
+                        mNetworkLogPathMutex.ReleaseMutex();
 
-                    // Reply with no message, and only add the user
-                    //mMut.WaitOne();
-                    mRestrictedUsers.Add(messageReceived.GetRestrictedUser());
-                    //mMut.ReleaseMutex();
-                }
-                else if (messageReceived.GetMessageType().Equals(Message.MSG_LEAVE))
-                {
-                    // Record the operation to the Network Log
-                    using (var streamWriter = File.AppendText(NetworkLogPath))
+                        // Reply with no message, and only add the user
+                        //mMut.WaitOne();
+                        mRestrictedUsers.Add(messageReceived.GetRestrictedUser());
+                        //mMut.ReleaseMutex();
+                    }
+                    else if (messageReceived.GetMessageType().Equals(Message.MSG_LEAVE))
                     {
-                        var currentTime = DateTime.Now.ToString("h: mm:ss tt");
-                        streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_LEAVE + ".");
-                        streamWriter.Close();
-                    }
+                        // Record the operation to the Network Log
+                        using (var streamWriter = File.AppendText(NetworkLogPath))
+                        {
+                            var currentTime = DateTime.Now.ToString("h: mm:ss tt");
+                            streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_LEAVE + ".");
+                            streamWriter.Close();
+                        }
 
-                    // Remove the user from the list
-                    var index = mRestrictedUsers.FindIndex(user => user.mIpAddress.Equals(ipSender.ToString()));
-                    mRestrictedUsers.RemoveAt(index);
+                        // Remove the user from the list
+                        var index = mRestrictedUsers.FindIndex(user => user.mIpAddress.Equals(ipSender.ToString()));
+                        mRestrictedUsers.RemoveAt(index);
+                    }
                 }
-            }
+
+            } catch (ObjectDisposedException obe) { return; }
         }
 
         internal void SetPrivateMode(bool v)
@@ -209,7 +211,7 @@ namespace Movex.Network
             mPrivateMode = v;
         }
 
-        public void ReceiveMessage()
+        public void StartReceiveMessages()
         {
             var endPoint = new IPEndPoint(IPAddress.Any, mListenPort);
             var s = new UdpState(endPoint, mUdpClient);
@@ -225,6 +227,17 @@ namespace Movex.Network
             }
             mNetworkLogPathMutex.ReleaseMutex();
 
+        }
+
+        public void StopReceiveMessages()
+        {
+            // Check the presence of the variable
+            if (mUdpClient == null) {
+                return;
+            }
+
+            mUdpClient.Close();
+            mUdpClient.Dispose();
         }
 
         /// <summary>
@@ -324,6 +337,15 @@ namespace Movex.Network
         }
 
         /// <summary>
+        /// Send a bye message in broadcast manner to every user
+        /// </summary>
+        public void SendByeMessage()
+        {
+            var message = new Message(Message.MSG_LEAVE);
+            SendMessage(Jsonify(message), mBROADCAST);
+        }
+
+        /// <summary>
         /// Return the updated list of restricted users
         /// </summary>
         /// <returns></returns>
@@ -375,6 +397,15 @@ namespace Movex.Network
 
             return message;
 
+        }
+
+        public void Release()
+        {
+            StopReceiveMessages();
+
+            // Stop the TCP Manager
+            mTcpManager.StopListener();
+            mTcpManager.StopClient();
         }
 
     }

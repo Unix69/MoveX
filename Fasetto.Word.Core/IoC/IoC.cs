@@ -82,6 +82,16 @@ namespace Movex.View.Core
             Kernel.Bind<FTPserver>().ToConstant(new FTPserver());
         }
 
+        /// <summary>
+        /// Release the resources
+        /// </summary>
+        public static void Dispose()
+        {
+            User.Release();
+            Application.Close();
+            FtpServer.Shutdown();
+        }
+
         #endregion
 
         /// <summary>
