@@ -31,9 +31,6 @@ namespace Movex.FTP
         private List<UploadChannel> mUchans = new List<UploadChannel>();
         private List<UploadChannelInfo> mUchaninfos = new List<UploadChannelInfo>();
         private static List<UploadChannelInfo> StaticUchanInfos;
-        private List<UploadChannel> mUchans_histories = null;
-        private string mUchans_histories_filepath;
-        private string mUchanFile = "history.uc";
         
         // Synchronization primitives
         private ManualResetEvent mUchanAvailability;
@@ -44,75 +41,8 @@ namespace Movex.FTP
             return StaticUchanInfos;
         }
 
-        public string[] GetFilenamesFromHistory()
-        {
-            var filenames = new string[0];
-            string[] filenamesuchan = null;
-            var n = 0;
-            var length = 0;
-            foreach (var uchan in mUchans_histories)
-            {
-                filenamesuchan = uchan.Get_filenames();
-                length = filenamesuchan.Length;
-                Array.Resize(ref filenames, filenames.Length + length);
-                Array.Copy(filenamesuchan, 0, filenames, n, length);
-                n += length;
-            }
-            return (filenames);
-
-        }
-        public int[] GetFilesizesFromHistory()
-        {
-            var filesizes = new int[0];
-            int[] filesizesuchan = null;
-            var n = 0;
-            var length = 0;
-            foreach (var uchan in mUchans_histories)
-            {
-                filesizesuchan = uchan.Get_filesizes();
-                length = filesizesuchan.Length;
-                Array.Resize(ref filesizes, filesizes.Length + length);
-                Array.Copy(filesizesuchan, 0, filesizes, n, length);
-                n += length;
-            }
-            return (filesizes);
-
-        }
-        public string[] GetPathsFromHistory()
-        {
-            var filepaths = new string[0];
-            string[] filepathsuchan = null;
-            var n = 0;
-            var length = 0;
-            foreach (var uchan in  mUchans_histories)
-            {
-                filepathsuchan = uchan.Get_paths();
-                length = filepathsuchan.Length;
-                Array.Resize(ref filepaths, filepaths.Length + length);
-                Array.Copy(uchan.Get_paths(), 0, filepaths, n, length);
-                n += length;
-            }
-            return (filepaths);
-        }
-        public string[] GetTosFromHistory()
-        {
-            var ipaddresses = new string[mUchans_histories.ToArray().Length];
-            var i = 0;
-            foreach (var uchan in mUchans_histories)
-            {
-                ipaddresses[i++] = uchan.Get_to();
-            }
-            return (ipaddresses);
-        }
-
-
-
-
         //costructor
-        public FTPclient() {
-            mUchans_histories_filepath = @".\" + mUchanFile;
-            mUchans_histories = ReadUchansHistory();
-        }
+        public FTPclient() {}
 
         //SUPPORT FTPmultiAll_t :
 
@@ -130,7 +60,7 @@ namespace Movex.FTP
             try
             {
 
-
+                
                 var uchan = GetChannel(ipaddress.ToString());
 
                 if (uchan == null || uchan.IsInterrupted())
@@ -172,12 +102,12 @@ namespace Movex.FTP
                         var clientsocket = uchan.Get_socket();
                         var filename = uchan.Get_filenames()[n];
                         var filepath = uchan.Get_paths()[n];
-                        nsendto[i] = new Thread(new ThreadStart(() => FTPsendFileWithLock(socketlock[index], n, ipaddresses[index])))
+                        nsendto[index] = new Thread(new ThreadStart(() => FTPsendFileWithLock(socketlock[index], n, ipaddresses[index])))
                         {
                             Priority = ThreadPriority.Highest
                         };
-                        nsendto[i].Start();
-                        uchan.Set_upload_thread(nsendto[i], i);
+                        nsendto[index].Start();
+                        uchan.Set_upload_thread(nsendto[index], index);
                     }
                 }
 
@@ -409,12 +339,11 @@ namespace Movex.FTP
                     //send file
                     {
                         var index = i;
-                        Console.WriteLine("\n"+index);
-                        nsendto[i] = new Thread(new ThreadStart(() => FTPmultisend_t(socketlocks, ipaddresses, index)))
+                        nsendto[index] = new Thread(new ThreadStart(() => FTPmultisend_t(socketlocks, ipaddresses, index)))
                         {
                             Priority = ThreadPriority.Highest
                         };
-                        nsendto[i].Start();
+                        nsendto[index].Start();
                     }
                 }
 
@@ -646,11 +575,11 @@ namespace Movex.FTP
                     //send file
                     {
                         var index = i;
-                        nsendto[i] = new Thread(new ThreadStart(() => FTPsingleClientTree_thread(clientsockets[index], ipaddresses[index], root)))
+                        nsendto[index] = new Thread(new ThreadStart(() => FTPsingleClientTree_thread(clientsockets[index], ipaddresses[index], root)))
                         {
                             Priority = ThreadPriority.Highest
                         };
-                        nsendto[i].Start();
+                        nsendto[index].Start();
                     }
 
                 }
@@ -660,7 +589,7 @@ namespace Movex.FTP
                 {
                     nsendto[i].Join();
                 }
-
+                
                 for (var i = 0; i < numclients; i++)
                 {
                     WaitUntilClose(clientsockets[i]);
@@ -735,11 +664,11 @@ namespace Movex.FTP
                     //send file
                     {
                         var index = i;
-                        nsendto[i] = new Thread(new ThreadStart(() => FTPsingleClientMultiTree_serial(clientsockets[i], ipaddresses[i], roots)))
+                        nsendto[index] = new Thread(new ThreadStart(() => FTPsingleClientMultiTree_serial(clientsockets[index], ipaddresses[index], roots)))
                         {
                             Priority = ThreadPriority.Highest
                         };
-                        nsendto[i].Start();
+                        nsendto[index].Start();
                     }
                 }
 
@@ -1021,12 +950,13 @@ namespace Movex.FTP
             newUploadChannels = GetUploadChannels(ref clientsockets, paths, filenames, ipaddresses, ref ftp_thread, ps);
             newUploadChannelInfos = GetUploadChannelInfos(newUploadChannels);
             StaticUchanInfos = newUploadChannelInfos;
-            
-            // This synchronization primitive say: Get the UchanInfo. It is now available
-            mUchanAvailability.Set();
 
-            // This synchornization primitive wait until Window(s) available
-            mWindowAvailability.WaitOne();
+            // This synchronization primitive say: Get the UchanInfo. It is now available
+            /*  mUchanAvailability.Set();
+
+              // This synchornization primitive wait until Window(s) available
+              mWindowAvailability.WaitOne();
+              */
             FTPstartAndWaitThread(ref ftp_thread);
 
             if (!RefreshCannels(newUploadChannels, newUploadChannelInfos)) {return (false);}
@@ -1066,10 +996,10 @@ namespace Movex.FTP
             ftp_thread.Start();
 
             // This synchronization primitive say: Get the UchanInfo. It is now available
-            mUchanAvailability.Set();
+         //   mUchanAvailability.Set();
 
             // This synchornization primitive wait until Window(s) available
-            mWindowAvailability.WaitOne();
+           // mWindowAvailability.WaitOne();
 
             ftp_thread.Join();
 
@@ -1078,108 +1008,9 @@ namespace Movex.FTP
 
         }
 
-        // 14 - grouped by some uchans
-        private List<UploadChannel> UnionFind(List<UploadChannel> uchans)
-        {
-            var uchans_array = uchans.ToArray();
-            var numclients = uchans_array.Length;
-            var uchans_list_array = new List<UploadChannel>[numclients];
-            var ipaddresses = new IPAddress[numclients][];
-            var i = 0;
-            var j = 0;
-            var bitmap = new int[numclients];
-            for (i = 0; i < numclients; i++)
-            {
-                bitmap[i] = 0;
-                uchans_list_array[i] = new List<UploadChannel>();
-            }
-
-            UploadChannel newuchan = null;
-            var new_uchans = new List<UploadChannel>();
-
-            for (i = 0; i < numclients; i++)
-            {
-                if (bitmap[i] == 1) { continue; }
-                bitmap[i] = 1;
-                newuchan = uchans_array[i];
-                for (j = i + 1; j < numclients; j++)
-                {
-                    if (newuchan != uchans_array[j] && bitmap[j] == 0 && newuchan.Get_to() == uchans_array[j].Get_to())
-                    {
-                        bitmap[j] = 1;
-                        newuchan = UploadChannel.JoinUploadChannels(newuchan, uchans_array[j]);
-                    }
-                }
-                new_uchans.Add(newuchan);
-            }
-            return (new_uchans);
-        }
-
-        // 15 - 
-        private UploadChannel MeshUploadChannels(List<UploadChannel> uchans) {
-            var uchans_array = uchans.ToArray();
-            UploadChannel uchan = null;
-            uchan = uchans_array[0];
-            for (var i = 1; i < uchans_array.Length; i ++) {
-                uchan = UploadChannel.JoinUploadChannels(uchan, uchans_array[i]);
-            }
-            return (null);
-        }
-
-        // 8 - call the best thread for the users request FTP transfer
-        public bool FTPsendagain(int priority, List<UploadChannel> uchans)
-        {
-            var t = 0;
-            var c = 0;
-            var numclients = 0;
-            var nsendto = new Thread[numclients];
-            List<UploadChannel> new_uchans = null;
-            numclients = uchans.ToArray().Length;
-            var ipaddresses = new IPAddress[numclients];
-            Socket[] clientsockets = null;
-            nsendto = new Thread[numclients];
-         
-            try
-            {
-                new_uchans = UnionFind(uchans);
-                ipaddresses = new IPAddress[numclients];
-                foreach (var uchan in new_uchans) { ipaddresses[c++] = IPAddress.Parse(uchan.Get_to()); }
-                clientsockets = GetSocketsForClients(ipaddresses);
-
-
-                foreach (var uchan in new_uchans)
-                {
-                    {
-                        var index = t;
-                        var ip = new IPAddress[1];
-                        ip[0] = IPAddress.Parse(uchan.Get_to());
-                        nsendto[t] = new Thread(new ThreadStart(() => FTPautonomousSend(100, uchan.Get_paths(), ip, ref clientsockets)))
-                        {
-                            Priority = ThreadPriority.Highest
-                        };
-                        nsendto[t].Start();
-                        t++;
-                    }
-                }
-
-                for (var i = 0; i < numclients; i++)
-                {
-                    nsendto[i].Join();
-                }
-
-
-                foreach (var uchan in uchans) {
-                    if (!mUchans_histories.Remove(uchan)) {
-                        return (false);
-                    }
-                }
-
-
-                return (true);
-            }
-            catch (Exception e) { return (false); }
-
-        }
+     
+     
+        
 
         //9
         private int FTPset_thread(int priority,ref Thread ftp_thread, string [] path, string[] filenames, IPAddress[] ipaddresses) {
@@ -1462,6 +1293,7 @@ namespace Movex.FTP
             }
 
             bufferOut = new byte[filedata_buff.Length];
+
             filedata_buff.CopyTo(bufferOut, 0);
 
             sended = Send(clientsocket, bufferOut, uchan, n);
@@ -1512,8 +1344,7 @@ namespace Movex.FTP
         {
             var depth_buff = BitConverter.GetBytes(depth);
             var sended = Send(clientsocket, depth_buff, null, 0);
-            if (sended != FTPsupporter.Depthsize)
-            {
+            if (sended != FTPsupporter.Depthsize){
                 return (false);
             }
             return (true);
@@ -1523,65 +1354,13 @@ namespace Movex.FTP
         {
             var numele_buff = BitConverter.GetBytes(numele);
             var sended = Send(clientsocket, numele_buff, null, 0);
-            if (sended != FTPsupporter.Numelementsize)
-            { //interrupt sending
+            if (sended != FTPsupporter.Numelementsize){ //interrupt sending
                 return (false);
             }
             return (true);
         }
 
-        private bool WriteUchan(BinaryWriter binarybuffer, UploadChannel uchan)
-        {
-            try
-            {
-                var download_date = System.DateTime.Now;
-                var numfile = uchan.Get_num_trasf();
-                var paths = uchan.Get_paths();
-                var ipaddress = uchan.Get_to();
-                var size = FTPsupporter.Numfilesize + FTPsupporter.Iplensize + ipaddress.Length;
-
-                var bufferOut = new byte[size];
-                var numfile_buff = BitConverter.GetBytes(numfile);
-                var ipaddress_buff = Encoding.ASCII.GetBytes(ipaddress);
-                var ipaddresslen_buff = BitConverter.GetBytes(ipaddress.Length);
-
-                numfile_buff.CopyTo(bufferOut, 0);
-                ipaddresslen_buff.CopyTo(bufferOut, FTPsupporter.Numfilesize);
-                ipaddress_buff.CopyTo(bufferOut, FTPsupporter.Numfilesize + FTPsupporter.Iplensize);
-                binarybuffer.Write(bufferOut, 0, size);
-                binarybuffer.Flush();
-                for (var i = 0; i < numfile; i++)
-                {
-                    var filename = uchan.Get_filenames()[i];
-                    size = FTPsupporter.Filenamelensize + filename.Length + paths[i].Length + FTPsupporter.Pathlensize;
-                    bufferOut = new byte[size];
-                    var pathlen_buff = BitConverter.GetBytes(paths[i].Length);
-                    var path_buff = Encoding.ASCII.GetBytes(paths[i]);
-                    var filenamelen_buff = BitConverter.GetBytes(filename.Length);
-                    var filename_buff = Encoding.ASCII.GetBytes(filename);
-                    filenamelen_buff.CopyTo(bufferOut, 0);
-                    filename_buff.CopyTo(bufferOut, FTPsupporter.Filenamelensize);
-                    pathlen_buff.CopyTo(bufferOut, FTPsupporter.Filenamelensize + filename.Length);
-                    path_buff.CopyTo(bufferOut, FTPsupporter.Filenamelensize + filename.Length + FTPsupporter.Pathlensize);
-                    binarybuffer.Write(bufferOut, 0, size);
-                    binarybuffer.Flush();
-                }
-
-                var download_date_buff = Encoding.ASCII.GetBytes(download_date.ToString());
-                var download_date_len_buff = BitConverter.GetBytes(download_date.ToString().Length);
-                size = FTPsupporter.Datelensize + download_date.ToString().Length;
-                bufferOut = new byte[size];
-                download_date_len_buff.CopyTo(bufferOut, 0);
-                download_date_buff.CopyTo(bufferOut, FTPsupporter.Datelensize);
-                binarybuffer.Write(bufferOut, 0, size);
-                binarybuffer.Flush();
-                return (true);
-            }
-            catch (Exception e) {
-                return (false); }
-
-        }
-
+       
         private void CloseBufferW(BinaryWriter binarybuffer)
         {
             binarybuffer.Flush();
@@ -1597,125 +1376,21 @@ namespace Movex.FTP
             return;
         }
 
-        private List<UploadChannel> ReadUchansHistory() {
-            BinaryReader binarybuffer = null;
-            try
-            {
-            var uchanshistory = new List<UploadChannel>();
-            if(File.Exists(mUchans_histories_filepath)){ binarybuffer = new BinaryReader(File.Open(mUchans_histories_filepath, FileMode.Open)); }
-            else{ binarybuffer = new BinaryReader(File.Open(mUchans_histories_filepath, FileMode.Create)); CloseBufferR(binarybuffer); return(uchanshistory); }
-            
-            var bufferIn = binarybuffer.ReadBytes(FTPsupporter.Numchannelssize);
-            var numuploadchannels = BitConverter.ToInt32(bufferIn, 0);
-            for (var i = 0; i < numuploadchannels; i++)
-            {
-                var uchan = ReadUchan(binarybuffer);
-                if (uchan == null) {
-                        CloseBufferR(binarybuffer);
-                        return (uchanshistory);
-                }
-                uchanshistory.Add(uchan);
-            }
-                CloseBufferR(binarybuffer);
-                return (uchanshistory);
-        }
-            catch (Exception e)
-            {
-                CloseBufferR(binarybuffer);
-                return (new List<UploadChannel>());
-            }
-        }
-
+    
          public bool FTPclose(){
-            if(!WriteUchansHistory(mUchans_histories)){ return(false); }
+       
             return(true);
         }
 
-        private bool WriteUchansHistory(List<UploadChannel> uchanshistory)
-        {
-            BinaryWriter binarybuffer = null;
-            try
-            {
-                binarybuffer = new BinaryWriter(File.Open(mUchans_histories_filepath, FileMode.Create));
-                var num_upload_channels = uchanshistory.ToArray().Length;
-                var numchannel_buff = BitConverter.GetBytes(num_upload_channels);
-                binarybuffer.Write(numchannel_buff, 0, FTPsupporter.Numchannelssize);
-                binarybuffer.Flush();
-                foreach (var uchan in uchanshistory)
-                {
-                    if (!WriteUchan(binarybuffer, uchan)) {
-                        CloseBufferW(binarybuffer);
-                        return (false); }
-                }
-                CloseBufferW(binarybuffer);
-                return (true);
-            }
-            catch (Exception e) {
-                CloseBufferW(binarybuffer);
-                return (false); }
-        }
+       
 
-        private UploadChannel ReadUchan(BinaryReader binarybuffer)
-        {
-            try
-            {
-
-                byte[] bufferIn = null;
-                var numfile = 0;
-                var pathlen = 0;
-                var iplen = 0;
-                string ip = null;
-                var multi_single = 0;
-                var filenamelen = 0;
-                var datelen = 0;
-
-                bufferIn = binarybuffer.ReadBytes(FTPsupporter.Numfilesize);
-                numfile = BitConverter.ToInt32(bufferIn, 0);
-                bufferIn = binarybuffer.ReadBytes(FTPsupporter.Iplensize);
-                iplen = BitConverter.ToInt32(bufferIn, 0);
-                bufferIn = binarybuffer.ReadBytes(iplen);
-                ip = Encoding.ASCII.GetString(bufferIn);
-                multi_single = (numfile > 1 ? FTPsupporter.Multifilesend : FTPsupporter.Filesend);
-
-                
-                var filenames = new string[numfile];
-                var paths = new string[numfile];
-                for (var i = 0; i < numfile; i++)
-                {
-                    bufferIn = binarybuffer.ReadBytes(FTPsupporter.Filenamelensize);
-                    filenamelen = BitConverter.ToInt32(bufferIn, 0);
-                    bufferIn = binarybuffer.ReadBytes(filenamelen);
-                    filenames[i] = Encoding.ASCII.GetString(bufferIn);
-                    bufferIn = binarybuffer.ReadBytes(FTPsupporter.Pathlensize);
-                    pathlen = BitConverter.ToInt32(bufferIn, 0);
-                    bufferIn = binarybuffer.ReadBytes(pathlen);
-                    paths[i] = Encoding.ASCII.GetString(bufferIn);
-
-                }
-             
-                var uchan = new UploadChannel(null, paths, ip, multi_single);
-                uchan.Set_filenames(filenames);
-                uchan.Set_paths(paths);
-                bufferIn = binarybuffer.ReadBytes(FTPsupporter.Datelensize);
-                datelen = BitConverter.ToInt32(bufferIn, 0);
-                bufferIn = binarybuffer.ReadBytes(datelen);
-                var date = DateTime.Parse(Encoding.ASCII.GetString(bufferIn));
-
-                return (uchan);
-            }
-            catch (Exception e)
-            {
-                return (null);
-            }
-
-        }
+       
 
         private bool RefreshCannels(List<UploadChannel> olduchans, List<UploadChannelInfo> olduchaninfos)
         {
             //lock require
             foreach (var olduchan in olduchans)
             {
-                mUchans_histories.Add(olduchan);
                 if (!mUchans.Remove(olduchan)) { return (false); }
             }
 

@@ -17,10 +17,7 @@ namespace Movex.FTP
         private Socket mServersocket;
 
         // Member(s) useful for History and Restore Functions
-        private string mDchanFile = "history.dc";
         private List<DownloadChannel> mDchans = new List<DownloadChannel>();
-        private List<DownloadChannel> mDchans_histories = new List<DownloadChannel>();
-        private string mDchans_histories_filepath;
         private Mutex mDchansDataLock;
 
         // Member(s) useful for Application Settings
@@ -39,58 +36,7 @@ namespace Movex.FTP
         private ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
         #endregion
 
-        private bool WriteDchan(BinaryWriter binarybuffer, DownloadChannel dchan)
-        {
-            try
-            {
-                var download_date = System.DateTime.Now;
-                var numfile = dchan.Get_num_trasf();
-                var paths = dchan.Get_filepaths();
-                var ipaddress = dchan.Get_from();
-                var size = FTPsupporter.Numfilesize + FTPsupporter.Iplensize + ipaddress.Length;
-
-                var bufferOut = new byte[size];
-                var numfile_buff = BitConverter.GetBytes(numfile);
-                var ipaddress_buff = Encoding.ASCII.GetBytes(ipaddress);
-                var ipaddresslen_buff = BitConverter.GetBytes(ipaddress.Length);
-
-                numfile_buff.CopyTo(bufferOut, 0);
-                ipaddresslen_buff.CopyTo(bufferOut, FTPsupporter.Numfilesize);
-                ipaddress_buff.CopyTo(bufferOut, FTPsupporter.Numfilesize + FTPsupporter.Iplensize);
-                binarybuffer.Write(bufferOut, 0, size);
-                binarybuffer.Flush();
-                for (var i = 0; i < numfile; i++)
-                {
-                    var filename = dchan.Get_filenames()[i];
-                    size = FTPsupporter.Filenamelensize + filename.Length + paths[i].Length + FTPsupporter.Pathlensize;
-                    bufferOut = new byte[size];
-                    var pathlen_buff = BitConverter.GetBytes(paths[i].Length);
-                    var path_buff = Encoding.ASCII.GetBytes(paths[i]);
-                    var filenamelen_buff = BitConverter.GetBytes(filename.Length);
-                    var filename_buff = Encoding.ASCII.GetBytes(filename);
-                    filenamelen_buff.CopyTo(bufferOut, 0);
-                    filename_buff.CopyTo(bufferOut, FTPsupporter.Filenamelensize);
-                    pathlen_buff.CopyTo(bufferOut, FTPsupporter.Filenamelensize + filename.Length);
-                    path_buff.CopyTo(bufferOut, FTPsupporter.Filenamelensize + filename.Length + FTPsupporter.Pathlensize);
-                    binarybuffer.Write(bufferOut, 0, size);
-                    binarybuffer.Flush();
-                }
-
-                var download_date_buff = Encoding.ASCII.GetBytes(download_date.ToString());
-                var download_date_len_buff = BitConverter.GetBytes(download_date.ToString().Length);
-                size = FTPsupporter.Datelensize + download_date.ToString().Length;
-                bufferOut = new byte[size];
-                download_date_len_buff.CopyTo(bufferOut, 0);
-                download_date_buff.CopyTo(bufferOut, FTPsupporter.Datelensize);
-                binarybuffer.Write(bufferOut, 0, size);
-                binarybuffer.Flush();
-                return (true);
-            }
-            catch (Exception e) {
-                return (false); }
-
-        }
-
+       
         public void SetSynchronization2(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
             mRequestAvailable = requestAvailable;
@@ -114,114 +60,8 @@ namespace Movex.FTP
             binarybuffer.Dispose();
             return;
         }
-        private List<DownloadChannel> ReadDchansHistory() {
-            BinaryReader binarybuffer = null;
-            try
-            {
-            var dchanshistory = new List<DownloadChannel>();
-            if(File.Exists(mDchans_histories_filepath)){ binarybuffer = new BinaryReader(File.Open(mDchans_histories_filepath, FileMode.Open)); }
-            else{ binarybuffer = new BinaryReader(File.Open(mDchans_histories_filepath, FileMode.Create));  CloseBufferR(binarybuffer); return(dchanshistory); }
-            
-            var bufferIn = binarybuffer.ReadBytes(FTPsupporter.Numchannelssize);
-            var numdownloadchannels = BitConverter.ToInt32(bufferIn, 0);
-            for (var i = 0; i < numdownloadchannels; i++)
-            {
-                var dchan = ReadDchan(binarybuffer);
-                if (dchan == null) {
-                        CloseBufferR(binarybuffer);
-                        return (dchanshistory);
-                }
-                dchanshistory.Add(dchan);
-            }
-                CloseBufferR(binarybuffer);
-                return (dchanshistory);
-        }
-            catch (Exception e)
-            {
-                CloseBufferR(binarybuffer);
-                return (new List<DownloadChannel>());
-            }
-        }
-        private bool WriteDchansHistory(List<DownloadChannel> dchanshistory)
-        {
-            BinaryWriter binarybuffer = null;
-            try
-            {
-                binarybuffer = new BinaryWriter(File.Open(mDchans_histories_filepath, FileMode.OpenOrCreate));
-                var num_upload_channels = dchanshistory.ToArray().Length;
-                var numchannel_buff = BitConverter.GetBytes(num_upload_channels);
-                binarybuffer.Write(numchannel_buff, 0, FTPsupporter.Numchannelssize);
-                binarybuffer.Flush();
-                foreach (var dchan in dchanshistory)
-                {
-                    if (!WriteDchan(binarybuffer, dchan)) {
-                        CloseBufferW(binarybuffer);
-                        return (false); }
-                }
-                CloseBufferW(binarybuffer);
-                return (true);
-            }
-            catch (Exception e) {
-                CloseBufferW(binarybuffer);
-                return (false); }
-        }
-        private DownloadChannel ReadDchan(BinaryReader binarybuffer)
-        {
-            try
-            {
-
-                byte[] bufferIn = null;
-                var numfile = 0;
-                var pathlen = 0;
-                var iplen = 0;
-                string ip = null;
-                var multi_single = 0;
-                var filenamelen = 0;
-                var datelen = 0;
-
-                bufferIn = binarybuffer.ReadBytes(FTPsupporter.Numfilesize);
-                numfile = BitConverter.ToInt32(bufferIn, 0);
-                bufferIn = binarybuffer.ReadBytes(FTPsupporter.Iplensize);
-                iplen = BitConverter.ToInt32(bufferIn, 0);
-                bufferIn = binarybuffer.ReadBytes(iplen);
-                ip = Encoding.ASCII.GetString(bufferIn);
-                multi_single = (numfile > 1 ? FTPsupporter.Multifilesend : FTPsupporter.Filesend);
-
-                
-                var filenames = new string[numfile];
-                var paths = new string[numfile];
-                for (var i = 0; i < numfile; i++)
-                {
-                    bufferIn = binarybuffer.ReadBytes(FTPsupporter.Filenamelensize);
-                    filenamelen = BitConverter.ToInt32(bufferIn, 0);
-                    bufferIn = binarybuffer.ReadBytes(filenamelen);
-                    filenames[i] = Encoding.ASCII.GetString(bufferIn);
-                    bufferIn = binarybuffer.ReadBytes(FTPsupporter.Pathlensize);
-                    pathlen = BitConverter.ToInt32(bufferIn, 0);
-                    bufferIn = binarybuffer.ReadBytes(pathlen);
-                    paths[i] = Encoding.ASCII.GetString(bufferIn);
-
-                }
-             
-                var dchan = new DownloadChannel(null, paths, ip, multi_single);
-                dchan.Set_filenames(filenames);
-                dchan.Set_filepaths(paths);
-                bufferIn = binarybuffer.ReadBytes(FTPsupporter.Datelensize);
-                datelen = BitConverter.ToInt32(bufferIn, 0);
-                bufferIn = binarybuffer.ReadBytes(datelen);
-                var date = DateTime.Parse(Encoding.ASCII.GetString(bufferIn));
-
-                return (dchan);
-
-            }
-            catch (Exception e)
-            {
-                return (null);
-            }
-
-        }
+       
         public bool FTPclose(){
-            if(!WriteDchansHistory(mDchans_histories)){ return(false); }
             return(true);
         }
         public void MakeInvisible() {
@@ -231,28 +71,16 @@ namespace Movex.FTP
             mVisible.ReleaseMutex();
         }
         
-
-        
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="port"></param>
-        /// <param name="PrivateMode"></param>
-        /// <param name="AutomaticReception"></param>
-        /// <param name="AutomaticSave"></param>
-        /// <param name="DownloadDefaultFolder"></param>
         public FTPserver(int port, bool PrivateMode, bool AutomaticReception, bool AutomaticSave, string DownloadDefaultFolder)
         {
             try
             {
-                mDchans_histories_filepath = @".\" + mDchanFile;
                 mVisible = new Mutex();
                 mDchansDataLock = new Mutex();
                 mPrivateMode = PrivateMode;
                 mAutomaticReception = AutomaticReception;
                 mAutomaticSave = AutomaticSave;
                 mDownloadDefaultFolder = DownloadDefaultFolder;
-                mDchans_histories = ReadDchansHistory();
                 return;
             }
             catch (Exception e) { return; }
@@ -263,7 +91,6 @@ namespace Movex.FTP
         // 1 - start the main thread of the server
         public void FTPstart() { 
             var ipEnd = new IPEndPoint(IPAddress.Any, FTPsupporter.Port);
-            mDchans_histories_filepath = @".\" + mDchanFile;
             mServersocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             
             try{ mServersocket.Bind(ipEnd); mServersocket.Listen(100); }
@@ -281,13 +108,14 @@ namespace Movex.FTP
                 mPrivateMode = false;
             }
 
+            /*
             string response;
             if (mAutomaticReception == false) { 
             // Set the message in a concurrent stack
             var message = "You received a request from " + client.LocalEndPoint.ToString() + "\r\nDo you want to accept it?";
-            
             var Id = "MyId";
-            mRequests.Enqueue(Id);
+
+                mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 101);
             mMessages.TryAdd(Id, message);
             var responseAvailable = new ManualResetEvent(false);
@@ -330,7 +158,8 @@ namespace Movex.FTP
             var path = @".\Downloads\";
             if (whereToSave != null) path = Path.GetFullPath(whereToSave);
             path = path + @"\";
-
+            */
+            var path = @".\";
             var recvfrom = new Thread(new ThreadStart(() => FTPrecv(client, path)))
             {
                 Priority = ThreadPriority.Highest
@@ -679,9 +508,10 @@ namespace Movex.FTP
 
             var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), t, path);
 
-            if (IsWorkingPath(path)) {
+            if (IsWorkingPath(dchan, path)) {
                 var ch = GetChannel(path, clientsocket.LocalEndPoint.ToString());
-                dchan.Set_mutex(ch.Get_Mutex());
+                    mDchans.Add(dchan);
+                    dchan.Set_mutex(ch.Get_Mutex());
             }
 
            
@@ -769,7 +599,7 @@ namespace Movex.FTP
         }
 
         // 2 - test if this path is used by another thread
-        private bool IsWorkingPath(string path) {
+        private bool IsWorkingPath(DownloadChannel newdchan, string path) {
             mDchansDataLock.WaitOne();
             foreach (var dchan in mDchans)
             {
@@ -779,7 +609,8 @@ namespace Movex.FTP
                 }
 
             }
-             mDchansDataLock.ReleaseMutex();
+            mDchans.Add(newdchan);
+            mDchansDataLock.ReleaseMutex();
                 return (false);
         }
 
@@ -927,19 +758,16 @@ namespace Movex.FTP
            
             var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), tag, path);
 
-            if (IsWorkingPath(path)) {
+            if (IsWorkingPath(dchan, path)) {
                 var ch = GetChannel(path, clientsocket.LocalEndPoint.ToString());
+                mDchans.Add(dchan);
                 dchan.Set_mutex(ch.Get_Mutex());
             }
 
-           
 
-            dchan.Set_socket(ref clientsocket);
+            Console.WriteLine("get mutex " + Thread.CurrentThread.ManagedThreadId);
             dchan.Get_Mutex().WaitOne();
-            
-            mDchansDataLock.WaitOne();
-            mDchans.Add(dchan);
-            mDchansDataLock.ReleaseMutex();
+            dchan.Set_socket(ref clientsocket);
 
 
 
@@ -987,7 +815,7 @@ namespace Movex.FTP
                 if (!RefreshCannels(dchan)) { return; }
                 goto Gettag;
             }
-
+            Console.WriteLine("release mutex " + Thread.CurrentThread.ManagedThreadId);
             dchan.Get_Mutex().ReleaseMutex();
             if (!RefreshCannels(dchan)) { return; }
             FTPclose();
@@ -998,7 +826,6 @@ namespace Movex.FTP
         private bool RefreshCannels(DownloadChannel olddchan)
         {
            mDchansDataLock.WaitOne();   
-           mDchans_histories.Add(olddchan);
            var result = mDchans.Remove(olddchan);
            mDchansDataLock.ReleaseMutex();
            return(result);
