@@ -1266,35 +1266,40 @@ namespace Movex.FTP
             var uchaninfo = uchan.GetUploadChannelInfo(filename);
 
 
-            var filenamelen_buff = new byte[filename.Length];
+            var filenamelen_buff = new byte[FTPsupporter.Filenamelensize];
             var filename_buff = new byte[filename.Length];
-            var filesize_buff = new byte[filename.Length];
-            var filedata_buff = new byte[filename.Length];
+            var filesize_buff = new byte[FTPsupporter.Filesizesize];
 
             filenamelen_buff = BitConverter.GetBytes(filename.Length);
             filename_buff = Encoding.ASCII.GetBytes(filename);
-            filedata_buff = File.ReadAllBytes(path + filename);
-            filesize_buff = BitConverter.GetBytes(filedata_buff.Length);
+            filesize_buff = BitConverter.GetBytes(filesize);
 
-            bufferOut = new byte[FTPsupporter.Filenamelensize + filename.Length + FTPsupporter.Filesizesize];
+            bufferOut = new byte[filenamelen_buff.Length + filename_buff.Length + filesize_buff.Length];
             filenamelen_buff.CopyTo(bufferOut, 0);
-            filename_buff.CopyTo(bufferOut, FTPsupporter.Filenamelensize);
-            filesize_buff.CopyTo(bufferOut, FTPsupporter.Filenamelensize + filename_buff.Length);
+            filename_buff.CopyTo(bufferOut, filenamelen_buff.Length);
+            filesize_buff.CopyTo(bufferOut, filenamelen_buff.Length + filename_buff.Length);
 
             var sended = Send(clientsocket, bufferOut, uchan, 0);
-            if (sended != FTPsupporter.Filenamelensize + filename.Length + FTPsupporter.Filesizesize)
+            if (sended != filenamelen_buff.Length + filename_buff.Length + filesize_buff.Length)
             {
                 return (false);
             }
 
-            bufferOut = new byte[filedata_buff.Length];
 
-            filedata_buff.CopyTo(bufferOut, 0);
+            var readFileStream = File.OpenRead(path + filename);
 
-            sended = Send(clientsocket, bufferOut, uchan, n);
-            if (sended != filedata_buff.Length)
+            var c = 0;
+            while( c >= filesize)
             {
-                return (false);
+                var toRead = filesize - c;
+                var filedata_buff = new byte[ (toRead > FTPsupporter.Filedatasize ? FTPsupporter.Filedatasize : toRead) ];
+                readFileStream.Read(filedata_buff, c, FTPsupporter.Filedatasize);
+                sended = Send(clientsocket, filedata_buff, uchan, n);
+                if (sended != filedata_buff.Length)
+                {
+                    return (false);
+                }
+                c += filedata_buff.Length;
             }
 
             uchaninfo.Switch_upload();
