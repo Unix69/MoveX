@@ -328,6 +328,7 @@ namespace Movex.FTP
                 {
                     var uchan = GetChannel(ipaddresses[i].ToString());
                     var clientsocket = uchan.Get_socket();
+                    //problemi multifile e single file
                     if (!SendTag(clientsocket, FTPsupporter.Multifilesend)) { return (false); }
                     if (!SendNumfile(clientsocket, uchan)) { return (false); }
                     socketlocks[i] = new Mutex();
