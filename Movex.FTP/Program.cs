@@ -20,7 +20,7 @@ namespace Movex.FTP
             var ip = new IPAddress[2];
             var serverThread = new Thread(new ThreadStart(() => server.FTPstart()));
             serverThread.Start();
-            ip[0] = IPAddress.Parse("127.0.0.2");
+            ip[0] = IPAddress.Parse("192.168.1.16");
             ip[1] = IPAddress.Parse("127.0.0.1");
             Console.WriteLine("inserire path del file");
             paths[0] = @".\A";
@@ -32,6 +32,7 @@ namespace Movex.FTP
             serverThread.Join();
             serverThread.Interrupt();
             serverThread = null;
+ 
             return;
         }
 

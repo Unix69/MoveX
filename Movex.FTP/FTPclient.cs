@@ -677,12 +677,6 @@ namespace Movex.FTP
                     nsendto[i].Join();
                 }
 
-                for (var i = 0; i < numclients; i++)
-                {
-                    WaitUntilClose(clientsockets[i]);
-                }
-
-
                 return (true);
             }
             catch (Exception e) { return (false); }

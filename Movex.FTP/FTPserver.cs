@@ -507,21 +507,21 @@ namespace Movex.FTP
             {
 
             var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), t, path);
-
-            if (IsWorkingPath(dchan, path)) {
+            mDchans.Add(dchan);
+            /*if (IsWorkingPath(dchan, path)) {
                 var ch = GetChannel(path, clientsocket.LocalEndPoint.ToString());
                     mDchans.Add(dchan);
                     dchan.Set_mutex(ch.Get_Mutex());
             }
-
+            */
            
 
             dchan.Set_socket(ref clientsocket);
-            dchan.Get_Mutex().WaitOne();
+            //dchan.Get_Mutex().WaitOne();
             dchan.Set_ps(FTPsupporter.Serial);
-            mDchansDataLock.WaitOne();
-            mDchans.Add(dchan);
-            mDchansDataLock.ReleaseMutex();
+            //mDchansDataLock.WaitOne();
+            //mDchans.Add(dchan);
+            //mDchansDataLock.ReleaseMutex();
              
 
 
@@ -757,16 +757,18 @@ namespace Movex.FTP
             if (!CheckTag(tag)) { return; }
            
             var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), tag, path);
+            mDchans.Add(dchan);
+            /*
+                        if (IsWorkingPath(dchan, path)) {
+                            var ch = GetChannel(path, clientsocket.LocalEndPoint.ToString());
 
-            if (IsWorkingPath(dchan, path)) {
-                var ch = GetChannel(path, clientsocket.LocalEndPoint.ToString());
-                mDchans.Add(dchan);
-                dchan.Set_mutex(ch.Get_Mutex());
-            }
+                            dchan.Set_mutex(ch.Get_Mutex());
+                        }
 
 
-            Console.WriteLine("get mutex " + Thread.CurrentThread.ManagedThreadId);
-            dchan.Get_Mutex().WaitOne();
+                        Console.WriteLine("get mutex " + Thread.CurrentThread.ManagedThreadId);
+                        dchan.Get_Mutex().WaitOne();
+              */
             dchan.Set_socket(ref clientsocket);
 
 
@@ -815,8 +817,8 @@ namespace Movex.FTP
                 if (!RefreshCannels(dchan)) { return; }
                 goto Gettag;
             }
-            Console.WriteLine("release mutex " + Thread.CurrentThread.ManagedThreadId);
-            dchan.Get_Mutex().ReleaseMutex();
+      //      Console.WriteLine("release mutex " + Thread.CurrentThread.ManagedThreadId);
+    //        dchan.Get_Mutex().ReleaseMutex();
             if (!RefreshCannels(dchan)) { return; }
             FTPclose();
             clientsocket.Close();
@@ -825,9 +827,9 @@ namespace Movex.FTP
 
         private bool RefreshCannels(DownloadChannel olddchan)
         {
-           mDchansDataLock.WaitOne();   
+           //mDchansDataLock.WaitOne();   
            var result = mDchans.Remove(olddchan);
-           mDchansDataLock.ReleaseMutex();
+           //mDchansDataLock.ReleaseMutex();
            return(result);
         }
 
