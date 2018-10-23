@@ -1,9 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Threading;
-using System.ComponentModel;
 using System.Collections.Concurrent;
-using Movex.View.Core;
 
 namespace Movex.View
 {
@@ -24,7 +21,7 @@ namespace Movex.View
             var WinViewModel = new WindowViewModel(this);            
             DataContext = WinViewModel;
 
-            // Passing a synchronization primitive to the YesNoControl
+            // Passing a synchronization primitive to the WhereControl
             var control = WhereWindow_WhereControl;
             control.SetResponseAvailability(WhereResponseAvailability);
             control.SetMessage(whereMessage);

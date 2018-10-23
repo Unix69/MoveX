@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.Windows.Threading;
 using Movex.View.Core;
 using System.Threading;
 using System.Collections.Concurrent;
