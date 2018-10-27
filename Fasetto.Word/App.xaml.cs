@@ -13,11 +13,7 @@ namespace Movex.View
     {
         private System.Windows.Forms.NotifyIcon mNotifyIcon;
         private bool mIsExit;
-        private Thread mServerThread;
         private UserListControl mUserListControl;
-        private Thread mYesNoWindowListener;
-        private ManualResetEvent mYesNoWindowRequest;
-        private ManualResetEvent mYesNoResponseAvailability;
         private bool mPrivateMode;
         private WindowDispatcher.WindowDispatcher mWindowDispatcher;
 
@@ -58,19 +54,6 @@ namespace Movex.View
             ShowMainWindow();
         }
 
-        private void LaunchYesNoWindow(ManualResetEvent mYesNoWindowRequest, ManualResetEvent mYesNoResponseAvailability)
-        {
-            mYesNoWindowRequest.WaitOne();
-
-            var YesNoWindowThread = new Thread(() =>
-            {
-                new YesNoWindow(mYesNoResponseAvailability).Show();
-                System.Windows.Threading.Dispatcher.Run();
-            });
-            YesNoWindowThread.SetApartmentState(ApartmentState.STA);
-            YesNoWindowThread.Start();
-        }
-
         private void CreateContextMenu()
         {
             mNotifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
@@ -89,6 +72,8 @@ namespace Movex.View
             mNotifyIcon = null;
 
             IoC.Dispose();
+
+            Environment.Exit(Environment.ExitCode);
         }
 
         /// <summary>

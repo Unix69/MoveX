@@ -24,6 +24,7 @@ namespace Movex.Network
         private static ManualResetEvent ConnectDone;
         private string mNetworkLogPath;
         private Mutex mNetworkLogPathMutex;
+        private bool mIsExit;
         private static string DefaultPath = @"ProfilePictures";
         private static int DefaulPort;
         private const int DataSizeLimit = 1024 * 1024;              // Avoid to have buffer larger than 1 MB.
@@ -79,6 +80,10 @@ namespace Movex.Network
         {
             mNetworkLogPath = s;
         }
+        private void SetIsExit(bool b)
+        {
+            mIsExit = b;
+        }
         #endregion
 
         #region Routine methods
@@ -118,6 +123,8 @@ namespace Movex.Network
         {
             try
             {
+                SetIsExit(true);
+                TcpClientConnected.Set();
                 mListener.Stop();
             }
             catch (Exception e)
@@ -234,6 +241,8 @@ namespace Movex.Network
             mListener.BeginAcceptTcpClient(new AsyncCallback(BeginAcceptTcpClientCallback), mListener);
             TcpClientConnected.WaitOne();
 
+            // Valid at application-shutdown
+            if (mIsExit == true) { return; }
 
             // Record the operation to Network Log
             mNetworkLogPathMutex.WaitOne();

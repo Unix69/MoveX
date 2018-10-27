@@ -9,7 +9,7 @@ namespace Movex.View.Core
     public class FTPclient
     {
 
-        #region private Properties
+        #region Private Properties
 
         Movex.FTP.FTPclient mClient;
 
