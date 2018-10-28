@@ -15,7 +15,7 @@ namespace Movex.View
     /// <summary>
     /// Interaction logic for BrowsePage.xaml
     /// </summary>
-    public partial class BrowsePage : BasePage<LoginViewModel>
+    public partial class BrowsePage : BasePage<BackboneViewModel>
     {
         /// <summary>
         /// Private Members

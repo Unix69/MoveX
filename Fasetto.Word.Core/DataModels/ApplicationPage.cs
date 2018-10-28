@@ -6,18 +6,14 @@
     public enum ApplicationPage
     {
         /// <summary>
-        /// The initial login page
+        /// The browse page
         /// </summary>
         Browse = 0,
 
         /// <summary>
-        /// The main chat page
+        /// An eventual other page
         /// </summary>
-        Chat = 1,
+        OtherPage = 1,
 
-        /// <summary>
-        /// The register page
-        /// </summary>
-        Register = 2,
     }
 }

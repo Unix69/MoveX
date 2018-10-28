@@ -106,18 +106,6 @@
     <Compile Include="AttachedProperties\FrameworkElementAnimationAttachedProperties.cs" />
     <Compile Include="AttachedProperties\NoFrameHistory.cs" />
     <Compile Include="AttachedProperties\PasswordBoxAttachedProperties.cs" />
-    <Compile Include="Controls\Chat\ChatMessage\ChatMessageListControl.xaml.cs">
-      <DependentUpon>ChatMessageListControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Chat\ChatList\ChatListControl.xaml.cs">
-      <DependentUpon>ChatListControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Chat\ChatList\ChatListItemControl.xaml.cs">
-      <DependentUpon>ChatListItemControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Chat\ChatMessage\ChatMessageListItemControl.xaml.cs">
-      <DependentUpon>ChatMessageListItemControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Input\TextEntryListControl.xaml.cs">
       <DependentUpon>TextEntryListControl.xaml</DependentUpon>
     </Compile>
@@ -170,9 +158,6 @@
     <Compile Include="Pages\BrowsePage.xaml.cs">
       <DependentUpon>BrowsePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ChatPage.xaml.cs">
-      <DependentUpon>ChatPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ValueConverters\ApplicationPageValueConverter.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\BooleanToVisibilityConverter - Copy.cs" />
@@ -198,22 +183,6 @@
     <Compile Include="Window\YesNoWindow\YesNoWindow.xaml.cs">
       <DependentUpon>YesNoWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\Chat\ChatMessage\ChatMessageListControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Chat\ChatList\ChatListControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Chat\ChatList\ChatListItemControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Chat\ChatMessage\ChatMessageListItemControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Input\TextEntryListControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -275,10 +244,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\BrowsePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\ChatPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
