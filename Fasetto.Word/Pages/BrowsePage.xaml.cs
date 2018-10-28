@@ -1,14 +1,12 @@
-﻿using Movex.View.Core;
-using System.Text;
+﻿using System;
 using System.Windows;
+using System.Threading;
+using System.Text;
 using System.IO;
+using System.Collections.Generic;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using System.Collections.Generic;
-using System.Net;
-using Movex.View.Windows;
-using System.Threading;
-using System;
+using Movex.View.Core;
 
 namespace Movex.View
 {
@@ -21,6 +19,7 @@ namespace Movex.View
         /// Private Members
         /// </summary>
         private List<string> mFilepaths;
+        private TransferItemListDesignModel mTransferItemList;
 
         /// <summary>
         /// Constructor
@@ -29,6 +28,9 @@ namespace Movex.View
         {
             InitializeComponent();
             mFilepaths = new List<string>();
+
+            mTransferItemList = ViewModelLocator.TransferItemListDesignModel;
+            TransferItemList.ItemsSource = mTransferItemList.Items;
         }
 
         #region Utility methods
@@ -43,8 +45,6 @@ namespace Movex.View
                 CheckFileExists = false,
                 CheckPathExists = true,
                 Multiselect = true
-                
-                
             };
 
             if (fileDialog.ShowDialog().Value)
@@ -72,6 +72,8 @@ namespace Movex.View
             {
                 builder.AppendLine(item);
                 mFilepaths.Add(item);
+                mTransferItemList.Items.Add(new TransferItemViewModel(item, new FileInfo(item).Length));
+                TransferItemList.Items.Refresh();
                 count++;
             }
 

@@ -32,14 +32,19 @@ namespace Movex.View.Core
         public static ProfileViewModel Profile => IoC.Get<ProfileViewModel>();
 
         /// <summary>
-        /// A shortcut to access the UserItemViewModel
+        /// A shortcut to access the LocalUserItemViewModel
         /// </summary>
         public static LocalUserItemViewModel User => IoC.Get<LocalUserItemViewModel>();
 
         /// <summary>
-        /// A shortcut to access the WhereDesignModel
+        /// A shortcut to access the ProgressDesignModel
         /// </summary>
         public static ProgressDesignModel Progress => IoC.Get<ProgressDesignModel>();
+
+        /// <summary>
+        /// A shortcut to access the TransferItemListDesignModel
+        /// </summary>
+        public static TransferItemListDesignModel TransferItemList => IoC.Get<TransferItemListDesignModel>();
 
         /// <summary>
         /// Static reference for FTP Client Utility
@@ -78,6 +83,7 @@ namespace Movex.View.Core
             Kernel.Bind<ProfileViewModel>().ToConstant(new ProfileViewModel());
             Kernel.Bind<ProgressDesignModel>().ToConstant(new ProgressDesignModel());
             Kernel.Bind<LocalUserItemViewModel>().ToConstant(new LocalUserItemViewModel());
+            Kernel.Bind<TransferItemListDesignModel>().ToConstant(new TransferItemListDesignModel());
             Kernel.Bind<FTPclient>().ToConstant(new FTPclient());
             Kernel.Bind<FTPserver>().ToConstant(new FTPserver());
         }

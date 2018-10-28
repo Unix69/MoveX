@@ -39,6 +39,11 @@ namespace Movex.View
         /// </summary>
         public static ProgressDesignModel ProgressDesignModel => IoC.Get<ProgressDesignModel>();
 
+        /// <summary>
+        /// The TransferItemList Design Model
+        /// </summary>
+        public static TransferItemListDesignModel TransferItemListDesignModel => IoC.Get<TransferItemListDesignModel>();
+
         #endregion
     }
 }

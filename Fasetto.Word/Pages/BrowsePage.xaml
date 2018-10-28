@@ -9,7 +9,7 @@
       x:Name="Page"
       d:DesignHeight="700" d:DesignWidth="700">
 
-    <Grid>
+	<Grid>
 
 		<Grid.RowDefinitions>
 
@@ -18,10 +18,13 @@
 
 			<!-- Browse Folders & Files -->
 			<RowDefinition Height="Auto" />
+			
+			<!-- Transfer Overview -->
+			<RowDefinition Height="Auto" />
 
 			<!-- Send Button -->
 			<RowDefinition Height="*" />
-			
+
 		</Grid.RowDefinitions>
 
 		<!-- Title bar -->
@@ -29,44 +32,45 @@
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="Auto" />
-
 			</Grid.ColumnDefinitions>
-		</Grid>
-
-		<StackPanel Grid.Row="1" Orientation="Vertical" Margin="30 0 30 30">
 			
-			<!-- Brose Folders -->
 			<TextBlock 
                     Foreground="{StaticResource ForegroundLightBrush}"
                     FontSize="{StaticResource FontSizeLarge}"
                     FontFamily="{StaticResource LatoRegular}"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-					Text="Seleziona una o più cartelle"
-			/>
-			<Button Style="{StaticResource ScanButton}"
-					HorizontalAlignment="Left"
-					Click="ScanButton_BrowseFolders"
-			/>
+					Text="Seleziona cosa inviare" />
 			
-			<!-- Browse Files -->
-			<TextBlock
-					Margin="0 10 0 0"  
-                    Foreground="{StaticResource ForegroundLightBrush}"
-                    FontSize="{StaticResource FontSizeLarge}"
-                    FontFamily="{StaticResource LatoRegular}"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-					Text="Seleziona uno o più file"
-			/>
-			<Button Style="{StaticResource ScanButton}"
-					HorizontalAlignment="Left"
-					Click="ScanButton_BrowseFiles"
-			/>
-			
+		</Grid>
+
+		<!-- Browse Folders & Files -->
+		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+
+			<Button Style="{StaticResource FolderScanButton}"
+					HorizontalAlignment="Right"
+					Click="ScanButton_BrowseFolders" />
+
+			<Button Style="{StaticResource FileScanButton}"
+					HorizontalAlignment="Right"
+					Click="ScanButton_BrowseFiles" />
+
 		</StackPanel>
 
-		<StackPanel Grid.Row="2" Margin="30 30 30 30" VerticalAlignment="Bottom">
+		<!-- Transfer Overview -->
+		<ListView Grid.Row="2" Margin="30" Name="TransferItemList" HorizontalAlignment="Stretch">
+			<ListView.View>
+				<GridView>
+					<GridView.Columns>
+						<GridViewColumn Width="Auto" Header="Percorso" DisplayMemberBinding="{Binding  Path=Path}" />
+						<GridViewColumn Width="Auto" Header="Dimensione" DisplayMemberBinding="{Binding Path=Size}" />
+					</GridView.Columns>
+				</GridView>
+			</ListView.View>
+		</ListView>
+
+		<!-- Send Button -->
+		<StackPanel Grid.Row="3" Margin="30 30 30 30" VerticalAlignment="Bottom">
 			<Button Style="{StaticResource SendButton}"
 					HorizontalAlignment="Right"
 					Click="SendButton_Click"
@@ -74,5 +78,5 @@
 		</StackPanel>
 
 	</Grid>
-	
+
 </local:BasePage>

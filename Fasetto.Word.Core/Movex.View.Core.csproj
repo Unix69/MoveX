@@ -72,6 +72,9 @@
     <Compile Include="ViewModel\Input\ToggleViewModel.cs" />
     <Compile Include="ViewModel\Input\TextEntryViewModel.cs" />
     <Compile Include="ViewModel\ProfileViewModel.cs" />
+    <Compile Include="ViewModel\Transfer\Design\TransferItemListDesignModel.cs" />
+    <Compile Include="ViewModel\Transfer\TransferItemListViewModel.cs" />
+    <Compile Include="ViewModel\Transfer\TransferItemViewModel.cs" />
     <Compile Include="ViewModel\Window\Design\ProgressDesignModel.cs" />
     <Compile Include="ViewModel\Window\Design\WhereDesignModel.cs" />
     <Compile Include="ViewModel\Window\Design\YesNoDesignModel.cs" />
