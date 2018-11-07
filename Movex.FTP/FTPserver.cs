@@ -112,7 +112,7 @@ namespace Movex.FTP
             string response;
             if (mAutomaticReception == false) { 
             // Set the message in a concurrent stack
-            var message = "You received a request from " + client.LocalEndPoint.ToString() + "\r\nDo you want to accept it?";
+            var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
             var Id = "MyId";
 
                 mRequests.Enqueue(Id);
@@ -138,7 +138,7 @@ namespace Movex.FTP
             if (mAutomaticSave == false)
             {
 
-                var message = "You received a request from " + client.LocalEndPoint.ToString() + "\r\nDo you want to accept it?";
+                var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
                 var Id = "MyId2";
                 mRequests.Enqueue(Id);
                 mTypeRequests.TryAdd(Id, 102);
