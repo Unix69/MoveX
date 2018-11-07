@@ -18,30 +18,30 @@
 		</Grid.RowDefinitions>
 		
 		<!-- Settings title -->
-		<Grid Height="40" Margin="0 0 0 20">
-			<Button Height="40"
+		<Grid Height="50" Background="{StaticResource WordVeryLightBlueBrush}">
+			<Button Height="50"
 					Style="{StaticResource IconButton}"
 					Content="{StaticResource FontAwesomeArrowDownIcon}"
 					FontFamily="{StaticResource FontAwesome}"
-					Foreground="{StaticResource ForegroundDarkBrush}"
+					Foreground="{StaticResource ForegroundLightBrush}"
 					HorizontalAlignment="Left"
 					VerticalAlignment="Center" 
 					Command="{Binding SettingsViewModel.CloseCommand, Source={x:Static local:ViewModelLocator.Instance}}"/>
 
 			<!-- Settings header -->
-			<TextBlock FontSize="{StaticResource FontSizeLarge}"
+			<TextBlock FontSize="17"
 					   HorizontalAlignment="Center" 
 					   VerticalAlignment="Center">
 				
 				<!-- Cog Icon -->
 				<Run FontFamily="{StaticResource FontAwesome}" 
 					 Text="{StaticResource FontAwesomeCogIcon}"
-					 Foreground="{StaticResource WordBlueBrush}" />
+					 Foreground="{StaticResource ForegroundLightBrush}"/>
 				
 				<!-- Settings text -->
 				<Run Text="Impostazioni"
-					 FontFamily="{StaticResource LatoRegular}"
-					 Foreground="{StaticResource ForegroundDarkBrush}"/>
+					 FontFamily="{StaticResource LatoBold}"
+					 Foreground="{StaticResource ForegroundLightBrush}"/>
 
 			</TextBlock>
 			
@@ -80,18 +80,20 @@
 					<TextBlock  Foreground="{StaticResource BackgroundVeryLightBrush}"
 								Margin="15 12"
 								VerticalAlignment="Center"
+								FontSize="{StaticResource FontSizeRegular}"
 								FontFamily="{StaticResource LatoRegular}"
 								Text="Cartella di salvataggio" />
 
-					
 
-					<TextBlock  Foreground="{StaticResource ForegroundMainBrush}"
+
+					<TextBlock  Foreground="{StaticResource ForegroundDarkBrush}"
 								Margin="15 0 0 12"
 								VerticalAlignment="Center"
+								FontSize="{StaticResource FontSizeSmall}"
 								FontFamily="{StaticResource LatoRegular}"
 								TextWrapping="Wrap"
 								TextTrimming="CharacterEllipsis"
-								Text="Selezionani una cartella e non ti verrà più chiesto dove salvare." />
+								Text="Seleziona una cartella predefinita dove salvare i tuoi trasferimenti." />
 
 					<!-- Browse Button -->
 					<Grid Grid.Column="1">

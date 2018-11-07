@@ -10,5 +10,11 @@ namespace Movex.View.Core
         /// </summary>
         public List<TransferItemViewModel> Items { get; set; }
 
+        /// <summary>
+        /// Indicate available item(s) in the list of transfers
+        /// </summary>
+        public bool TransferAvailable { get; set; }
+
+
     }
 }

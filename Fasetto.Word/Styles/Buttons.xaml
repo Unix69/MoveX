@@ -223,7 +223,7 @@
                         <EventTrigger RoutedEvent="MouseEnter">
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation To="{StaticResource WordLightBlue}" Duration="0:0:0.3" Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color" />
+                                    <ColorAnimation To="{StaticResource WordDarkBlue}" Duration="0:0:0.3" Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
@@ -248,7 +248,7 @@
 
 		<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
 
-		<!-- Fixed dimentions of the button -->
+		<!-- Fixed dimensions of the button -->
 		<Setter Property="Margin" Value="10" />
 		<Setter Property="Height" Value="40" />
 		<Setter Property="Width"  Value="140" />
@@ -299,7 +299,7 @@
 
 		<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
 		
-		<!-- Fixed dimentions of the button -->
+		<!-- Fixed dimensions of the button -->
 		<Setter Property="Margin" Value="10" />
 		<Setter Property="Height" Value="40" />
 		<Setter Property="Width"  Value="140" />
@@ -349,50 +349,24 @@
 	<Style TargetType="{x:Type Button}" x:Key="SendButton" BasedOn="{StaticResource Hoverless}">
 
 		<Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+
+		<!-- Fixed dimensions of the button -->
 		<Setter Property="Margin" Value="10" />
 		<Setter Property="Height" Value="40" />
 		<Setter Property="Width"  Value="140" />
+
+		<!-- Button template -->
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ButtonBase}">
-
-					<!-- Content -->
 					<Border x:Name="background" Background="{StaticResource WordGreenBrush}">
 						<Grid x:Name="container" Background="Transparent">
-
-							<Grid.ColumnDefinitions>
-								<!-- 1.Main content -->
-								<ColumnDefinition Width="*" />
-								<!-- 2.Profile picture -->
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-
-							<!-- 1.Main content -->
-							<Border Grid.Column="0" Padding="10 8 8 10">
-								<StackPanel VerticalAlignment="Center">
-									<!-- Name-->
-									<TextBlock Text="{Binding Name}"
-													Padding="0 0 0 2"
-													Foreground="{StaticResource BackgroundVeryLightBrush}"
-													TextTrimming="CharacterEllipsis"
-													FontFamily="{StaticResource LatoRegular}">
-													Invia</TextBlock>
-								</StackPanel>
-							</Border>
-
-							<!-- 2.Profile picture padding -->
-							<Border Grid.Column="1" 
-										Padding="8 15"
-										>
-
-								<!-- Profile picture background -->
-								<Border Height="50"
-                                        Width="50">
-									<Image Source="/Images/Icons/clipboard.png" />
-								</Border>
-
-							</Border>
-
+							<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+								<TextBlock	Text="Invia"
+											Foreground="{StaticResource BackgroundVeryLightBrush}"
+											TextTrimming="CharacterEllipsis"
+											FontFamily="{StaticResource LatoRegular}" />
+							</StackPanel>
 						</Grid>
 					</Border>
 

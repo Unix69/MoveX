@@ -28,7 +28,7 @@
 		</Grid.RowDefinitions>
 
 		<!-- Title bar -->
-		<Grid Height="50">
+		<Grid Height="50" Margin="0 20 0 0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="Auto" />
@@ -36,7 +36,7 @@
 			
 			<TextBlock 
                     Foreground="{StaticResource ForegroundLightBrush}"
-                    FontSize="{StaticResource FontSizeLarge}"
+                    FontSize="{StaticResource FontSizeXLarge}"
                     FontFamily="{StaticResource LatoRegular}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -58,19 +58,31 @@
 		</StackPanel>
 
 		<!-- Transfer Overview -->
-		<ListView Grid.Row="2" Margin="30" Name="TransferItemList" HorizontalAlignment="Stretch">
-			<ListView.View>
-				<GridView>
-					<GridView.Columns>
-						<GridViewColumn Width="Auto" Header="Percorso" DisplayMemberBinding="{Binding  Path=Path}" />
-						<GridViewColumn Width="Auto" Header="Dimensione" DisplayMemberBinding="{Binding Path=Size}" />
-					</GridView.Columns>
-				</GridView>
-			</ListView.View>
-		</ListView>
+		<ScrollViewer	Grid.Row="2"
+						VerticalScrollBarVisibility="Auto"
+						Visibility="{Binding TransferItemListDesignModel.TransferAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}, ConverterParameter=True}">
+			<ListView	
+					Margin="30"
+					Name="TransferItemList"
+					HorizontalAlignment="Stretch" 
+					Width="480"
+					Height="Auto"
+					MaxHeight="300"
+					ItemContainerStyle="{StaticResource alternatingListViewStyle}" >
+
+				<ListView.View>
+					<GridView>
+						<GridView.Columns>
+							<GridViewColumn Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={local:StarWidthValueConverter}}"  Header="Percorso" DisplayMemberBinding="{Binding Path=Path}" />
+							<GridViewColumn Width="100" Header="Dimensione" DisplayMemberBinding="{Binding Path=Size}" />
+						</GridView.Columns>
+					</GridView>
+				</ListView.View>
+			</ListView>
+		</ScrollViewer>
 
 		<!-- Send Button -->
-		<StackPanel Grid.Row="3" Margin="30 30 30 30" VerticalAlignment="Bottom">
+		<StackPanel Grid.Row="3" Margin="30 30 30 20" VerticalAlignment="Bottom">
 			<Button Style="{StaticResource SendButton}"
 					HorizontalAlignment="Right"
 					Click="SendButton_Click"

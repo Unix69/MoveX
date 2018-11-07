@@ -80,7 +80,7 @@
 
                                         <!-- Title -->
 										<Viewbox Grid.Column="0" Grid.ColumnSpan="3" Margin="60,14,10,14" HorizontalAlignment="Left">
-											<TextBlock Text="moveX - Local Sharing Point" Foreground="{StaticResource ForegroundDarkBrush}" TextAlignment="Center" />
+											<TextBlock Text="MoveX - Local Sharing Point" FontFamily="{StaticResource LatoThin}" Foreground="{StaticResource ForegroundDarkBrush}" TextAlignment="Center" />
 										</Viewbox>
 
                                         <!-- Window Buttons -->

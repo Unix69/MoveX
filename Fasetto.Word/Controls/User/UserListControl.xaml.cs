@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Threading;
 using System.Windows.Controls;
 using Movex.View.Core;
 using System.Net;
@@ -11,18 +10,21 @@ namespace Movex.View
     /// </summary>
     public partial class UserListControl : UserControl
     {
+
+        #region Constructor
         public UserListControl()
         {
             InitializeComponent();
             DataContext = new UserDesignModel();
             ((App)(Application.Current)).SetUserListControl(this);
         }
+        #endregion
 
-        /// Helpers Methods
+        #region Helper Method(s)
         public IPAddress[] GetIpAddressesFromUserList()
         {
             IPAddress[] IPs;
-            var UserListDesignModel = (UserDesignModel) UserList.DataContext;
+            var UserListDesignModel = (UserDesignModel)UserList.DataContext;
             if (!(UserListDesignModel == null))
             {
                 // Get the user list
@@ -58,6 +60,7 @@ namespace Movex.View
                 return null;
             }
         }
+        #endregion
 
     }
 }

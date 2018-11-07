@@ -38,11 +38,12 @@
 				<!-- Explanation -->
 				<StackPanel Orientation="Vertical">
 					<TextBlock  Text="{Binding Explanation}"
-								Foreground="{StaticResource ForegroundMainBrush}"
+								Foreground="{StaticResource ForegroundDarkBrush}"
 								Margin="15 0 0 12"
 								FontFamily="{StaticResource LatoRegular}"
 								TextWrapping="Wrap"
 								TextTrimming="CharacterEllipsis"
+								FontSize="{StaticResource FontSizeSmall}"
 								/>
 				</StackPanel>
 

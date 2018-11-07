@@ -16,37 +16,37 @@
 		</Grid.RowDefinitions>
 		
 		<!-- Profile title -->
-		<Grid Height="40" Margin="0 0 0 20">
-			<Button Height="40"
+		<Grid Height="50" Background="{StaticResource WordVeryLightBlueBrush}">
+			<Button Height="50"
 					Style="{StaticResource IconButton}"
 					Content="{StaticResource FontAwesomeArrowDownIcon}"
 					FontFamily="{StaticResource FontAwesome}"
-					Foreground="{StaticResource ForegroundDarkBrush}"
+					Foreground="{StaticResource ForegroundLightBrush}"
 					HorizontalAlignment="Left"
 					VerticalAlignment="Center" 
 					Command="{Binding ProfileViewModel.CloseCommand, Source={x:Static local:ViewModelLocator.Instance}}"/>
 
 			<!-- Profile header -->
-			<TextBlock FontSize="{StaticResource FontSizeLarge}"
+			<TextBlock FontSize="17"
 					   HorizontalAlignment="Center" 
 					   VerticalAlignment="Center">
 				
 				<!-- Cog Icon -->
 				<Run FontFamily="{StaticResource FontAwesome}" 
-					 Text="{StaticResource FontAwesomeCogIcon}"
-					 Foreground="{StaticResource WordBlueBrush}" />
+					 Text="{StaticResource FontAwesomeUserIcon}"
+					 Foreground="{StaticResource ForegroundLightBrush}" />
 				
 				<!-- Profile text -->
 				<Run Text="Profilo"
-					 FontFamily="{StaticResource LatoRegular}"
-					 Foreground="{StaticResource ForegroundDarkBrush}"/>
+					 FontFamily="{StaticResource LatoBold}"
+					 Foreground="{StaticResource ForegroundLightBrush}"/>
 
 			</TextBlock>
 			
 		</Grid>
 		
 		<!-- Profile Main Content -->
-		<Grid Grid.Row="1">
+		<Grid Grid.Row="1" Margin="0 30 0 30">
 
 			<Grid.RowDefinitions>
 				<RowDefinition Height="128" />
@@ -55,6 +55,7 @@
 
 			<!-- Profile Picture -->
 			<Border CornerRadius="64"
+					
 					Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
 				<Border.Background>
 					<ImageBrush ImageSource="{Binding UserItemViewModel.ProfilePicture,
@@ -76,7 +77,7 @@
 					</Grid.ColumnDefinitions>
 
 					<!-- Label -->
-					<TextBlock  Foreground="{StaticResource ForegroundDarkBrush}"
+					<TextBlock  Foreground="{StaticResource BackgroundVeryLightBrush}"
 								Margin="15 12"
 								VerticalAlignment="Center"
 								FontFamily="{StaticResource LatoRegular}"

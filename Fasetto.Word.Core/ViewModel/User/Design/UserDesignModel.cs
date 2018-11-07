@@ -45,6 +45,7 @@ namespace Movex.View.Core
                 // Collect the List of User from Network Discovering
                 u.GetForFriend();
                 var ItemsList = u.GetFriendList();
+                IoC.User.FriendsAvailable = ItemsList.Capacity == 0 ? false : true ;
                 if (Items != null) { ItemsStore = Items; }
                 Items = new List<UserItemViewModel>();
                 

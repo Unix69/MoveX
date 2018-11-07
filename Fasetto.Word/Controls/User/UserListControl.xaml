@@ -8,8 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-	<Grid x:Name="UserList"
-		  Background="{StaticResource ForegroundLightBrush}">
+	<Grid x:Name="UserList" Background="{StaticResource ForegroundLightBrush}">
+		
 		<ScrollViewer VerticalScrollBarVisibility="Auto">
 			<ItemsControl ItemsSource="{Binding Items}">
 				<ItemsControl.ItemTemplate>
@@ -19,6 +19,26 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</ScrollViewer>
+
+		<StackPanel Orientation="Vertical"
+					Background="Transparent"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					Visibility="{Binding UserItemViewModel.FriendsAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}}">
+
+			<Image Grid.Column="0"
+				   Width="40"
+				   Source="/Images/Icons/301-desk-lamp.png" />
+
+			<TextBlock Grid.Column="1"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"
+					   Text="Nessun utente disponibile"
+					   Foreground="{StaticResource ForegroundMainBrush}"
+                       TextTrimming="CharacterEllipsis"
+                       FontFamily="{StaticResource LatoRegular}" />
+
+		</StackPanel>
 	</Grid>
 	
 </UserControl>

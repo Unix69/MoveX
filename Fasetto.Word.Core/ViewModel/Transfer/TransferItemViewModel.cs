@@ -31,7 +31,7 @@ namespace Movex.View.Core
         public TransferItemViewModel() { }
 
         /// <summary>
-        ///  Constructor taking the properties as input
+        /// Constructor taking the properties as input
         /// </summary>
         /// <param name="path">The path of the file to be sent.</param>
         /// <param name="size">The size (dimensione) of the file to be sent.</param>

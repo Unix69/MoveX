@@ -23,7 +23,7 @@
                     </Grid.RowDefinitions>
 
                     <!-- Top Menu -->
-                    <Grid Height="50">
+					<Grid Height="50" Background="{StaticResource WordVeryLightBlueBrush}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -35,19 +35,67 @@
                         <StackPanel Orientation="Horizontal">
 							<Button Style="{StaticResource IconButton}"
 									Command="{Binding ProfileViewModel.SearchCommand, Source={x:Static local:ViewModelLocator.Instance}}"
-									Content="{StaticResource FontAwesomeSearchIcon}" />
+									Content="{StaticResource FontAwesomeSearchIcon}">
+								
+								<Button.ToolTip>
+									<ToolTip Background="Black">
+										<StackPanel>
+											<TextBlock	Text="Esegui ricerca"
+														FontWeight="Bold"
+														FontFamily="{StaticResource LatoRegular}"
+														Foreground="{StaticResource BackgroundVeryLightBrush}" />
+											<TextBlock	Text="Cerca utenti nella rete locale."
+														FontFamily="{StaticResource LatoRegular}"
+														Foreground="{StaticResource ForegroundDarkBrush}" />
+										</StackPanel>
+									</ToolTip>
+								</Button.ToolTip>
+								
+							</Button>
 						</StackPanel>
 
                         <!-- Settings and profile buttons -->
 						<StackPanel Orientation="Horizontal" Grid.Column="2">
-							
+
 							<Button Style="{StaticResource IconButton}"
 									Command="{Binding ProfileViewModel.OpenCommand, Source={x:Static local:ViewModelLocator.Instance}}"
-									Content="{StaticResource FontAwesomeUserIcon}" />
+									Content="{StaticResource FontAwesomeUserIcon}">
+
+								<Button.ToolTip>
+									<ToolTip Background="Black">
+										<StackPanel>
+											<TextBlock	Text="Profilo"
+														FontWeight="Bold"
+														FontFamily="{StaticResource LatoRegular}"
+														Foreground="{StaticResource BackgroundVeryLightBrush}" />
+											<TextBlock	Text="Modifica i tuoi dati."
+														FontFamily="{StaticResource LatoRegular}"
+														Foreground="{StaticResource ForegroundDarkBrush}" />
+										</StackPanel>
+									</ToolTip>
+								</Button.ToolTip>
+
+							</Button>
 
 							<Button Style="{StaticResource IconButton}"
 									Command="{Binding SettingsViewModel.OpenCommand, Source={x:Static local:ViewModelLocator.Instance}}"
-									Content="{StaticResource FontAwesomeCogIcon}" />
+									Content="{StaticResource FontAwesomeCogIcon}">
+
+								<Button.ToolTip>
+									<ToolTip Background="Black">
+										<StackPanel>
+											<TextBlock	Text="Impostazioni"
+														FontWeight="Bold"
+														FontFamily="{StaticResource LatoRegular}"
+														Foreground="{StaticResource BackgroundVeryLightBrush}" />
+											<TextBlock	Text="Configura i settaggi delll'applicazione."
+														FontFamily="{StaticResource LatoRegular}"
+														Foreground="{StaticResource ForegroundDarkBrush}" />
+										</StackPanel>
+									</ToolTip>
+								</Button.ToolTip>
+
+							</Button>
 						</StackPanel>
 					</Grid>
 

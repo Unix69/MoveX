@@ -4,6 +4,7 @@ using System.Threading;
 using System.Text;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Movex.View.Core;
@@ -11,37 +12,34 @@ using Movex.View.Core;
 namespace Movex.View
 {
     /// <summary>
-    /// Interaction logic for BrowsePage.xaml
+    /// Interaction logic for the BrowsePage
     /// </summary>
     public partial class BrowsePage : BasePage<BackboneViewModel>
     {
-        /// <summary>
-        /// Private Members
-        /// </summary>
+        #region Private members
         private List<string> mFilepaths;
         private TransferItemListDesignModel mTransferItemList;
+        #endregion
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        #region Constructor
         public BrowsePage()
         {
             InitializeComponent();
             mFilepaths = new List<string>();
 
-            mTransferItemList = ViewModelLocator.TransferItemListDesignModel;
-            TransferItemList.ItemsSource = mTransferItemList.Items;
+            mTransferItemList                   = ViewModelLocator.TransferItemListDesignModel;
+            TransferItemList.ItemsSource        = mTransferItemList.Items;
+            mTransferItemList.TransferAvailable = mTransferItemList.Items.Capacity == 0 ? false : true;
         }
+        #endregion
 
         #region Utility methods
         private void ScanButton_BrowseFiles(object sender, RoutedEventArgs e)
         {
-
-            var defaultFilename = "Select a folder";
+            var defaultFilename = "Select a file";
             var fileDialog = new OpenFileDialog()
             {
                 ValidateNames = false,
-                FileName = defaultFilename,
                 CheckFileExists = false,
                 CheckPathExists = true,
                 Multiselect = true
@@ -49,34 +47,22 @@ namespace Movex.View
 
             if (fileDialog.ShowDialog().Value)
             {
-
-                // Check if the user picked a file or a directory, for example:
                 if (!fileDialog.FileName.Contains(defaultFilename))
                 {
-                    // File code
+                    var builder = new StringBuilder();
+                    var enumerator = fileDialog.FileNames;
+
+                    foreach (var item in enumerator)
+                    {
+                        builder.AppendLine(item);
+                        mFilepaths.Add(item);
+                        mTransferItemList.Items.Add(new TransferItemViewModel(item, new FileInfo(item).Length));
+                        TransferItemList.Items.Refresh();
+                        mTransferItemList.TransferAvailable = true;
+                    }
                 }
-                else // You should probably turn this into an else if instead
-                {
-                    // Directory code
-                }
-
-                
-
+                else {}
             }
-
-            var builder = new StringBuilder();
-            var count = 0;
-            var enumerator = fileDialog.FileNames;
-
-            foreach(var item in enumerator)
-            {
-                builder.AppendLine(item);
-                mFilepaths.Add(item);
-                mTransferItemList.Items.Add(new TransferItemViewModel(item, new FileInfo(item).Length));
-                TransferItemList.Items.Refresh();
-                count++;
-            }
-
         }
         private void ScanButton_BrowseFolders(object sender, RoutedEventArgs e)
         {
@@ -92,7 +78,6 @@ namespace Movex.View
 
             dialog.ShowDialog();
 
-            
             try
             {
                 var count = 0;
@@ -108,6 +93,10 @@ namespace Movex.View
                     {
                         builder.AppendLine(item);
                         mFilepaths.Add(item);
+                        var folderSize = Directory.GetFiles(item, "*", SearchOption.AllDirectories).Sum(t => (new FileInfo(t).Length));
+                        mTransferItemList.Items.Add(new TransferItemViewModel(item, folderSize));
+                        TransferItemList.Items.Refresh();
+                        mTransferItemList.TransferAvailable = true;
                     }
                 }
             }
@@ -116,23 +105,21 @@ namespace Movex.View
                 return;
             }
         }
-        #endregion
-
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             var builder = new StringBuilder();
             var filepaths = mFilepaths.ToArray();
 
             // Get the ip addresses selected by the user
-            var addresses = ((App) Application.Current).GetUserListControl().GetIpAddressesFromUserList();
+            var addresses = ((App)Application.Current).GetUserListControl().GetIpAddressesFromUserList();
 
             // Ask to the FTP Client Service to send data
             if (!(filepaths == null) && !(addresses == null))
             {
                 foreach (var item in filepaths) { builder.AppendLine(item); }
-                foreach(var item in addresses) { builder.AppendLine(item.ToString()); }
+                foreach (var item in addresses) { builder.AppendLine(item.ToString()); }
                 System.Windows.MessageBox.Show(builder.ToString());
-                
+
                 var WindowThread = new Thread(() =>
                 {
                     var windowAvailability = new ManualResetEvent(false);
@@ -143,7 +130,8 @@ namespace Movex.View
                 WindowThread.SetApartmentState(ApartmentState.STA);
                 WindowThread.Start();
 
-            }   
+            }
         }
+        #endregion
     }
 }

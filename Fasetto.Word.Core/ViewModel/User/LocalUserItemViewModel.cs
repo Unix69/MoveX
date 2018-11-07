@@ -24,6 +24,8 @@ namespace Movex.View.Core
 
         public string AutomaticSave { get; set; }
 
+        public bool FriendsAvailable { get; set; }
+
         #endregion
 
         #region Private Members

@@ -51,7 +51,7 @@
 
 			<!-- Label -->
 			<TextBlock  Text="{Binding Label}"
-						Foreground="{StaticResource ForegroundDarkBrush}"
+						Foreground="{StaticResource BackgroundVeryLightBrush}"
 						Margin="15 12"
 						VerticalAlignment="Center"
 						FontFamily="{StaticResource LatoRegular}"
@@ -76,9 +76,11 @@
 
 			<!-- Content -->
 			<TextBlock  Text="{Binding OriginalText}"
+						Background="{StaticResource ForegroundLightBrush}"
 						Foreground="{StaticResource ForegroundDarkBrush}"
 						Grid.Column="1"
 						Margin="15 0"
+						FontFamily="{StaticResource LatoRegular}"
 						local:AnimateFadeInProperty.Value="{Binding Editing, Converter={local:BooleanInvertConverter}}"
 						VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Width="108" HorizontalAlignment="Left"/>
 
