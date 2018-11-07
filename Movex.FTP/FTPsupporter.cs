@@ -9,7 +9,7 @@ namespace Movex.FTP
     class FTPsupporter
     {
         // general send protocol attributes and fields
-        
+        public const int Ack = 200;
             
         //Type of Sends
         public const int ToSfileonly = 1;
