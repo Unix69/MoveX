@@ -9,7 +9,7 @@ namespace Movex.FTP
     class FTPsupporter
     {
         // general send protocol attributes and fields
-        
+        public const int Ack = 200;
             
         //Type of Sends
         public const int ToSfileonly = 1;
@@ -25,7 +25,7 @@ namespace Movex.FTP
         //File send attributes and fields
         public const int Filenamelensize = 4;
         public const int Filesizesize = 4;
-        public const int Filedatasize = 1024*1024; //1MB
+        public const int Filedatasize = 1024 * 1024; //1MB
         public const int Tagsize = 4;
         public const int Numfilesize = 4;  
         public const int Headersize = 4 + 4;
