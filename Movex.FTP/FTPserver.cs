@@ -230,11 +230,13 @@ namespace Movex.FTP
                 binarybuffer = new BinaryWriter(File.Open(path + filename, FileMode.Append));
                 binarybuffer.Write(bufferIn, 0, filesize);
                 CloseBufferW(binarybuffer);
+                bufferIn = null;
                 dchan.GetDownloadChannelInfo(filename).Switch_download();
                 return(true);
             }
             catch (Exception e) {
                 CloseBufferW(binarybuffer);
+                bufferIn = null;
                 return (false);
             }
 
@@ -503,7 +505,7 @@ namespace Movex.FTP
         private bool FTPfilesByTree(Socket clientsocket, string [] paths, string path, int t) {
         var numfile = 0;
         string filename = null;
-        byte [][] bufferFile = null;
+        byte [] bufferFile = null;
         Thread [] nrecvfrom = null;
         var tag = 0;
             try
@@ -520,15 +522,14 @@ namespace Movex.FTP
 
                 if (t == FTPsupporter.Filesend)
                 {
-                    bufferFile = new byte[1][];
                     dchan.Set_num_trasf(1);
                     dchan.Set_filepaths(paths);
                     AttachDownloadInfosToChannel(ref dchan);
                     filename = RecvFilename(clientsocket, dchan, 0);
                     if (!CheckFilename(filename)) { return (false); }
-                    bufferFile[0] = RecvFiledata(clientsocket, dchan, 0, filename);
-                    if (!CheckFileData(bufferFile[0], dchan, 0)) { return (false); }
-                    if (!FTPfilewrite_(bufferFile[0], dchan, 0)) { return (false); }
+                    bufferFile = RecvFiledata(clientsocket, dchan, 0, filename);
+                    if (!CheckFileData(bufferFile, dchan, 0)) { return (false); }
+                    if (!FTPfilewrite_(bufferFile, dchan, 0)) { return (false); }
                 }
                 else
                 {
@@ -537,7 +538,6 @@ namespace Movex.FTP
                     if (!CheckNumfile(numfile, dchan)) { return (false); }
                     dchan.Set_filepaths(paths);
                     AttachDownloadInfosToChannel(ref dchan);
-                    bufferFile = new byte[numfile][];
                     nrecvfrom = new Thread[numfile];
 
                     for (var i = 0; i < numfile; i++)
@@ -546,9 +546,10 @@ namespace Movex.FTP
                         if (!CheckTag(tag)) { return (false); }
                         filename = RecvFilename(clientsocket, dchan, 0);
                         if (!CheckFilename(filename)) { return (false); }
-                        bufferFile[i] = RecvFiledata(clientsocket, dchan, 0, filename);
-                        if (!CheckFileData(bufferFile[i], dchan, i)) { return (false); }
-                        {
+                        bufferFile = RecvFiledata(clientsocket, dchan, 0, filename);
+                        if (!CheckFileData(bufferFile, dchan, i)) { return (false); }
+                        FTPfilewritepath(paths[i], bufferFile, dchan, i);
+                       /* {
                             var index = i;
                             nrecvfrom[index] = new Thread(new ThreadStart(() => FTPfilewritepath(paths[index], bufferFile[index], dchan, index)))
                             {
@@ -557,7 +558,7 @@ namespace Movex.FTP
                             };
                             nrecvfrom[index].Start();
                             dchan.Set_download_thread(nrecvfrom[index], index);
-                        }
+                        }*/
                     }
 
                     for (var i = 0; i < nrecvfrom.Length; i++)
