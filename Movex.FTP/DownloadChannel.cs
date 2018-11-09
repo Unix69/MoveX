@@ -37,8 +37,8 @@ namespace Movex.FTP
         private string[] mFilepaths;
         private Thread [] mDownload_thread;
         private Thread mMain_download_thread;
-        private int [] mFilesizes;
-        private int [] mReceived;
+        private long [] mFilesizes;
+        private long [] mReceived;
         private double[] mThroughputs;
         private long[] mStart_time_millisec;
         private long[] mRemaining_time_millisec;
@@ -78,8 +78,8 @@ namespace Movex.FTP
         //creater
         public void Set_ps(int ps)
         {
-            var parallel = FTPsupporter.Parallel;
-            var serial = FTPsupporter.Serial;
+            var parallel = FTPsupporter.ProtocolAttributes.Parallel;
+            var serial = FTPsupporter.ProtocolAttributes.Serial;
 
             if (ps == serial)
             {
@@ -111,10 +111,10 @@ namespace Movex.FTP
 
         private void CreateReceiveStructure(int num_trasf) {
             
-            mFilesizes = new int[num_trasf];
+            mFilesizes = new long[num_trasf];
             mFilenames = new string[num_trasf];
             mFilepaths = new string[num_trasf];
-            mReceived = new int[num_trasf];
+            mReceived = new long[num_trasf];
             mThroughputs = new double[num_trasf];
             mStart_time_millisec = new long[num_trasf];
             mRemaining_time_millisec = new long[num_trasf];
@@ -208,11 +208,11 @@ namespace Movex.FTP
             return (mDownload_thread[index]);
         }
 
-        public int [] Get_received() {
+        public long [] Get_received() {
             return (mReceived);
         }
 
-        public int [] Get_filesizes() {
+        public long [] Get_filesizes() {
             return (mFilesizes);
         }
 
@@ -247,6 +247,8 @@ namespace Movex.FTP
         public void InterruptDownload()
         {
             mInterrupted = true;
+            mMain_download_thread.Interrupt();
+          
         }
 
         public bool IsInterrupted()
@@ -255,7 +257,7 @@ namespace Movex.FTP
         }
 
 
-        public void Add_new_download(string filename, int filesize)
+        public void Add_new_download(string filename, long filesize)
         {
 
             mFilenames[mIndex] = filename;
@@ -287,9 +289,9 @@ namespace Movex.FTP
             Incr_received_p(IndexOf(filename), incr);
         }
 
-        public int GetTotReceived()
+        public long GetTotReceived()
         {
-            var TotReceived = 0;
+            long TotReceived = 0;
             for (var i = 0; i < mNum_trasf; i++)
             {
                 TotReceived += mReceived[i];
@@ -297,9 +299,9 @@ namespace Movex.FTP
             return (TotReceived);
         }
 
-        public int GetTotFilesize()
+        public long GetTotFilesize()
         {
-            var TotFilesize = 0;
+            long TotFilesize = 0;
             for (var i = 0; i < mNum_trasf; i++)
             {
                 TotFilesize += mFilesizes[i];
