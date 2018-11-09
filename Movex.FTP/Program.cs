@@ -17,12 +17,13 @@ namespace Movex.FTP
         {
           var server = new FTPserver(2000, false, false, false, @".\Downloads\");
             var client = new FTPclient();
-            var paths = new string[1];
+            var paths = new string[2];
             var ip = new IPAddress[1];
             var serverThread = new Thread(new ThreadStart(() => server.FTPstart()));
             serverThread.Start();
             ip[0] = IPAddress.Parse("127.0.0.1");
             paths[0] = @".\demo(1)(1).zip";
+            paths[1] = @".\ciao.txt";
             client.FTPsendAll(paths, ip, null, null);
             serverThread.Join();
             serverThread.Interrupt();

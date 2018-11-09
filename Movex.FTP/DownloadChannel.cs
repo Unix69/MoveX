@@ -35,18 +35,18 @@ namespace Movex.FTP
         private string mFrom;
         private string [] mFilenames;
         private string[] mFilepaths;
-        private Thread [] mDownload_thread;
         private Thread mMain_download_thread;
         private long [] mFilesizes;
         private long [] mReceived;
         private double[] mThroughputs;
         private long[] mStart_time_millisec;
+        private long[] mCurrent_time_millisec;
         private long[] mRemaining_time_millisec;
         private int mIndex;
         private int mNum_trasf;
         private int mMulti_single;
         private string mPath;
-        private Mutex mMutex;
+
         private bool mInterrupted;
         private Socket mSocket;
         private List<DownloadChannelInfo> mDchaninfos;
@@ -58,7 +58,6 @@ namespace Movex.FTP
             mFrom = from;
             mMulti_single = multi_single;
             mPath = path;
-            mMutex = new Mutex();
             mIndex = 0;
             mInterrupted = false;
             mDchaninfos = new List<DownloadChannelInfo>();
@@ -117,11 +116,14 @@ namespace Movex.FTP
             mReceived = new long[num_trasf];
             mThroughputs = new double[num_trasf];
             mStart_time_millisec = new long[num_trasf];
+            mCurrent_time_millisec = new long[num_trasf];
             mRemaining_time_millisec = new long[num_trasf];
-            mDownload_thread = new Thread[num_trasf];
             for (var i = 0; i < num_trasf; i++)
             {
                 mFilesizes[i] = 0; mReceived[i] = 0;
+                mStart_time_millisec[i] = 0;
+                mCurrent_time_millisec[i] = 0;
+                mThroughputs[i] = 0;
                 mFilenames[i] = "";mFilepaths[i] = mPath;
             }
             mIndex = 0;
@@ -155,22 +157,7 @@ namespace Movex.FTP
             return;
         }
 
-        public void Set_download_thread(Thread download_thread, int index)
-        {
-            mDownload_thread[index] = download_thread;
-            return;
-        }
-
-        public void Set_download_thread(Thread download_thread,string filename)
-        {
-            mDownload_thread[IndexOf(filename)] = download_thread;
-            return;
-        }
-
-        public void Set_mutex(Mutex mutex) {
-            mMutex = mutex;
-        }
-
+       
         public Socket Get_socket()
         {
             return (mSocket);
@@ -198,16 +185,7 @@ namespace Movex.FTP
             return(mMulti_single);
         }
 
-        public Thread Get_download_thread(string filename)
-        {
-            return (mDownload_thread[IndexOf(filename)]);
-        }
-
-        public Thread Get_download_thread(int index)
-        {
-            return (mDownload_thread[index]);
-        }
-
+        
         public long [] Get_received() {
             return (mReceived);
         }
@@ -220,11 +198,7 @@ namespace Movex.FTP
             return (mFilenames);
         }
 
-        public Mutex Get_Mutex()
-        {
-            return (mMutex);
-        }
-
+       
         public int Get_ps()
         {
             return (mPs);
@@ -256,23 +230,58 @@ namespace Movex.FTP
             return (mInterrupted);
         }
 
+        public void StartDownload(int index)
+        {
+            if (mStart_time_millisec != null && mCurrent_time_millisec != null)
+            {
+                mStart_time_millisec[index] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                mCurrent_time_millisec[index] = mStart_time_millisec[index];
+            }
+        }
+
+
+        public void StartDownload(string filename)
+        {
+            if (mStart_time_millisec != null && mCurrent_time_millisec != null)
+            {
+                var index = IndexOf(filename);
+                if (index > 0 && index < mNum_trasf)
+                {
+                    mStart_time_millisec[IndexOf(filename)] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    mCurrent_time_millisec[index] = mStart_time_millisec[index];
+                }
+            }
+        }
+
+
+
 
         public void Add_new_download(string filename, long filesize)
         {
-
-            mFilenames[mIndex] = filename;
-            mStart_time_millisec[mIndex] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            mFilesizes[mIndex++] = filesize;
-
+            if (mStart_time_millisec != null && mFilenames != null && mFilesizes != null)
+            {
+                mFilenames[mIndex] = filename;
+                mStart_time_millisec[mIndex] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                mFilesizes[mIndex++] = filesize;
+            }
             return;
         }
 
         public void Incr_received_p(int index, int incr)
         {
-            var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
-            mReceived[index] += incr;
-            mThroughputs[index] = (double) mReceived[index] / (var_milliseconds - mStart_time_millisec[index]);
-            mRemaining_time_millisec[index] = (long)((mFilesizes[index] - mReceived[index]) / mThroughputs[index]);
+            try
+            {
+                var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
+                if (mReceived != null && mRemaining_time_millisec != null && mThroughputs != null)
+                {
+                    mReceived[index] += incr;
+                    mThroughputs[index] = (incr / (var_milliseconds - mCurrent_time_millisec[index])) * 1000;
+                    mCurrent_time_millisec[index] = var_milliseconds;
+                    mRemaining_time_millisec[index] = (long)((mFilesizes[index] - mReceived[index]) / ((mReceived[index] / (var_milliseconds - mStart_time_millisec[index])) * 1000));
+                }
+            }
+            catch (Exception e) { return; }
+            
         }
 
         public int IndexOf(string filename) {

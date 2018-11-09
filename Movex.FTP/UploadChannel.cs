@@ -21,6 +21,7 @@ namespace Movex.FTP
         private long[] mSended;
         private double[] mThroughputs;
         private long[] mStart_time_millisec;
+        private long[] mCurrent_time_millisec;
         private long[] mRemaining_time_millisec;
         private int mIndex;
         private int mNum_trasf;
@@ -57,6 +58,7 @@ namespace Movex.FTP
             mSended = new long[num_trasf];
             mThroughputs = new double[num_trasf];
             mStart_time_millisec = new long[num_trasf];
+            mCurrent_time_millisec = new long[num_trasf];
             mRemaining_time_millisec = new long[num_trasf];
             mUpload_threads = new Thread[num_trasf];
             for (var i = 0; i < num_trasf; i++)
@@ -64,6 +66,7 @@ namespace Movex.FTP
                 mFilesizes[i] = mSended[i] = 0;
                 mThroughputs[i] = 0;
                 mStart_time_millisec[i] = 0;
+                mCurrent_time_millisec[i] = 0;
                 mFilenames[i] = "";
             }
             mIndex = 0;
@@ -244,15 +247,21 @@ namespace Movex.FTP
             if (mStart_time_millisec != null)
             {
                 mStart_time_millisec[index] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                mCurrent_time_millisec[index] = mStart_time_millisec[index];
             }
         }
 
 
-        public void StartDownload(string filename)
+        public void StartUpload(string filename)
         {
             if (mStart_time_millisec != null)
             {
-                mStart_time_millisec[IndexOf(filename)] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                var index = IndexOf(filename);
+                if (index > 0 && index < mNum_trasf)
+                {
+                    mStart_time_millisec[index] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    mCurrent_time_millisec[index] = mStart_time_millisec[index];
+                }
             }
         }
 
@@ -261,10 +270,12 @@ namespace Movex.FTP
 
         public void Add_new_upload(string filename, long filesize)
         {
+
             if (mStart_time_millisec != null && mFilenames != null && mFilesizes != null)
             {
                 mFilenames[mIndex] = filename;
                 mStart_time_millisec[mIndex] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                mCurrent_time_millisec[mIndex] = mStart_time_millisec[mIndex];
                 mFilesizes[mIndex++] = filesize;
             }
             return;
@@ -272,13 +283,18 @@ namespace Movex.FTP
 
         public void Incr_sended_p(int index, int incr)
         {
-            var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
-            if (mSended != null && mRemaining_time_millisec != null && mThroughputs != null)
+            try
             {
-                mSended[index] += incr;
-                mThroughputs[index] = (mSended[index] / (var_milliseconds - mStart_time_millisec[index])) * 1000;
-                mRemaining_time_millisec[index] = (long)((mFilesizes[index] - mSended[index]) / mThroughputs[index]);
+                var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
+                if (mSended != null && mRemaining_time_millisec != null && mThroughputs != null)
+                {
+                    mSended[index] += incr;
+                    mThroughputs[index] = (incr / (var_milliseconds - mCurrent_time_millisec[index])) * 1000;
+                    mCurrent_time_millisec[index] = var_milliseconds;
+                    mRemaining_time_millisec[index] = (long)((mFilesizes[index] - mSended[index]) / ((mSended[index] / (var_milliseconds - mStart_time_millisec[index])) * 1000));
+                }
             }
+            catch (Exception e) { return;}
         }
 
         public int IndexOf(string filename)

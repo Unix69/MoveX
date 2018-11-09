@@ -155,6 +155,24 @@ namespace Movex.FTP
 
         }
 
+
+        public string getBytesSufix(ref double bytes) {
+            string[] sufixes = {"",  "K", "M", "G", "T", "P" };
+            var s = 0;
+            while (bytes > 1024) {
+                bytes /= 1024;
+                s++;
+            }
+            return (sufixes[s]);
+        }
+
+        public string getConvertedNumber(long bytes) {
+            double b = bytes;
+            string sufix = getBytesSufix(ref b);
+            float r = (float)b;
+            return (r.ToString() + " " + sufix + "b");
+        }
+
       
        
         public void WaitClient(Socket clientsocket) {
@@ -270,7 +288,8 @@ namespace Movex.FTP
 
         private void WaitUntilClose(Socket clientsocket)
         {
-            while (clientsocket.Connected) ;
+            while (clientsocket.Connected);
+            clientsocket.Dispose();
             clientsocket.Close();
             return;
 
@@ -660,21 +679,23 @@ namespace Movex.FTP
         private int Send(Socket clientsocket, byte[] bufferOut, UploadChannel uchan, int uploadindex) {
             var length = 0;
             var sended = 0;
-            if (uchan == null)
-            {
-                length = bufferOut.Length;
-                sended = clientsocket.Send(bufferOut, 0, length, 0);
-                return (sended);
-            }
-
-            if (!clientsocket.Connected || uchan.IsInterrupted())
+            if (uchan != null && (!clientsocket.Connected || uchan.IsInterrupted()))
             {
                 uchan.InterruptUpload();
                 return (0);
             }
 
+           
+
             length = bufferOut.Length;
             sended = clientsocket.Send(bufferOut, 0, length, 0);
+
+            if (uchan == null)
+            {
+                return (sended);
+            }
+
+
             if (sended == 0)
             {
                 uchan.InterruptUpload();
@@ -755,6 +776,8 @@ namespace Movex.FTP
                 long toread = 0;
                 long readed = 0;
                 var x = 1;
+                var remainingtimes = uchan.Get_remaining_times();
+                var throughputs = uchan.Get_throughputs();
                 Console.WriteLine("Send: filename " + filename + " filesize " + filesize + "/");
                 while (readed < filesize)
                 {
@@ -762,7 +785,8 @@ namespace Movex.FTP
                     var filedata_buff = new byte[(toread > FTPsupporter.Sizes.Filedatasize ? FTPsupporter.Sizes.Filedatasize : toread)];
                     var nread = readFileStream.Read(filedata_buff, 0, filedata_buff.Length);
                     sended = Send(clientsocket, filedata_buff, uchan, n);
-                    Console.WriteLine("Send: readed " + readed + " toread " + toread + " buffersize " + filedata_buff.Length + " nread " + nread);
+                    Console.WriteLine("Send: readed =" +getConvertedNumber(readed) + " toread =" + getConvertedNumber(toread) + " nread =" +getConvertedNumber(nread) + 
+                        " remaining time =" + remainingtimes[n] + "s  throughput =" + getConvertedNumber((long) throughputs[n])+"/s");
                     if (sended != nread)
                     {
                         readFileStream.Dispose();
@@ -853,14 +877,14 @@ namespace Movex.FTP
         private bool RefreshCannels(UploadChannel olduchan, List<UploadChannelInfo> olduchaninfos)
         {
 
-            Console.WriteLine("Upload channel end details : ");
+            Console.WriteLine("\n\nUpload channel end details :\n\n");
             if (olduchan == null || olduchaninfos == null) { return (false); }
             var filenames = olduchan.Get_filenames();
             var filesizes = olduchan.Get_filesizes();
             var sended = olduchan.Get_sended();
             var throughputs = olduchan.Get_throughputs();
             for (var i = 0; i < olduchan.Get_num_trasf(); i++) {
-                Console.WriteLine(i + " - filename " + filenames[i] + " filesize "+filesizes[i]+" sended "+sended[i]+" throughput "+throughputs[i]);
+                Console.WriteLine(i + " - filename " + filenames[i] + "  filesize "+getConvertedNumber(filesizes[i])+"\n sended "+getConvertedNumber(sended[i])+" throughput "+getConvertedNumber((long) throughputs[i])+"/s\n\n");
             }
             mUchansDataLock.WaitOne();
             if (!mUchans.Remove(olduchan)) {
@@ -951,7 +975,10 @@ namespace Movex.FTP
             {
                
                     length = bufferIn.Length;
-                    received = client.Receive(bufferIn, 0, length, 0);
+                    while (received < length) {
+                         received += client.Receive(bufferIn, received, length - received, 0);
+                    }
+                   
                     return (received);
 
             }
