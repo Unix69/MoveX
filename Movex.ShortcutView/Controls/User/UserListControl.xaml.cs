@@ -89,7 +89,7 @@ namespace Movex.ShortcutView
             MessageBox.Show("I am going to send (using TCP): " + folders[0] + ", " + files[0] + ".");
 
             // Send the content
-            new Thread(() => IoC.FtpClient.Send(100, folders, files, IPs, 2000)).Start();
+         //   new Thread(() => IoC.FtpClient.Send(100, folders, files, IPs, 2000)).Start();
         }
     }
 }

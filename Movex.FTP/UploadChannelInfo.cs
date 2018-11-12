@@ -45,7 +45,7 @@ namespace Movex.FTP
                 }
             }
             if (mCurrent_index > mEnd_index) {
-                filename = FTPsupporter.UnknownString;
+                filename = FTPsupporter.Unknown.UnknownString;
             }
             return (filename);
         }
@@ -53,15 +53,15 @@ namespace Movex.FTP
         public double Get_current_throughput() {
             if (mCurrent_index >= mEnd_index)
             {
-                return (FTPsupporter.UnknownDouble);
+                return (FTPsupporter.Unknown.UnknownDouble);
             }
             return (mUchan.Get_throughputs()[mCurrent_index]);
         }
 
-        public int Get_current_filesize() {
+        public long Get_current_filesize() {
             if (mCurrent_index > mEnd_index)
             {
-                return (FTPsupporter.UnknownInt);
+                return (FTPsupporter.Unknown.UnknownInt);
             }
             return (mUchan.Get_filesizes()[mCurrent_index]);
         }
@@ -69,7 +69,7 @@ namespace Movex.FTP
         public string Get_current_to() {
             if (mCurrent_index > mEnd_index)
             {
-                return (FTPsupporter.UnknownString);
+                return (FTPsupporter.Unknown.UnknownString);
             }
             return (mUchan.Get_to());
         }
@@ -77,15 +77,15 @@ namespace Movex.FTP
         public string Get_current_remaining_time() {
             if (mCurrent_index > mEnd_index)
             {
-                return (FTPsupporter.UnknownLong).ToString();
+                return (FTPsupporter.Unknown.UnknownLong).ToString();
             }
             return (mUchan.Get_remaining_times()[mCurrent_index]).ToString();
         }
 
-        public int Get_current_sended() {
+        public long Get_current_sended() {
             if (mCurrent_index > mEnd_index)
             {
-                return (FTPsupporter.UnknownInt);
+                return (FTPsupporter.Unknown.UnknownInt);
             }
             return (mUchan.Get_sended()[mCurrent_index]);
         }

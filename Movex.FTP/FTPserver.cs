@@ -61,9 +61,7 @@ namespace Movex.FTP
             return;
         }
        
-        public bool FTPclose(){
-            return(true);
-        }
+       
         public void MakeInvisible() {
             mVisible.WaitOne();
         }
@@ -85,15 +83,15 @@ namespace Movex.FTP
                 mDownloadDefaultFolder = DownloadDefaultFolder;
                 return;
             }
-            catch (Exception e) { return; }
+            catch (Exception e) { throw e; }
         }
      
         public void FTPstart() { 
-            var ipEnd = new IPEndPoint(IPAddress.Any, FTPsupporter.Port);
+            var ipEnd = new IPEndPoint(IPAddress.Any, FTPsupporter.ProtocolAttributes.Port);
             mServersocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             
             try{ mServersocket.Bind(ipEnd); mServersocket.Listen(100); }
-            catch(Exception e){return;}
+            catch(Exception e) { throw new IOException("Cannot Bind Server"); }
             
             Accept:
     
@@ -169,101 +167,32 @@ namespace Movex.FTP
         }
 
 
-       
-        private void FTPfilewrite(byte[] bufferIn, DownloadChannel dchan, int id)
-        {
 
+        private int Receive(Socket client, ref byte [] bufferIn, DownloadChannel dchan, int downloadindex) {
             try
             {
-                var result = FTPfilewrite_(bufferIn, dchan, id);
 
-                return;
-            }
-            catch (Exception e) { return; }
-            
-        }
-
-      
-        private void FTPfilewritepath(string path, byte[] bufferIn, DownloadChannel dchan, int id)
-        {
-
-            try
-            {
-                var result = FTPfilewritepath_(path, bufferIn, dchan, id);
-
-                return;
-            }
-            catch (Exception e) { return; }
-
-        }
-
-
-        private bool FTPfilewrite_(byte[] bufferIn, DownloadChannel dchan, int index)
-        {
-            BinaryWriter binarybuffer = null;
-            try
-            {
-                var filename = dchan.Get_filenames()[index];
-                var path = dchan.Get_filepaths()[index];
-                var filesize = dchan.Get_filesizes()[index];
-                binarybuffer = new BinaryWriter(File.Open(path + filename, FileMode.Append));
-                binarybuffer.Write(bufferIn, 0, filesize);
-                CloseBufferW(binarybuffer);
-                dchan.GetDownloadChannelInfo(filename).Switch_download();
-                return (true);
-            }
-            catch (Exception e) {
-                 CloseBufferW(binarybuffer);
-                return (false);
-            }
-
-        }
-
-       
-        private bool FTPfilewritepath_(string path, byte[] bufferIn, DownloadChannel dchan, int index)
-        {
-            BinaryWriter binarybuffer = null;
-            try
-            {
-                var filename = dchan.Get_filenames()[index];
-                var filesize = dchan.Get_filesizes()[index];
-                binarybuffer = new BinaryWriter(File.Open(path + filename, FileMode.Append));
-                binarybuffer.Write(bufferIn, 0, filesize);
-                CloseBufferW(binarybuffer);
-                bufferIn = null;
-                dchan.GetDownloadChannelInfo(filename).Switch_download();
-                return(true);
-            }
-            catch (Exception e) {
-                CloseBufferW(binarybuffer);
-                bufferIn = null;
-                return (false);
-            }
-
-
-
-        }
-
-        private int Receive(Socket client, byte [] bufferIn, DownloadChannel dchan, int downloadindex) {
-            try
-            {
-                var received = 0;
-                var length = 0;
-                if (dchan == null)
-                {
-                    length = bufferIn.Length;
-                    received = client.Receive(bufferIn, 0, length, 0);
-                    return (received);
-                }
-
-                if (!client.Connected || dchan.IsInterrupted())
+                if (dchan != null && (!client.Connected || dchan.IsInterrupted()))
                 {
                     dchan.InterruptDownload();
                     return (0);
                 }
 
+                var received = 0;
+                var length = 0;
+
+              
                 length = bufferIn.Length;
-                received = client.Receive(bufferIn, 0, length, 0);
+
+                while (received < length) {
+                    received += client.Receive(bufferIn, received, length - received, 0);
+                }
+
+                if (dchan == null)
+                {
+                    return (received);
+                }
+
                 if (received == 0)
                 {
                     dchan.InterruptDownload();
@@ -274,112 +203,44 @@ namespace Movex.FTP
                 }
                 return (received);
             }
-            catch (Exception e) { return (0); }
-            }
+            catch (Exception e) { throw e; }
+        }
 
 
 
       
-        private bool FTPmultiFile_t(ref Socket clientsocket, int tag, string path)
-        {
-
-            var numfile = 0;
-            string filename = null;
-            byte[][] bufferFile;
-            Thread[] nrecvfrom;
-            var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), tag, path);
-            mDchansDataLock.WaitOne();
-            mDchans.Add(dchan);
-            mDchansDataLock.ReleaseMutex();
-            dchan.Set_socket(ref clientsocket);
-
-            try
-            {
-                numfile = RecvNumfile(clientsocket);
-                if (!CheckNumfile(numfile, dchan)) { return (false); }
-                dchan.Set_main_download_thread(Thread.CurrentThread);
-                dchan.Set_ps(FTPsupporter.Parallel);
-                AttachDownloadInfosToChannel(ref dchan);
-
-
-                bufferFile = new byte[numfile][];
-                nrecvfrom = new Thread[numfile];
-
-                for (var i = 0; i < numfile; i++)
-                {
-
-                    tag = RecvTag(clientsocket);
-                    if (!CheckTag(tag)) {return (false);}
-                    filename = RecvFilename(clientsocket, dchan, i);
-                    if (!CheckFilename(filename)) { return (false); }
-                    bufferFile[i] = RecvFiledata(clientsocket, dchan, i, filename);
-                    if (!CheckFileData(bufferFile[i], dchan, i)) {return (false);}
-                    {
-                        var index = i;
-                        nrecvfrom[index] = new Thread(new ThreadStart(() => FTPfilewrite(bufferFile[index], dchan, index)))
-                        {
-                            Priority = ThreadPriority.Highest,
-                            Name = "ServerWriteThread" + index
-                        };
-                        nrecvfrom[index].Start();
-                        dchan.Set_download_thread(nrecvfrom[index], index);
-                    }
-                }
-
-                var numthreads = nrecvfrom.Length;
-               
-                for (var i = 0; i < numthreads; i++)
-                {
-                    nrecvfrom[i].Join();
-                }
-
-                if (!RefreshCannels(dchan)) { return (false); }
-
-                return (true);
-            }
-            catch (Exception e) { return (false); }
-
-
-
-        }
-
+       
    
         private bool FTPmultiFile_s(ref Socket clientsocket, int tag, string path)
         {
             var numfile = 0;
-            byte[] bufferFile = null;
             string filename = null;
-
-            var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), tag, path);
-            mDchansDataLock.WaitOne();
-            mDchans.Add(dchan);
-            mDchansDataLock.ReleaseMutex();
-            dchan.Set_socket(ref clientsocket);
-            dchan.Set_ps(FTPsupporter.Serial);
-            dchan.Set_main_download_thread(Thread.CurrentThread);
-
-
             try
             {
+                var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), tag, path);
+                mDchansDataLock.WaitOne();
+                mDchans.Add(dchan);
+                mDchansDataLock.ReleaseMutex();
+                dchan.Set_socket(ref clientsocket);
+                dchan.Set_ps(FTPsupporter.ProtocolAttributes.Serial);
+                dchan.Set_main_download_thread(Thread.CurrentThread);
 
                 numfile = RecvNumfile(clientsocket);
-                if (!CheckNumfile(numfile, dchan)){return (false);}
+                if (!CheckNumfile(numfile, dchan)) { throw new IOException("Number of files not correct"); }
                 AttachDownloadInfosToChannel(ref dchan);
                 for (var i = 0; i < numfile; i++)
                 {
                     tag = RecvTag(clientsocket);
-                    if (!CheckTag(tag)){return (false);}
+                    if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
                     filename = RecvFilename(clientsocket, dchan, i);
-                    if (!CheckFilename(filename)) { return (false); }
-                    bufferFile = RecvFiledata(clientsocket, dchan, i, filename);
-                    if (!CheckFileData(bufferFile, dchan, i)) { return (false);}
-                    FTPfilewrite(bufferFile, dchan, i);
+                    if (!CheckFilename(filename)) { throw new IOException("Bad filename"); }
+                    RecvFiledata(clientsocket, dchan, i, filename);
                 }
 
-                if (!RefreshCannels(dchan)) { return (false); }
+                if (!RefreshCannels(dchan)) { throw new IOException("Channels Unrefreshable"); }
                 return (true);
             }
-            catch (Exception e) { return (false); }
+            catch (Exception e) {throw e; }
         }
 
 
@@ -391,7 +252,7 @@ namespace Movex.FTP
             {
                 var dchaninfo = new DownloadChannelInfo(ref dchan);
                 dchaninfo.Set_current_index(i);
-                if (ps == FTPsupporter.Serial)
+                if (ps == FTPsupporter.ProtocolAttributes.Serial)
                 {
                     dchaninfo.Set_end_index(numfile);
                 }
@@ -415,31 +276,46 @@ namespace Movex.FTP
             dchan.Set_socket(ref clientsocket);
 
             string filename = null;
-            byte[] bufferFile = null;
             dchan.Set_num_trasf(1);
             dchan.Set_main_download_thread(Thread.CurrentThread);
-            dchan.Set_ps(FTPsupporter.Serial);
+            dchan.Set_ps(FTPsupporter.ProtocolAttributes.Serial);
             AttachDownloadInfosToChannel(ref dchan);
 
 
             try
             {
                 filename = RecvFilename(clientsocket, dchan, 0);
-                if (!CheckFilename(filename)) { return (false); }
-                bufferFile = RecvFiledata(clientsocket, dchan, 0, filename);
-                if (!CheckFileData(bufferFile, dchan, 0)) { return (false); }
-                dchan.GetDownloadChannelInfo(filename).Switch_download();
-                var filesize = dchan.Get_filesizes()[0];
-                var binarybuffer = new BinaryWriter(File.Open(path + filename, FileMode.Append));
-                binarybuffer.Write(bufferFile, 0, filesize);
-                CloseBufferW(binarybuffer);
-                if (!RefreshCannels(dchan)) { return(false); }
+                if (!CheckFilename(filename)) { throw new IOException("Bad filename"); }
+                RecvFiledata(clientsocket, dchan, 0, filename);
+                if (!RefreshCannels(dchan)) { throw new IOException("Channels Unrefreshable"); }
                 return (true);
             }
             catch (Exception e) { return (false); }
 
 
         }
+
+
+        public string getBytesSufix(ref double bytes)
+        {
+            string[] sufixes = { "", "K", "M", "G", "T", "P" };
+            var s = 0;
+            while (bytes > 1024)
+            {
+                bytes /= 1024;
+                s++;
+            }
+            return (sufixes[s]);
+        }
+
+        public string getConvertedNumber(long bytes)
+        {
+            double b = bytes;
+            string sufix = getBytesSufix(ref b);
+            float r = (float) b;
+            return (r.ToString() + " " + sufix + "b");
+        }
+
 
         private bool FTPtree(Socket clientsocket, string path)
         {
@@ -454,30 +330,31 @@ namespace Movex.FTP
                
 
                 numele = RecvNumele(clientsocket);
+                if (!CheckNumele(numele)) { { throw new IOException("Bad number of elements"); } }
 
                 elements = new string[numele];
                 depths = new int[numele];
 
                 for (var i = 0; i < numele; i++)
                 {
-                    elements[i] = RecvElement(clientsocket);
+                    elements[i] = RecvElement(clientsocket);            
                     depths[i] = RecvDepth(clientsocket);
                 }
 
                 CreateDirectoryTree(dirpaths, depths, filepaths, elements, ".");
 
                 tag = RecvTag(clientsocket);
-                if (!CheckTag(tag)) { return(false); }
+                if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
 
                
-                if (tag != FTPsupporter.Multifilesend && tag != FTPsupporter.Filesend) {
-                    return (false);
+                if (tag != FTPsupporter.Tags.Multifilesend && tag != FTPsupporter.Tags.Filesend) {
+                    throw new IOException("Bad tag");
                 }
 
                 FTPfilesByTree(clientsocket, filepaths.ToArray(), path, tag);
                         return (true);
             }
-            catch (Exception e) { return (false); }
+            catch (Exception e) { throw e; }
 
 
 
@@ -490,14 +367,15 @@ namespace Movex.FTP
             {
                 var tag = 0;
                 var numtrees = RecvNumele(clientsocket);
-                for(var i = 0; i < numtrees; i++){
+                if (!CheckNumele(numtrees)) { throw new IOException("Bad number of elements"); }
+                for (var i = 0; i < numtrees; i++){
                     tag = RecvTag(clientsocket);
-                    if (!CheckTag(tag)) { return (false); }
-                    if (!FTPtree(clientsocket, path)){return (false);}
+                    if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
+                    if (!FTPtree(clientsocket, path)){ throw new IOException("Cannot receive tree"); }
                 }
                 return(true);
             }
-            catch (Exception e) { return (false); }
+            catch (Exception e) { throw e; }
 
         }
 
@@ -505,8 +383,6 @@ namespace Movex.FTP
         private bool FTPfilesByTree(Socket clientsocket, string [] paths, string path, int t) {
         var numfile = 0;
         string filename = null;
-        byte [] bufferFile = null;
-        Thread [] nrecvfrom = null;
         var tag = 0;
             try
             {
@@ -518,58 +394,37 @@ namespace Movex.FTP
                 mDchansDataLock.ReleaseMutex();
 
                 dchan.Set_socket(ref clientsocket);
-                dchan.Set_ps(FTPsupporter.Serial);
+                dchan.Set_ps(FTPsupporter.ProtocolAttributes.Serial);
 
-                if (t == FTPsupporter.Filesend)
+                if (t == FTPsupporter.Tags.Filesend)
                 {
                     dchan.Set_num_trasf(1);
                     dchan.Set_filepaths(paths);
                     AttachDownloadInfosToChannel(ref dchan);
                     filename = RecvFilename(clientsocket, dchan, 0);
-                    if (!CheckFilename(filename)) { return (false); }
-                    bufferFile = RecvFiledata(clientsocket, dchan, 0, filename);
-                    if (!CheckFileData(bufferFile, dchan, 0)) { return (false); }
-                    if (!FTPfilewrite_(bufferFile, dchan, 0)) { return (false); }
+                    if (!CheckFilename(filename)) { throw new IOException("Bad filename"); }
+                    RecvFiledata(clientsocket, dchan, 0, filename);
                 }
                 else
                 {
 
                     numfile = RecvNumfile(clientsocket);
-                    if (!CheckNumfile(numfile, dchan)) { return (false); }
+                    if (!CheckNumfile(numfile, dchan)) { throw new IOException("Bad number of files"); }
                     dchan.Set_filepaths(paths);
                     AttachDownloadInfosToChannel(ref dchan);
-                    nrecvfrom = new Thread[numfile];
-
                     for (var i = 0; i < numfile; i++)
                     {
                         tag = RecvTag(clientsocket);
-                        if (!CheckTag(tag)) { return (false); }
+                        if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
                         filename = RecvFilename(clientsocket, dchan, 0);
-                        if (!CheckFilename(filename)) { return (false); }
-                        bufferFile = RecvFiledata(clientsocket, dchan, 0, filename);
-                        if (!CheckFileData(bufferFile, dchan, i)) { return (false); }
-                        FTPfilewritepath(paths[i], bufferFile, dchan, i);
-                       /* {
-                            var index = i;
-                            nrecvfrom[index] = new Thread(new ThreadStart(() => FTPfilewritepath(paths[index], bufferFile[index], dchan, index)))
-                            {
-                                Priority = ThreadPriority.Highest,
-                                Name = "ServerWriteThread" + index
-                            };
-                            nrecvfrom[index].Start();
-                            dchan.Set_download_thread(nrecvfrom[index], index);
-                        }*/
-                    }
-
-                    for (var i = 0; i < nrecvfrom.Length; i++)
-                    {
-                        nrecvfrom[i].Join();
+                        if (!CheckFilename(filename)) { throw new IOException("Bad filename"); }
+                        RecvFiledata(clientsocket, dchan, 0, filename);
                     }
                 }
-                if (!RefreshCannels(dchan)) { return(false); }
+                if (!RefreshCannels(dchan)) { throw new IOException("Channels Unrefeshable"); }
                 return (true);
             }
-            catch (Exception e) { return (false); }
+            catch (Exception e) { throw e; }
 }
 
       
@@ -708,76 +563,132 @@ namespace Movex.FTP
                 }
             }
 
+
+
+
+
+
+        public bool CheckToS(int tos) {
+            return (tos == FTPsupporter.ToSs.ToSfileandtree || tos == FTPsupporter.ToSs.ToStreeonly || tos == FTPsupporter.ToSs.ToSfileonly);
+        }
+
+
          private void FTPrecv(Socket clientsocket, string path) {
             var result = false;
             var tag = 0;   
             var tos = 0;
 
-
-
-            tos = RecvTag(clientsocket);
-            if (!CheckTag(tag)) { return; }
-         
-         
-           Gettag:
-
-            tag = RecvTag(clientsocket);
-            if (!CheckTag(tag)) { return; }
-           
-           
-            switch (tag)
+            try
             {
-                case FTPsupporter.Filesend:
-                    {
 
-                        result = FTPsingleFile(ref clientsocket, tag, path);
-                        break;
+                tos = RecvTag(clientsocket);
+                if (!CheckToS(tos)) { throw new IOException("Bad ToS"); }
 
-                    }
-                case FTPsupporter.Multifilesend:
-                    {
+                if (!SendAck(clientsocket, FTPsupporter.ProtocolAttributes.Ack))
+                {
+                    throw new IOException("Cannot send ack");
+                }
 
-                        if (FTPcpu_priority() >= 50)
+                Gettag:
+
+                tag = RecvTag(clientsocket);
+                if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
+
+
+                switch (tag)
+                {
+                    case FTPsupporter.Tags.Filesend:
                         {
-                            result = FTPmultiFile_t(ref clientsocket, tag, path);
+
+                            result = FTPsingleFile(ref clientsocket, tag, path);
+                            break;
+
                         }
-                        else
+                    case FTPsupporter.Tags.Multifilesend:
                         {
                             result = FTPmultiFile_s(ref clientsocket, tag, path);
+                            break;
                         }
-                        break;
+                    case FTPsupporter.Tags.Treesend:
+                        {
 
-                    }
-                case FTPsupporter.Treesend:
-                    {
+                            result = FTPtree(clientsocket, path);
+                            break;
 
-                        result = FTPtree(clientsocket, path);
-                        break;
+                        }
+                    case FTPsupporter.Tags.Multitreesend:
+                        {
 
-                    }
-                case FTPsupporter.Multitreesend:
-                    {
+                            result = FTPmultiTree(clientsocket, path);
+                            break;
 
-                        result = FTPmultiTree(clientsocket, path);
-                        break;
+                        }
+                }
 
-                    }
+                if (tos == FTPsupporter.ToSs.ToSfileandtree)
+                {
+                    tos = FTPsupporter.Unknown.UnknownInt;
+                    goto Gettag;
+                }
+
+
+                if (!SendAck(clientsocket, FTPsupporter.ProtocolAttributes.Ack))
+                {
+                    throw new IOException("Cannot send ack");
+                }
+
+                clientsocket.Dispose();
+                clientsocket.Close();
+
+                return;
             }
-
-            if(tos == FTPsupporter.ToSfileandtree){
-                tos = FTPsupporter.UnknownInt;
-                goto Gettag;
-            }
-
-
-           
-            FTPclose();
-            clientsocket.Close();
-            return;
+            catch (Exception e) { throw e; }
         }
+
+        private int Send(Socket clientsocket, byte[] bufferOut)
+        {
+            var length = 0;
+            var sended = 0;
+            try
+            {
+                length = FTPsupporter.Sizes.Tagsize;
+                while (sended < length)
+                {
+                    sended += clientsocket.Send(bufferOut, sended, length - sended, 0);
+                }
+                    return (sended);
+            }
+            catch (Exception e) { throw e; }
+        }
+
+
+
+        private bool SendAck(Socket clientsocket, int ack) {
+            var bufferOut = new byte[FTPsupporter.Sizes.Tagsize];
+            bufferOut = BitConverter.GetBytes(ack);
+
+            var sended = Send(clientsocket, bufferOut);
+            if (sended != FTPsupporter.Sizes.Tagsize)
+            {
+                throw new IOException("Cannot send ack");
+            }
+            return (true);
+        }
+
 
         private bool RefreshCannels(DownloadChannel olddchan)
         {
+           
+            Console.WriteLine("\n\nDownload channel end details :\n\n");
+            if (olddchan == null) { return (false); }
+            var filenames = olddchan.Get_filenames();
+            var filesizes = olddchan.Get_filesizes();
+            var received = olddchan.Get_received();
+            var throughputs = olddchan.Get_throughputs();
+            for (var i = 0; i < olddchan.Get_num_trasf(); i++)
+            {
+                Console.WriteLine(i + " - filename " + filenames[i] + "  filesize " + getConvertedNumber(filesizes[i]) + "\n sended " + getConvertedNumber(received[i]) + " throughput " + getConvertedNumber((long)throughputs[i]) + "/s\n\n");
+            }
             mDchansDataLock.WaitOne();
             var result = mDchans.Remove(olddchan);
             mDchansDataLock.ReleaseMutex();
@@ -810,79 +721,92 @@ namespace Movex.FTP
         }
 
         private int RecvTag(Socket clientsocket) {
-            var bufferIn = new byte[FTPsupporter.Tagsize];
-            var received = Receive(clientsocket, bufferIn, null, 0);
+            var bufferIn = new byte[FTPsupporter.Sizes.Tagsize];
+            var received = Receive(clientsocket, ref bufferIn, null, 0);
             if (received == 0)
             {
-                return (FTPsupporter.UnknownTag);
+                throw new IOException("Bad tag");
             }
             var tag = BitConverter.ToInt32(bufferIn, 0);
             return (tag);
         }
 
         private bool CheckTag(int tag) {
-            return (tag != FTPsupporter.UnknownTag);
-        }
-
-        private bool CheckFilename(string filename) {
-            return (filename != FTPsupporter.UnknownString);
+            return (
+                tag == FTPsupporter.Tags.Filesend || 
+                tag == FTPsupporter.Tags.Multifilesend || 
+                tag == FTPsupporter.Tags.Treesend || 
+                tag == FTPsupporter.Tags.Multitreesend
+                );
         }
 
         private string RecvFilename(Socket clientsocket, DownloadChannel dchan, int n)
         {
-            var bufferIn = new byte[FTPsupporter.Filenamelensize];
-            var received = Receive(clientsocket, bufferIn, null, n);
+            var bufferIn = new byte[FTPsupporter.Sizes.Filenamelensize];
+            var received = Receive(clientsocket, ref bufferIn, null, n);
             var filenamelen = BitConverter.ToInt32(bufferIn, 0);
             bufferIn = new byte[filenamelen];
-            received += Receive(clientsocket, bufferIn, null, n);
+            received += Receive(clientsocket, ref bufferIn, null, n);
             if (received == 0)
             {
-                return (FTPsupporter.UnknownString);
+                throw new IOException("Bad Filename");
             }
             var filename = Encoding.ASCII.GetString(bufferIn, 0, filenamelen);
             filename = AdjustFilename(filename, dchan.Get_path());
             return (filename);
         }
 
-        private bool CheckFileData(byte [] bufferFile, DownloadChannel dchan, int n){
-                var filesize = dchan.Get_filesizes()[n];
-                if(bufferFile == null)
-                  { return(false); }
-                if(bufferFile.Length != filesize)
-                  { return(false);}
-                return(true);
+        private bool CheckFilename(string filename){
+                return(!String.IsNullOrWhiteSpace(filename) && filename.Length > 0 && filename.Length <= Int32.MaxValue);
        }
  
-        private byte [] RecvFiledata(Socket clientsocket, DownloadChannel dchan, int n, string filename) {
-            var toreceive = 0;
-            var nrecv = 0;
-            var bufferIn = new byte[FTPsupporter.Filesizesize];
-            var received = Receive(clientsocket, bufferIn, null, 0);
-            if(received != FTPsupporter.Filesizesize) { return(null); }
-            var filesize = BitConverter.ToInt32(bufferIn, 0);
+        private void RecvFiledata(Socket clientsocket, DownloadChannel dchan, int n, string filename) {
+            long toreceive = 0;
+            int nrecv = 0;
+            var bufferIn = new byte[FTPsupporter.Sizes.Filesizesize];
+            var received = (long) Receive(clientsocket,ref bufferIn, null, 0);
+            if(received != FTPsupporter.Sizes.Filesizesize) { return; }
+            var filesize = BitConverter.ToInt64(bufferIn, 0);
+
+
             dchan.Add_new_download(filename, filesize);
-            bufferIn = new byte[filesize];
             received = 0;
-            Console.WriteLine("Recpt: filename " + filename + " filesize " + filesize + "/");
+
+            var path = dchan.Get_filepaths()[n];
+            var binarybuffer = new BinaryWriter(File.Open(path + filename, FileMode.Append));
+            Console.WriteLine("Recpt: write file=" + filename + " size=" + getConvertedNumber(filesize));
+
+            var throughputs = dchan.Get_throughputs();
+            var remainingtimes = dchan.Get_remaining_times();
+
+            dchan.StartDownload(n);
+
+
             while (received < filesize)
             {
-                toreceive = filesize - received;
-                var filedata_buff = new byte[(toreceive > FTPsupporter.Filedatasize ? FTPsupporter.Filedatasize : toreceive)];
-                nrecv = Receive(clientsocket, filedata_buff, dchan, n);
-                filedata_buff.CopyTo(bufferIn, received);
-                Console.WriteLine("Recpt: received " + received + " toreceive " + toreceive + " buffersize " + filedata_buff.Length + " nrecv " + nrecv);
-                received += nrecv;
+                toreceive = filesize - ((long)received);
+                var filedata_buff = new byte[(toreceive > FTPsupporter.Sizes.Filedatasize ? FTPsupporter.Sizes.Filedatasize : toreceive)];
+                nrecv = Receive(clientsocket, ref filedata_buff, dchan, n);
+                binarybuffer.Write(filedata_buff, 0 , nrecv);
+                Console.WriteLine("Recpt: received " + getConvertedNumber(received) + " toreceive " + getConvertedNumber(toreceive) 
+                    + " nrecv " + getConvertedNumber(nrecv) +
+                        " remaining time =" + remainingtimes[n] + "s  throughput =" + getConvertedNumber((long)throughputs[n])+"/s");
+                received += (long) nrecv;
             }
-            return (bufferIn);
+
+            CloseBufferW(binarybuffer);
+            dchan.GetDownloadChannelInfo(filename).Switch_download();
+
+            return;
         }
 
         private int RecvNumfile(Socket clientsocket)
         {
-            var bufferIn = new byte[FTPsupporter.Numfilesize];
-            var received = Receive(clientsocket, bufferIn, null, 0);
-            if (received != FTPsupporter.Numfilesize)
+            var bufferIn = new byte[FTPsupporter.Sizes.Numfilesize];
+            var received = Receive(clientsocket, ref bufferIn, null, 0);
+            if (received != FTPsupporter.Sizes.Numfilesize)
             {
-                return (FTPsupporter.UnknownInt);
+                throw new IOException("Bad numfile");
             }
             var numfile = BitConverter.ToInt32(bufferIn, 0);
             return (numfile);
@@ -891,27 +815,23 @@ namespace Movex.FTP
         private bool CheckNumfile(int numfile, DownloadChannel dchan)
         {
             dchan.Set_num_trasf(numfile);
-            return (numfile != FTPsupporter.UnknownInt);
-        }
-
-        private int FTPcpu_priority() {
-            return (mDchans.ToArray().Length * 10);
+            return (numfile > 0 && numfile <= System.Int32.MaxValue);
         }
         
         private string RecvElement(Socket clientsocket)
         {
-            var bufferIn = new byte[FTPsupporter.Elementlensize];
-            var received = Receive(clientsocket, bufferIn, null, 0);
+            var bufferIn = new byte[FTPsupporter.Sizes.Elementlensize];
+            var received = Receive(clientsocket,ref bufferIn, null, 0);
             if (received == 0)
             {
-                return (FTPsupporter.UnknownString);
+                throw new IOException("Bad element length");
             }
             var elementlen = BitConverter.ToInt32(bufferIn, 0);
             bufferIn = new byte[elementlen];
-            received = Receive(clientsocket, bufferIn, null, 0);
+            received = Receive(clientsocket,ref bufferIn, null, 0);
             if (received == 0)
             {
-                return (FTPsupporter.UnknownString);
+                throw new IOException("Bad element");
             }
             return (Encoding.ASCII.GetString(bufferIn, 0, elementlen));
           
@@ -919,22 +839,22 @@ namespace Movex.FTP
 
         private int RecvDepth(Socket clientsocket)
         {
-            var bufferIn = new byte[FTPsupporter.Elementdepthsize];
-            var received = Receive(clientsocket, bufferIn, null, 0);
+            var bufferIn = new byte[FTPsupporter.Sizes.Elementdepthsize];
+            var received = Receive(clientsocket,ref bufferIn, null, 0);
             if (received == 0)
             {
-                return (FTPsupporter.UnknownInt);
+                throw new IOException("Bad depth");
             }
             return (BitConverter.ToInt32(bufferIn, 0));
         }
 
         private int RecvNumele(Socket clientsocket)
         {
-            var bufferIn = new byte[FTPsupporter.Numelementsize];
-            var received = Receive(clientsocket, bufferIn, null, 0);
-            if (received != FTPsupporter.Numelementsize)
+            var bufferIn = new byte[FTPsupporter.Sizes.Numelementsize];
+            var received = Receive(clientsocket,ref bufferIn, null, 0);
+            if (received != FTPsupporter.Sizes.Numelementsize)
             {
-                return (FTPsupporter.UnknownInt);
+                throw new IOException("Bad number of elements");
             }
             var numele = BitConverter.ToInt32(bufferIn, 0);
             return (numele);
@@ -943,7 +863,7 @@ namespace Movex.FTP
 
         private bool CheckNumele(int numele)
         {
-            return (numele != FTPsupporter.UnknownInt);
+            return (numele > 0 && numele <= System.Int32.MaxValue);
         }
 
         // GETTER(s) AND SETTER(s)

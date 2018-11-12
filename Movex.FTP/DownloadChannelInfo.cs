@@ -35,11 +35,11 @@ namespace Movex.FTP
 
         public string Get_current_filename()
         {
-            var filename = mDchan.Get_filenames()[mCurrent_index];
             if (mCurrent_index >= mEnd_index)
             {
-                return (FTPsupporter.UnknownString);
+                return (FTPsupporter.Unknown.UnknownString);
             }
+            var filename = mDchan.Get_filenames()[mCurrent_index];
             return (filename);
         }
 
@@ -47,16 +47,16 @@ namespace Movex.FTP
         {
             if (mCurrent_index >= mEnd_index)
             {
-                return (FTPsupporter.UnknownDouble);
+                return (FTPsupporter.Unknown.UnknownDouble);
             }
             return (mDchan.Get_throughputs()[mCurrent_index]);
         }
 
-        public int Get_current_filesize()
+        public long Get_current_filesize()
         {
             if (mCurrent_index >= mEnd_index)
             {
-                return (FTPsupporter.UnknownInt);
+                return (FTPsupporter.Unknown.UnknownInt);
             }
             return (mDchan.Get_filesizes()[mCurrent_index]);
         }
@@ -65,7 +65,7 @@ namespace Movex.FTP
         {
             if (mCurrent_index >= mEnd_index)
             {
-                return (FTPsupporter.UnknownString);
+                return (FTPsupporter.Unknown.UnknownString);
             }
             return (mDchan.Get_from());
         }
@@ -74,16 +74,16 @@ namespace Movex.FTP
         {
             if (mCurrent_index >= mEnd_index)
             {
-                return (FTPsupporter.UnknownLong);
+                return (FTPsupporter.Unknown.UnknownLong);
             }
             return (mDchan.Get_remaining_times()[mCurrent_index]);
         }
 
-        public int Get_current_sended()
+        public long Get_current_sended()
         {
             if (mCurrent_index >= mEnd_index)
             {
-                return (FTPsupporter.UnknownInt);
+                return (FTPsupporter.Unknown.UnknownInt);
             }
             return (mDchan.Get_received()[mCurrent_index]);
         }
