@@ -9,17 +9,36 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
 	<Grid x:Name="UserList" Background="{StaticResource ForegroundLightBrush}">
-		
-		<ScrollViewer VerticalScrollBarVisibility="Auto">
-			<ItemsControl ItemsSource="{Binding Items}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<local:UserListItemControl />
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
+		<StackPanel Orientation="Vertical" Background="Transparent">
+			<StackPanel Orientation="Horizontal"
+					Background="Transparent"
+					HorizontalAlignment="Center"
+					Visibility="{Binding UserItemViewModel.FriendsAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}, ConverterParameter=True}">
 
+				<TextBlock Text="{Binding ItemsSelected}"
+					   Margin="10 5 0 5"
+					   TextTrimming="CharacterEllipsis"
+					   HorizontalAlignment="Center"
+					   Foreground="{StaticResource ForegroundMainBrush}"
+					   FontFamily="{StaticResource LatoRegular}" />
+
+				<TextBlock Text=" utenti selezionati."
+					   TextTrimming="CharacterEllipsis"
+					   Margin="0 5 10 5"
+					   HorizontalAlignment="Center"
+					   Foreground="{StaticResource ForegroundMainBrush}"
+					   FontFamily="{StaticResource LatoRegular}" />
+			</StackPanel>
+			<ScrollViewer VerticalScrollBarVisibility="Auto">
+				<ItemsControl ItemsSource="{Binding Items}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<local:UserListItemControl />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</StackPanel>
 		<StackPanel Orientation="Vertical"
 					Background="Transparent"
 					VerticalAlignment="Center"
@@ -40,5 +59,4 @@
 
 		</StackPanel>
 	</Grid>
-	
 </UserControl>

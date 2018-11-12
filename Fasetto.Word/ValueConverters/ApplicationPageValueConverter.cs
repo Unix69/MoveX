@@ -19,6 +19,9 @@ namespace Movex.View
                 case ApplicationPage.Browse:
                     return new BrowsePage();
 
+                case ApplicationPage.Landing:
+                    return new LandingPage();
+
                 default:
                     Debugger.Break();
                     return null;

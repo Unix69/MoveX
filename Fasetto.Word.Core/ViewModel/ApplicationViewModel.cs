@@ -14,7 +14,7 @@ namespace Movex.View.Core
         /// <summary>
         /// The current page of the application
         /// </summary>
-        public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.Browse;
+        public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.Landing;
 
         /// <summary>
         /// True if the side menu should be shown
@@ -35,6 +35,20 @@ namespace Movex.View.Core
         /// Thread that updates continuously the list of users at UserDeisignModel
         /// </summary>
         public Thread UserDesignModelUpdater { get; set; } = null;
+
+        /// <summary>
+        /// Navigates to the specified page
+        /// </summary>
+        /// <param name="page">The page to go to</param>
+        public void GoToPage(ApplicationPage page)
+        {
+            // Set the current page
+            CurrentPage = page;
+
+            // Show side menu or not?
+            // SideMenuVisible = page == ApplicationPage.Chat;
+
+        }
 
         /// <summary>
         /// The method to terminate the application active threads.

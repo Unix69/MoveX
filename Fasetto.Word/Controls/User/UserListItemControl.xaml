@@ -25,13 +25,6 @@
 									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
 
-								<!-- New Message Indicator Bar -->
-								<Border Background="Red" 
-                                    Width="4"
-                                    HorizontalAlignment="Left"
-                                    Visibility="{Binding NewContentAvailable, Converter={local:BooleanToVisiblityConverter}, ConverterParameter=True}"
-                                    />
-
 								<!-- Profile picture padding -->
 								<Border Grid.Column="0" 
                                     Padding="8 15"
@@ -82,6 +75,7 @@
                                             Width="20"
                                             Height="20"
                                             IsChecked="{Binding IsSelected}"
+											Click="CheckBox_Click"
                                             >
                                         </CheckBox>
                                     </Grid>

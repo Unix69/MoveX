@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Movex.View
 {
@@ -10,6 +11,12 @@ namespace Movex.View
         public UserListItemControl()
         {
             InitializeComponent();
+        }
+
+        private void CheckBox_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ((App)(Application.Current)).GetUserListControl().RefreshAndGetUsersSelectedNumber();
+            // In this case I do not need to catch the value returned.
         }
     }
 }

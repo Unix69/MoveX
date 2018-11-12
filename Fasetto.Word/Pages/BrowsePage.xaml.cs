@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Movex.View.Core;
+using System.Windows.Controls;
 
 namespace Movex.View
 {
@@ -16,9 +17,11 @@ namespace Movex.View
     /// </summary>
     public partial class BrowsePage : BasePage<BackboneViewModel>
     {
+
         #region Private members
         private List<string> mFilepaths;
         private TransferItemListDesignModel mTransferItemList;
+        private TransferItemViewModel mSelectedItem;
         #endregion
 
         #region Constructor
@@ -29,7 +32,9 @@ namespace Movex.View
 
             mTransferItemList                   = ViewModelLocator.TransferItemListDesignModel;
             TransferItemList.ItemsSource        = mTransferItemList.Items;
-            mTransferItemList.TransferAvailable = mTransferItemList.Items.Capacity == 0 ? false : true;
+            mTransferItemList.TransferAvailable = mTransferItemList.Items.Count == 0 ? false : true;
+
+            ((App)(Application.Current)).SetBrowsePage(this);
         }
         #endregion
 
@@ -51,12 +56,13 @@ namespace Movex.View
                 {
                     var builder = new StringBuilder();
                     var enumerator = fileDialog.FileNames;
+                    var TransferItemListCount = mTransferItemList.Items.Count;
 
                     foreach (var item in enumerator)
                     {
                         builder.AppendLine(item);
                         mFilepaths.Add(item);
-                        mTransferItemList.Items.Add(new TransferItemViewModel(item, new FileInfo(item).Length));
+                        mTransferItemList.Items.Add(new TransferItemViewModel(++TransferItemListCount, item, new FileInfo(item).Length));
                         TransferItemList.Items.Refresh();
                         mTransferItemList.TransferAvailable = true;
                     }
@@ -89,12 +95,13 @@ namespace Movex.View
 
                 if (count > 0)
                 {
+                    var TransferItemListCount = mTransferItemList.Items.Count;
                     foreach (var item in dialog.FileNames)
                     {
                         builder.AppendLine(item);
                         mFilepaths.Add(item);
                         var folderSize = Directory.GetFiles(item, "*", SearchOption.AllDirectories).Sum(t => (new FileInfo(t).Length));
-                        mTransferItemList.Items.Add(new TransferItemViewModel(item, folderSize));
+                        mTransferItemList.Items.Add(new TransferItemViewModel(++TransferItemListCount, item, folderSize));
                         TransferItemList.Items.Refresh();
                         mTransferItemList.TransferAvailable = true;
                     }
@@ -132,6 +139,65 @@ namespace Movex.View
 
             }
         }
+        public void ClearTransferItemsList()
+        {
+            // CLEAR items from the current TransferItemList
+            mTransferItemList.Items.Clear();
+            mTransferItemList.TransferAvailable = false;
+            mTransferItemList = null;
+            TransferItemList.Items.Refresh();
+
+            // RELEASE the member(s)
+            mFilepaths.Clear();
+            mFilepaths = null;
+
+            // Clear the selected users too
+            ((App)(Application.Current)).GetUserListControl().ClearSelectedUsers();
+        }
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ClearTransferItemsList();
+        }
+        private void TransferItemList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                mSelectedItem = (TransferItemViewModel)e.AddedItems[0];
+                Console.WriteLine("Selected item: " + mSelectedItem.Path);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+        }
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Get two values
+                var TransferItemIndexToRemove = mSelectedItem.Index - 1;
+                var TransferItemListCount = mTransferItemList.Items.Count;
+
+                // Remove the item from the list
+                mTransferItemList.Items.Remove(mSelectedItem);
+
+                // Update all the subsequent item reducing the Index (for the alternationIndex purpose)
+                for (var i = TransferItemIndexToRemove; i < TransferItemListCount - 1; i++)
+                {
+                    mTransferItemList.Items[i].Index -= 1;
+                    mTransferItemList.Items[i].AlternationIndex = mTransferItemList.Items[i].Index % 2;
+                }
+
+                // Refresh the ViewModel
+                TransferItemList.Items.Refresh();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
+        }
         #endregion
+
     }
 }

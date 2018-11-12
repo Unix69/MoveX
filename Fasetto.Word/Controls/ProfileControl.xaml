@@ -16,7 +16,7 @@
 		</Grid.RowDefinitions>
 		
 		<!-- Profile title -->
-		<Grid Height="50" Background="{StaticResource WordVeryLightBlueBrush}">
+		<Grid Height="50" Background="{StaticResource BackgroundStrongOrangeBrush}">
 			<Button Height="50"
 					Style="{StaticResource IconButton}"
 					Content="{StaticResource FontAwesomeArrowDownIcon}"
