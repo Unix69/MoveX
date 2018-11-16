@@ -34,7 +34,7 @@ namespace Movex.View.Core
         /// </summary>
         public void Send(string[] filepaths, IPAddress[] ipaddress, ManualResetEvent uchanAvailability, ManualResetEvent windowAvailability)
         {
-            mClient.FTPsendAll(filepaths, ipaddress, 100, uchanAvailability, windowAvailability);
+            mClient.FTPsendAll(filepaths, ipaddress, uchanAvailability, windowAvailability);
         }
 
         public List<UploadChannelInfo> GetUChanInfo()

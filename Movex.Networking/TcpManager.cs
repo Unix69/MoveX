@@ -228,7 +228,7 @@ namespace Movex.Network
             catch (Exception e)
             {
                 // Show ErrorView with error message
-                MessageBox.Show(e.ToString());
+                Console.WriteLine(e.Message);
             }
 
             // Signal the calling thread to continue.

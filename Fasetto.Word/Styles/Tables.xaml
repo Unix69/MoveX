@@ -3,16 +3,21 @@
                     xmlns:local="clr-namespace:Movex.View">
 
 	<Style x:Key="alternatingListViewStyle" TargetType="{x:Type ListViewItem}">
+		<Setter Property="FontFamily" Value="{StaticResource LatoRegular}" />
+		<Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+
 		<Style.Triggers>
-			<Trigger Property="ItemsControl.AlternationIndex" Value="0">
-				<Setter Property="Background" Value="#FFFFFFFF">
-				</Setter>
-			</Trigger>
-			<Trigger Property="ItemsControl.AlternationIndex" Value="1">
-				<Setter Property="Background" Value="#88E6E6E6">
-				</Setter>
-			</Trigger>
+			<DataTrigger Binding="{Binding Path=AlternationIndex}" Value="0">
+				<Setter Property="Background" Value="{StaticResource WordVeryVeryLightBlueBrush}" />
+			</DataTrigger>
+			<DataTrigger Binding="{Binding Path=AlternationIndex}" Value="1">
+				<Setter Property="Background" Value="White" />
+			</DataTrigger>
 		</Style.Triggers>
 	</Style>
+
+	<ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
+		<StackPanel Margin="-20,0,-5,0" Background="White"/>
+	</ItemsPanelTemplate>
 
 </ResourceDictionary>

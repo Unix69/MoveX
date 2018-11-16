@@ -13,9 +13,14 @@ namespace Movex.View
     {
         private System.Windows.Forms.NotifyIcon mNotifyIcon;
         private bool mIsExit;
-        private UserListControl mUserListControl;
+        
         private bool mPrivateMode;
         private WindowDispatcher.WindowDispatcher mWindowDispatcher;
+
+        #region Instance Members for project-inner-access
+        private BrowsePage mBrowsePage;
+        private UserListControl mUserListControl;
+        #endregion
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -110,5 +115,7 @@ namespace Movex.View
         /// <param name="control"></param>
         public void SetUserListControl(UserListControl control) { mUserListControl = control; }
         public UserListControl GetUserListControl() { return mUserListControl; }
+        public void SetBrowsePage(BrowsePage browsePage) { mBrowsePage = browsePage; }
+        public BrowsePage GetBrowsePage() { return mBrowsePage; }
     }
 }

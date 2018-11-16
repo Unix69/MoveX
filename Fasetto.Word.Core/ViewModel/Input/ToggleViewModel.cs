@@ -55,20 +55,19 @@ namespace Movex.View.Core
         public void SaveActiveStatus()
         {
             // Save the status of the Toogle Button to the LocalDB
-            var db = new Database();
             if (Name == "Modalità privata")
             {
-                db.UpdateLocalDB("PrivateMode", Active.ToString());
+                Database.UpdateLocalDB("PrivateMode", Active.ToString());
                 IoC.FtpServer.SetPrivateMode(Active);
             }
             else if (Name == "Ricezione automatica")
             {
-                db.UpdateLocalDB("AutomaticReception", Active.ToString());
+                Database.UpdateLocalDB("AutomaticReception", Active.ToString());
                 IoC.FtpServer.SetAutomaticReception(Active);
             }
             else if (Name == "Salvataggio automatico")
             {
-                db.UpdateLocalDB("AutomaticSave", Active.ToString());
+                Database.UpdateLocalDB("AutomaticSave", Active.ToString());
                 IoC.FtpServer.SetAutomaticSave(Active);
             }
         }

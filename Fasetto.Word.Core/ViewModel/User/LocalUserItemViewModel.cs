@@ -15,24 +15,15 @@ namespace Movex.View.Core
     public class LocalUserItemViewModel : UserItemViewModel
     {
         #region Public Properties
-
         // All the public properties are inherited from UserItemViewModel
-
         public string PrivateMode { get; set; }
-
         public string AutomaticReception { get; set; }
-
         public string AutomaticSave { get; set; }
-
         public bool FriendsAvailable { get; set; }
-
         #endregion
 
         #region Private Members
-
         private User mUser;
-        private Database mDatabase;
-
         #endregion
 
         #region Public Command
@@ -51,47 +42,44 @@ namespace Movex.View.Core
         /// </summary>
         public LocalUserItemViewModel()
         {
-            mDatabase = new Database();
             var errorOccurrences = 0;
 
             // Load the local values from the database
             GetValues:
-            var dictionary = mDatabase.GetValues();
+            var dictionary = Database.GetValues();
             if (dictionary == null)
             {
-                MessageBox.Show("Errore #DB001: errore nel caricamento dei dati utente.\r\n"
-                                    + "Contatta il supporto.");
+                Console.WriteLine("Errore #DB001: errore nel caricamento dei dati utente.");
             }
-
-            // Set the values got from the local database
-            try
-            { 
-                ProfilePicture          = dictionary["ProfilePicture"];
-                Name                    = dictionary["Name"];
-                Message                 = dictionary["Message"];
-                IpAddress               = dictionary["IpAddress"];
-                DownloadDefaultFolder   = dictionary["DownloadDefaultFolder"];
-                AutomaticSave           = dictionary["AutomaticSave"];
-                AutomaticReception      = dictionary["AutomaticReception"];
-                PrivateMode             = dictionary["PrivateMode"];
-            }
-            catch (KeyNotFoundException exc)
+            else
             {
-                errorOccurrences += 1;
-
-                if (errorOccurrences >= 2)
+                // Set the values got from the local database
+                try
                 {
-                    MessageBox.Show("Errore #DB003: errore nel caricamento dei dati utente.\r\n"
-                                        +"Contatta il supporto.");
-                    // In this case:
-                    // The view will not show any value (the fields will be empty)
+                    ProfilePicture = dictionary["ProfilePicture"];
+                    Name = dictionary["Name"];
+                    Message = dictionary["Message"];
+                    IpAddress = dictionary["IpAddress"];
+                    DownloadDefaultFolder = dictionary["DownloadDefaultFolder"];
+                    AutomaticSave = dictionary["AutomaticSave"];
+                    AutomaticReception = dictionary["AutomaticReception"];
+                    PrivateMode = dictionary["PrivateMode"];
                 }
-                else
+                catch (KeyNotFoundException exception)
                 {
-                    MessageBox.Show("Errore #DB002: errore nel caricamento dei dati utente.\r\n"
-                                        +"Contatta il supporto.");
-                    mDatabase.Drop();
-                    goto GetValues;
+                    Console.WriteLine(exception.Message);
+                    errorOccurrences += 1;
+
+                    if (errorOccurrences >= 2)
+                    {
+                        Console.WriteLine("Errore #DB003: errore nel caricamento dei dati utente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Errore #DB002: errore nel caricamento dei dati utente.");
+                        Database.Drop();
+                        goto GetValues;
+                    }
                 }
             }
 
@@ -114,7 +102,7 @@ namespace Movex.View.Core
         public void SetProfilePicture(string path)
         {
             ProfilePicture = path;
-            mDatabase.UpdateLocalDB(nameof(ProfilePicture), path);
+            Database.UpdateLocalDB(nameof(ProfilePicture), path);
             mUser.SetProfilePicturePath(path);
         }
 
@@ -124,20 +112,20 @@ namespace Movex.View.Core
         public void SetDownloadDefaultFolder(string path)
         {
             DownloadDefaultFolder = path;
-            mDatabase.UpdateLocalDB(nameof(DownloadDefaultFolder), path);
+            Database.UpdateLocalDB(nameof(DownloadDefaultFolder), path);
             IoC.FtpServer.SetDownloadDefaultFolder(path);
         }
 
         public void SetAutomaticSave(string value)
         {
             AutomaticSave = value;
-            mDatabase.UpdateLocalDB(nameof(AutomaticSave), value);
+            Database.UpdateLocalDB(nameof(AutomaticSave), value);
         }
 
         public void SetPrivateMode(string value)
         {
             PrivateMode = value;
-            mDatabase.UpdateLocalDB(nameof(PrivateMode), value);
+            Database.UpdateLocalDB(nameof(PrivateMode), value);
             IoC.FtpServer.SetPrivateMode(Convert.ToBoolean(value));
             mUser.SetPrivateMode(Convert.ToBoolean(value));
         }
@@ -148,7 +136,7 @@ namespace Movex.View.Core
         public void SetName(string name)
         {
             Name = name;
-           mDatabase.UpdateLocalDB(nameof(Name), name);
+            Database.UpdateLocalDB(nameof(Name), name);
         }
 
         /// <summary>
@@ -157,7 +145,7 @@ namespace Movex.View.Core
         public void SetMessage(string message)
         {
             Message = message;
-            mDatabase.UpdateLocalDB(nameof(Message), message);
+            Database.UpdateLocalDB(nameof(Message), message);
         }
 
         /// <summary>

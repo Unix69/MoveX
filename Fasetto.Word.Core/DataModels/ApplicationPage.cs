@@ -6,14 +6,14 @@
     public enum ApplicationPage
     {
         /// <summary>
-        /// The browse page
+        /// The Browse page
         /// </summary>
         Browse = 0,
 
         /// <summary>
-        /// An eventual other page
+        /// The Landing Page
         /// </summary>
-        OtherPage = 1,
+        Landing = 1,
 
     }
 }

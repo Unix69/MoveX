@@ -90,14 +90,13 @@ namespace Movex.View.Core
         public void Save()
         {
             OriginalText = EditedText;
-            var db = new Database();
             if (Label == "Nome")
             {
-                db.UpdateLocalDB("Name", OriginalText);
+                Database.UpdateLocalDB("Name", OriginalText);
             }
             else if (Label == "Messaggio")
             {
-                db.UpdateLocalDB("Message", OriginalText);
+                Database.UpdateLocalDB("Message", OriginalText);
             }
             Editing = false;
         }

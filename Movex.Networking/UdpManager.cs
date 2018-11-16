@@ -283,7 +283,7 @@ namespace Movex.Network
             if (!File.Exists(path))
             {
                 // TODO: Instead of the System MessageBox show the Custom ErrorView
-                if (DEBUG) MessageBox.Show("Error: file path not valid: " + path);
+                if (DEBUG) Console.WriteLine("[ERROR] File path not valid when sending my profile picture: " + path);
                 return;
             };
 

@@ -34,7 +34,7 @@ namespace Movex.View.Core
                 var currWorkingDirectory = Directory.GetCurrentDirectory();
                 var defaultDir = @"ProfilePictures";
                 var defaultDirPath = Path.Combine(currWorkingDirectory, defaultDir);
-                var defaultProfilePicture = Path.Combine(currWorkingDirectory, @"Images/Icons/profile.png");
+                var defaultProfilePicture = Path.Combine(currWorkingDirectory, @"\Images\Icons\profile.png");
 
                 // Get the technical user
                 var u = IoC.User.GetTechnicalUser();
@@ -58,16 +58,26 @@ namespace Movex.View.Core
                 // Inser the ModelData to the Items object
                 for (var i = 0; i < ItemsList.Count; i++)
                 {
+                    
+                    // Get the right ProfilePicture (if not OK, put the default one)
+                    var ProfilePicturePath = "";
+                    if (!File.Exists(Path.Combine(defaultDirPath, ItemsList[i].mProfilePictureFilename))) 
+                    {
+                        ProfilePicturePath = ItemsList[i].mProfilePictureFilename = defaultProfilePicture;
+                    }
+                    else
+                    {
+                        ProfilePicturePath = Path.Combine(defaultDirPath, ItemsList[i].mProfilePictureFilename);
+                    }
+
                     // Convert from RestrictedUser to UserItemViewModel
-                    if (!File.Exists(Path.Combine(defaultDirPath, ItemsList[i].mProfilePictureFilename)))
-                        { ItemsList[i].mProfilePictureFilename = defaultProfilePicture; }
                     var candidate = new UserItemViewModel
                     {
                         Name = ItemsList[i].mUsername,
                         IpAddress = ItemsList[i].mIpAddress,
                         Initials = ItemsList[i].mUsername[0].ToString(),
                         Message = ItemsList[i].mMessage,
-                        ProfilePicture = Path.Combine(defaultDirPath, ItemsList[i].mProfilePictureFilename),
+                        ProfilePicture = ProfilePicturePath,
                         NewMessageAvailable = true,
                         IsSelected = false
                         

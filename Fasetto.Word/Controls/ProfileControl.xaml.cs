@@ -62,8 +62,7 @@ namespace Movex.View
 
                 // Set the final filename (if not exist yet)
                 var finalFilename = RandomString(12) + extension;
-                var db = new Database();
-                var dictionary = db.GetValues();
+                var dictionary = Database.GetValues();
                 var originalFilenamePath = dictionary["ProfilePicture"];
                 var originalFilename = Path.GetFileName(originalFilenamePath);
                 
@@ -84,7 +83,7 @@ namespace Movex.View
                 }
                 catch (Exception excep)
                 {
-                    MessageBox.Show(excep.Message);
+                    Console.WriteLine(excep.Message);
                 }
                 
                 // Store the path of the profilePicture into the User object
@@ -163,7 +162,7 @@ namespace Movex.View
                     graphicsHandle.SmoothingMode = SmoothingMode.AntiAlias;
                     graphicsHandle.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     graphicsHandle.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    graphicsHandle.DrawImage(image, new System.Drawing.Rectangle(0, 0, newWidth, newWidth), new System.Drawing.Rectangle(0, 0, newWidth, newHeight), GraphicsUnit.Pixel);
+                    graphicsHandle.DrawImage(image, new System.Drawing.Rectangle(0, 0, newWidth, newWidth), new System.Drawing.Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
                 }
                 return newImage;
             }

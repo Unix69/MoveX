@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Movex.View.Core
 {
-    public class Database
+    public static class Database
     {
 
         /// <summary>
@@ -15,7 +15,7 @@ namespace Movex.View.Core
         /// <param name="user">User (of Movex.Network Project), used to get network informations like: Environment Machine Name, IPaddress Machine</param>
         /// <returns>Dictionary (with values), null (in case of error)</returns>
         /// </summary>
-        public Dictionary<string, string> GetValues()
+        public static Dictionary<string, string> GetValues()
         {
             // Initialize the return value
             var dictionary = new Dictionary<string, string>();
@@ -28,6 +28,17 @@ namespace Movex.View.Core
             // Check if the file exists and act consequently
             if (!File.Exists(DbPath))
             {
+
+                if (!Directory.Exists(currWorkingDirectory + @"\Downloads\"))
+                {
+                    Directory.CreateDirectory(currWorkingDirectory + @"\Downloads\");
+                }
+
+                if (!Directory.Exists(currWorkingDirectory + @"\ProfilePictures\"))
+                {
+                    Directory.CreateDirectory(currWorkingDirectory + @"\ProfilePictures\");
+                }
+
                 // Create the file (the database) and put default values
                 try
                 {
@@ -56,7 +67,7 @@ namespace Movex.View.Core
                         var DownloadDefaultFolder = currWorkingDirectory + @"\Downloads\";
                         info = new UTF8Encoding(true).GetBytes("DownloadDefaultFolder=" + DownloadDefaultFolder + "\r\n");
                         fs.Write(info, 0, info.Length);
-                        dictionary["ProfilePicture"] = DownloadDefaultFolder;
+                        dictionary["DownloadDefaultFolder"] = DownloadDefaultFolder;
 
                         var PrivateMode = "False";
                         info = new UTF8Encoding(true).GetBytes("PrivateMode=" + PrivateMode + "\r\n");
@@ -64,9 +75,9 @@ namespace Movex.View.Core
                         dictionary["PrivateMode"] = PrivateMode;
 
                         var AutomaticReception = "False";
-                        info = new UTF8Encoding(true).GetBytes("AutomaticReceipt=" + AutomaticReception + "\r\n");
+                        info = new UTF8Encoding(true).GetBytes("AutomaticReception=" + AutomaticReception + "\r\n");
                         fs.Write(info, 0, info.Length);
-                        dictionary["AutomaticReceipt"] = AutomaticReception;
+                        dictionary["AutomaticReception"] = AutomaticReception;
 
                         var AutomaticSave = "False";
                         info = new UTF8Encoding(true).GetBytes("AutomaticSave=" + AutomaticSave + "\r\n");
@@ -75,9 +86,9 @@ namespace Movex.View.Core
                     }
 
                 }
-                catch (Exception excep)
+                catch (Exception exception)
                 {
-                    //TODO: Try to manage the exception showing a message ( you can use: MessageBox.Show(excep.Message); )
+                    Console.WriteLine(exception.Message);
                     return null;
                 }
             }
@@ -136,7 +147,7 @@ namespace Movex.View.Core
                 }
                 catch (Exception excep)
                 {
-                    //TODO: Try to manage the exception showing a message ( you can use: MessageBox.Show(excep.Message); )
+                    Console.WriteLine(excep.Message);
                     return null;
                 }
 
@@ -146,7 +157,7 @@ namespace Movex.View.Core
             return dictionary;
         }
 
-        public void UpdateLocalDB(string nameOfParameter, string value)
+        public static void UpdateLocalDB(string nameOfParameter, string value)
         {
             var DbFile = @"Database.txt";
             var currWorkingDirectory = Directory.GetCurrentDirectory();
@@ -191,6 +202,7 @@ namespace Movex.View.Core
             }
             catch (Exception excep)
             {
+                Console.WriteLine(excep.Message);
                 return;
             }
 
@@ -207,13 +219,14 @@ namespace Movex.View.Core
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message);
+                Console.WriteLine(exc.Message);
+                return;
             }
 
 
         }
 
-        public void Drop()
+        public static void Drop()
         {
             var DbFile = @"Database.txt";
             var currWorkingDirectory = Directory.GetCurrentDirectory();

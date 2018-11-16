@@ -23,7 +23,7 @@
                     </Grid.RowDefinitions>
 
                     <!-- Top Menu -->
-					<Grid Height="50" Background="{StaticResource WordVeryLightBlueBrush}">
+					<Grid Height="50" Background="{StaticResource BackgroundStrongOrangeBrush}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
