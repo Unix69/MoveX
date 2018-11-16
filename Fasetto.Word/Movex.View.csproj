@@ -16,6 +16,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -28,7 +29,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -396,7 +396,7 @@
     <Resource Include="Images\Icons\301-desk-lamp.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\Icons\profile.png" />
+    <Resource Include="Images\Icons\profile.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Icons\301-startup.png" />

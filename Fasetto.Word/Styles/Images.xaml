@@ -2,6 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Movex.View">
 
-	<!-- <BitmapImage x:Key="DefaultProfilePicture" UriSource="/Images/Icons/image.png"/> -->
+	<BitmapImage x:Key="DefaultProfilePicture" UriSource="/Movex.View;Images/Icons/profile.png" />
 
 </ResourceDictionary>

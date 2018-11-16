@@ -44,10 +44,6 @@ namespace Movex.View.Core
         {
             // Set the current page
             CurrentPage = page;
-
-            // Show side menu or not?
-            // SideMenuVisible = page == ApplicationPage.Chat;
-
         }
 
         /// <summary>
