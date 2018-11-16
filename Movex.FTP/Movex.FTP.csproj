@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="DownloadChannel.cs" />
-    <Compile Include="DownloadChannelInfo.cs" />
     <Compile Include="FTPclient.cs" />
     <Compile Include="FTPhelper.cs" />
     <Compile Include="FTPserver.cs" />
@@ -56,7 +55,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StackHelper.cs" />
     <Compile Include="UploadChannel.cs" />
-    <Compile Include="UploadChannelInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

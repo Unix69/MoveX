@@ -49,9 +49,6 @@ namespace Movex.FTP
 
         private bool mInterrupted;
         private Socket mSocket;
-        private List<DownloadChannelInfo> mDchaninfos;
-        private int mPs;
-        private int mN_infos;
         //costructor
 
         public DownloadChannel(string from, int multi_single, string path) {
@@ -60,7 +57,6 @@ namespace Movex.FTP
             mPath = path;
             mIndex = 0;
             mInterrupted = false;
-            mDchaninfos = new List<DownloadChannelInfo>();
         }
 
         public void Set_filepaths(string [] filepaths) {
@@ -73,41 +69,13 @@ namespace Movex.FTP
             return(mFilepaths);
         }
 
-
-        //creater
-        public void Set_ps(int ps)
-        {
-            var parallel = FTPsupporter.ProtocolAttributes.Parallel;
-            var serial = FTPsupporter.ProtocolAttributes.Serial;
-
-            if (ps == serial)
-            {
-                mN_infos = ps;
-            }
-            else if (ps == parallel)
-            {
-                mN_infos = mNum_trasf;
-            }
-            mPs = ps;
-        }
-
-        public int Get_n_infos()
-        {
-            return (mN_infos);
-        }
-
-
         public void Set_main_download_thread(Thread main_download_thread)
         {
             mMain_download_thread = main_download_thread;
             return;
         }
 
-        public void Set_dchaninfo(ref DownloadChannelInfo dchaninfo)
-        {
-            mDchaninfos.Add(dchaninfo);
-        }
-
+       
         private void CreateReceiveStructure(int num_trasf) {
             
             mFilesizes = new long[num_trasf];
@@ -199,10 +167,7 @@ namespace Movex.FTP
         }
 
        
-        public int Get_ps()
-        {
-            return (mPs);
-        }
+        
 
         public Thread Get_main_download_thread()
         {
@@ -232,25 +197,35 @@ namespace Movex.FTP
 
         public void StartDownload(int index)
         {
-            if (mStart_time_millisec != null && mCurrent_time_millisec != null)
+            try
             {
-                mStart_time_millisec[index] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                mCurrent_time_millisec[index] = mStart_time_millisec[index];
+                if (mStart_time_millisec != null && mCurrent_time_millisec != null)
+                {
+                    mStart_time_millisec[index] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    mCurrent_time_millisec[index] = mStart_time_millisec[index];
+                }
             }
+            catch (DivideByZeroException e) { return; }
+            catch (Exception e) { throw e; }
         }
 
 
         public void StartDownload(string filename)
         {
-            if (mStart_time_millisec != null && mCurrent_time_millisec != null)
+            try
             {
-                var index = IndexOf(filename);
-                if (index > 0 && index < mNum_trasf)
+                if (mStart_time_millisec != null && mCurrent_time_millisec != null)
                 {
-                    mStart_time_millisec[IndexOf(filename)] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    mCurrent_time_millisec[index] = mStart_time_millisec[index];
+                    var index = IndexOf(filename);
+                    if (index > 0 && index < mNum_trasf)
+                    {
+                        mStart_time_millisec[IndexOf(filename)] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                        mCurrent_time_millisec[index] = mStart_time_millisec[index];
+                    }
                 }
             }
+            catch (DivideByZeroException e) { return; }
+            catch (Exception e) { throw e; }
         }
 
 
@@ -258,19 +233,26 @@ namespace Movex.FTP
 
         public void Add_new_download(string filename, long filesize)
         {
-            if (mStart_time_millisec != null && mFilenames != null && mFilesizes != null)
+            try
             {
-                mFilenames[mIndex] = filename;
-                mStart_time_millisec[mIndex] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                mFilesizes[mIndex++] = filesize;
+                if (mStart_time_millisec != null && mFilenames != null && mFilesizes != null)
+                {
+                    mFilenames[mIndex] = filename;
+                    mStart_time_millisec[mIndex] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    mCurrent_time_millisec[mIndex] = mStart_time_millisec[mIndex];
+                    mFilesizes[mIndex++] = filesize;
+                }
+                return;
             }
-            return;
+            catch (DivideByZeroException e) { return; }
+            catch (Exception e) { throw e; }
         }
 
         public void Incr_received_p(int index, int incr)
         {
             try
             {
+
                 var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
                 if (mReceived != null && mRemaining_time_millisec != null && mThroughputs != null)
                 {
@@ -278,9 +260,12 @@ namespace Movex.FTP
                     mThroughputs[index] = (incr / (var_milliseconds - mCurrent_time_millisec[index])) * 1000;
                     mCurrent_time_millisec[index] = var_milliseconds;
                     mRemaining_time_millisec[index] = (long)((mFilesizes[index] - mReceived[index]) / ((mReceived[index] / (var_milliseconds - mStart_time_millisec[index])) * 1000));
+
                 }
             }
-            catch (Exception e) { return; }
+
+            catch (DivideByZeroException e) { return; }
+            catch (Exception e) { throw e; }
             
         }
 
@@ -371,22 +356,7 @@ namespace Movex.FTP
             return (mRemaining_time_millisec);
         }
 
-        public DownloadChannelInfo GetDownloadChannelInfo(string filename)
-        {
-            foreach (var dchaninfo in mDchaninfos)
-            {
-                if (dchaninfo.Get_current_filename().Equals(filename))
-                {
-                    return (dchaninfo);
-                }
-            }
-            return (null);
-        }
-
-        public List<DownloadChannelInfo> GetDownloadChannelInfos()
-        {
-            return (mDchaninfos);
-        }
+      
         public void Set_filenames(string []filenames) {
             mFilenames = filenames;
             return;
@@ -396,7 +366,6 @@ namespace Movex.FTP
         {
             mFilepaths = paths;
             mFrom = from;
-            mN_infos = 0;
             mMulti_single = multi_single;
             mIndex = 0;
             mSocket = socket;

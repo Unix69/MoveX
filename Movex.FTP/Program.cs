@@ -22,7 +22,7 @@ namespace Movex.FTP
             var serverThread = new Thread(new ThreadStart(() => server.FTPstart()));
             serverThread.Start();
             ip[0] = IPAddress.Parse("127.0.0.1");
-            paths[0] = @".\demo(1)(1).zip";
+            paths[0] = @".\ciao.txt";
             paths[1] = @".\ciao.txt";
             client.FTPsendAll(paths, ip, null, null);
             serverThread.Join();
