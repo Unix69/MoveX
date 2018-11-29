@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net.Sockets;
+using System.Security;
 
 namespace Movex.FTP
 {
@@ -23,6 +24,7 @@ namespace Movex.FTP
         private long[] mCurrent_time_millisec;
         private long[] mRemaining_time_millisec;
         private int mIndex;
+        private int mIndexCurrentTransfer;
         private int mNum_trasf;
         private int mMulti_single;
         private Socket mSocket;
@@ -37,6 +39,7 @@ namespace Movex.FTP
             mTo = to;
             mMulti_single = multi_single;
             mIndex = 0;
+            mIndexCurrentTransfer = 0;
             mSocket = socket;
             mInterrupted = false;
         }
@@ -132,9 +135,13 @@ namespace Movex.FTP
             mMain_upload_thread = main_upload_thread;
             return;
         }
-       
-     
-       public Socket Get_socket()
+
+        public int Get_index_current_transfer()
+        {
+            return (mIndexCurrentTransfer);
+        }
+
+        public Socket Get_socket()
         {
             return (mSocket);
         }
@@ -205,9 +212,17 @@ namespace Movex.FTP
 
 
         public void InterruptUpload() {
-            mInterrupted = true;
+           
             if (mMain_upload_thread == null) { return; }
-            mMain_upload_thread.Interrupt();
+
+            try
+            {
+                mInterrupted = true;
+                mMain_upload_thread.Interrupt();
+                mMain_upload_thread.Abort();
+            }
+            catch (SecurityException e) { Console.WriteLine(e.Message); throw e; }
+            catch (ThreadStateException e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public bool IsInterrupted() {
@@ -218,8 +233,10 @@ namespace Movex.FTP
         //additional function
 
         public void StartUpload(int index) {
+            
             try
             {
+                mIndexCurrentTransfer = index;
                 if (mStart_time_millisec != null)
                 {
                     mStart_time_millisec[index] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
@@ -239,6 +256,7 @@ namespace Movex.FTP
                 if (mStart_time_millisec != null)
                 {
                     var index = IndexOf(filename);
+                    mIndexCurrentTransfer = index;
                     if (index > 0 && index < mNum_trasf)
                     {
                         mStart_time_millisec[index] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
@@ -271,10 +289,15 @@ namespace Movex.FTP
             catch (Exception e) { throw e; }
         }
 
+
+
+
+
         public void Incr_sended_p(int index, int incr)
         {
             try
             {
+                mIndexCurrentTransfer = index;
                 var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
                 if (mSended != null && mRemaining_time_millisec != null && mThroughputs != null)
                 {
@@ -368,6 +391,18 @@ namespace Movex.FTP
                 return ((sended * 100) / tosend);
             }
             catch (DivideByZeroException e) { return(0); }
+           
+        }
+
+        public long GetRemainingTime() {
+            try
+            {
+                var totBytes = GetTotSended();
+                var totFileBytes = GetTotFilesize();
+                var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
+                return ((long)((totFileBytes - totBytes) / ((totBytes / (var_milliseconds - mStart_time_millisec[0])) * 1000)));
+            }
+            catch (DivideByZeroException e) { return (0); }
             catch (Exception e) { throw e; }
         }
 
@@ -382,7 +417,7 @@ namespace Movex.FTP
                     tosend += (float)mFilesizes[i];
                     sended += (float)mSended[i];
                 }
-                return ((sended * 100) / tosend);
+                return((float) Math.Round(((sended * 100) / tosend), 0, MidpointRounding.AwayFromZero));
             }
             catch (DivideByZeroException e) { return(0); }
             catch (Exception e) { throw e; }

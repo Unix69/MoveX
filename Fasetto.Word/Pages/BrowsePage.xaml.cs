@@ -127,16 +127,28 @@ namespace Movex.View
                 foreach (var item in addresses) { builder.AppendLine(item.ToString()); }
                 System.Windows.MessageBox.Show(builder.ToString());
 
-                var WindowThread = new Thread(() =>
-                {
-                    var windowAvailability = new ManualResetEvent(false);
-                    new ProgressWindow(IoC.FtpClient, filepaths, addresses, windowAvailability).Show();
-                    windowAvailability.Set();
-                    System.Windows.Threading.Dispatcher.Run();
-                });
-                WindowThread.SetApartmentState(ApartmentState.STA);
-                WindowThread.Start();
+                ManualResetEvent[] UploadChannelAvailability = new ManualResetEvent[addresses.Length];
+                for (var i = 0; i < addresses.Length; i++){ UploadChannelAvailability[i] = new ManualResetEvent(false); }
 
+
+                var mFtpClientThread = new Thread(() => { IoC.FtpClient.Send(filepaths, addresses, UploadChannelAvailability); });
+                mFtpClientThread.Start();
+
+                for (var i = 0; i < addresses.Length; i++)
+                {
+                    {
+                        var u = i;
+                        var WindowThread = new Thread(() =>
+                        {
+                            new ProgressWindow(IoC.FtpClient, filepaths, addresses[u], UploadChannelAvailability[u]).Show();
+                            System.Windows.Threading.Dispatcher.Run();
+                        });
+
+                        WindowThread.SetApartmentState(ApartmentState.STA);
+                        WindowThread.Start();
+
+                    }
+                }
             }
         }
         public void ClearTransferItemsList()

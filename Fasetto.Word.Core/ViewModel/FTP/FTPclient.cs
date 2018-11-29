@@ -32,14 +32,15 @@ namespace Movex.View.Core
         /// <summary>
         /// Send a file using the FTP Client
         /// </summary>
-        public void Send(string[] filepaths, IPAddress[] ipaddress, ManualResetEvent uchanAvailability, ManualResetEvent windowAvailability)
+        public void Send(string[] filepaths, IPAddress[] ipaddress, ManualResetEvent[] uchanAvailability)
         {
-            mClient.FTPsendAll(filepaths, ipaddress, uchanAvailability, windowAvailability);
+            mClient.FTPsendAll(filepaths, ipaddress, uchanAvailability);
         }
 
-        public List<UploadChannelInfo> GetUChanInfo()
-        {
-            return mClient.GetUCInfo();
+
+
+        public UploadChannel GetChannel(IPAddress address) {
+            return(mClient.GetChannel(address.ToString()));
         }
 
         #endregion

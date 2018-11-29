@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
+using System.Net;
 using System.Windows.Input;
 
 namespace Movex.View.Core
@@ -16,6 +17,13 @@ namespace Movex.View.Core
         /// The current user
         /// </summary>
         public string User { get; set; }
+
+
+
+        /// <summary>
+        /// The current ip
+        /// </summary>
+        public string IpAddress { get; set; }
 
         /// <summary>
         /// The current file name
@@ -86,7 +94,9 @@ namespace Movex.View.Core
         /// </summary>
         public void Stop()
         {
-            MessageBox.Show("Ciao.");           
+            if (! IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).IsInterrupted()){
+                IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).InterruptUpload();
+            }
         }
 
         #region Internal Methods

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 using System.Net.Sockets;
+using System.Security;
 
 /*
 
@@ -46,7 +47,7 @@ namespace Movex.FTP
         private int mNum_trasf;
         private int mMulti_single;
         private string mPath;
-
+        private int mIndexCurrentTransfer;
         private bool mInterrupted;
         private Socket mSocket;
         //costructor
@@ -56,6 +57,7 @@ namespace Movex.FTP
             mMulti_single = multi_single;
             mPath = path;
             mIndex = 0;
+            mIndexCurrentTransfer = 0;
             mInterrupted = false;
         }
 
@@ -77,25 +79,31 @@ namespace Movex.FTP
 
        
         private void CreateReceiveStructure(int num_trasf) {
-            
-            mFilesizes = new long[num_trasf];
-            mFilenames = new string[num_trasf];
-            mFilepaths = new string[num_trasf];
-            mReceived = new long[num_trasf];
-            mThroughputs = new double[num_trasf];
-            mStart_time_millisec = new long[num_trasf];
-            mCurrent_time_millisec = new long[num_trasf];
-            mRemaining_time_millisec = new long[num_trasf];
-            for (var i = 0; i < num_trasf; i++)
+            try
             {
-                mFilesizes[i] = 0; mReceived[i] = 0;
-                mStart_time_millisec[i] = 0;
-                mCurrent_time_millisec[i] = 0;
-                mThroughputs[i] = 0;
-                mFilenames[i] = "";mFilepaths[i] = mPath;
+                mFilesizes = new long[num_trasf];
+                mFilenames = new string[num_trasf];
+                mFilepaths = new string[num_trasf];
+                mReceived = new long[num_trasf];
+                mThroughputs = new double[num_trasf];
+                mStart_time_millisec = new long[num_trasf];
+                mCurrent_time_millisec = new long[num_trasf];
+                mRemaining_time_millisec = new long[num_trasf];
+                for (var i = 0; i < num_trasf; i++)
+                {
+                    mFilesizes[i] = 0; mReceived[i] = 0;
+                    mStart_time_millisec[i] = 0;
+                    mCurrent_time_millisec[i] = 0;
+                    mThroughputs[i] = 0;
+                    mFilenames[i] = ""; mFilepaths[i] = mPath;
+                }
+                mIndex = 0;
+                return;
             }
-            mIndex = 0;
-            return;
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (OutOfMemoryException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
 
@@ -185,9 +193,19 @@ namespace Movex.FTP
 
         public void InterruptDownload()
         {
-            mInterrupted = true;
-            mMain_download_thread.Interrupt();
-          
+            try
+            {
+                
+                if (mMain_download_thread != null)
+                {
+                    mMain_download_thread.Interrupt();
+                    mInterrupted = true;
+                    mMain_download_thread.Abort();
+                }
+            }
+            catch (SecurityException e) { Console.WriteLine(e.Message); throw e; }
+            catch (ThreadStateException e) { Console.WriteLine(e.Message); throw e; }
+
         }
 
         public bool IsInterrupted()
@@ -199,12 +217,16 @@ namespace Movex.FTP
         {
             try
             {
+                mIndexCurrentTransfer = index;
                 if (mStart_time_millisec != null && mCurrent_time_millisec != null)
                 {
                     mStart_time_millisec[index] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     mCurrent_time_millisec[index] = mStart_time_millisec[index];
                 }
             }
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (OverflowException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
             catch (DivideByZeroException e) { return; }
             catch (Exception e) { throw e; }
         }
@@ -217,6 +239,7 @@ namespace Movex.FTP
                 if (mStart_time_millisec != null && mCurrent_time_millisec != null)
                 {
                     var index = IndexOf(filename);
+                    mIndexCurrentTransfer = index;
                     if (index > 0 && index < mNum_trasf)
                     {
                         mStart_time_millisec[IndexOf(filename)] = DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond;
@@ -224,6 +247,9 @@ namespace Movex.FTP
                     }
                 }
             }
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (OverflowException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
             catch (DivideByZeroException e) { return; }
             catch (Exception e) { throw e; }
         }
@@ -244,6 +270,9 @@ namespace Movex.FTP
                 }
                 return;
             }
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (OverflowException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
             catch (DivideByZeroException e) { return; }
             catch (Exception e) { throw e; }
         }
@@ -252,7 +281,7 @@ namespace Movex.FTP
         {
             try
             {
-
+                mIndexCurrentTransfer = index;
                 var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
                 if (mReceived != null && mRemaining_time_millisec != null && mThroughputs != null)
                 {
@@ -263,20 +292,29 @@ namespace Movex.FTP
 
                 }
             }
-
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (OverflowException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
             catch (DivideByZeroException e) { return; }
             catch (Exception e) { throw e; }
             
         }
 
         public int IndexOf(string filename) {
-            for (var i = 0; i < mNum_trasf; i++)
+            try
             {
-                if (mFilenames[i].Equals(filename)){
-                    return (i);
+                for (var i = 0; i < mNum_trasf; i++)
+                {
+                    if (mFilenames[i].Equals(filename))
+                    {
+                        return (i);
+                    }
                 }
+                return (-1);
             }
-            return (-1);
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public void IncrReceivedOf(string filename, int incr) {
@@ -285,34 +323,56 @@ namespace Movex.FTP
 
         public long GetTotReceived()
         {
-            long TotReceived = 0;
-            for (var i = 0; i < mNum_trasf; i++)
+            try
             {
-                TotReceived += mReceived[i];
+                long TotReceived = 0;
+                for (var i = 0; i < mNum_trasf; i++)
+                {
+                    TotReceived += mReceived[i];
+                }
+                return (TotReceived);
             }
-            return (TotReceived);
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (OverflowException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public long GetTotFilesize()
         {
-            long TotFilesize = 0;
-            for (var i = 0; i < mNum_trasf; i++)
+            try
             {
-                TotFilesize += mFilesizes[i];
+                long TotFilesize = 0;
+                for (var i = 0; i < mNum_trasf; i++)
+                {
+                    TotFilesize += mFilesizes[i];
+                }
+                return (TotFilesize);
             }
-            return (TotFilesize);
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (OverflowException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public int GetCompleteTransfer()
         {
-            var completetransfer = 0;
-            for (var i = 0; i < mNum_trasf; i++)
+            try
             {
-                if (mFilesizes[i] == mReceived[i]) {
-                    completetransfer ++;
+                var completetransfer = 0;
+                for (var i = 0; i < mNum_trasf; i++)
+                {
+                    if (mFilesizes[i] == mReceived[i])
+                    {
+                        completetransfer++;
+                    }
                 }
+                return (completetransfer);
             }
-            return (completetransfer);
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (OverflowException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public int GetPrevIndex() {
@@ -325,25 +385,39 @@ namespace Movex.FTP
 
         public float GetPercOfTransfer(string filename)
         {
-            var index = IndexOf(filename);
-            if (index == -1) {
-                return (-1);
+            try
+            {
+                var index = IndexOf(filename);
+                if (index == -1)
+                {
+                    return (-1);
+                }
+                var toreceive = (float)mFilesizes[index];
+                var received = (float)mReceived[index];
+                return ((received * 100) / toreceive);
             }
-            var toreceive = (float) mFilesizes[index];
-            var received = (float) mReceived[index];
-            return ((received * 100) / toreceive);
-
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (DivideByZeroException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public float GetPerc() {
-            float receive = 0;
-            float toreceive = 0;
-            for (var i = 0; i < mNum_trasf; i++)
+            try
             {
-                    toreceive += (float) mFilesizes[i];
-                    receive += (float) mReceived[i];
+                float receive = 0;
+                float toreceive = 0;
+                for (var i = 0; i < mNum_trasf; i++)
+                {
+                    toreceive += (float)mFilesizes[i];
+                    receive += (float)mReceived[i];
+                }
+                return ((receive * 100) / toreceive);
             }
-            return ((receive*100)/toreceive);
+            catch (NullReferenceException e) { Console.WriteLine(e.Message); throw e; }
+            catch (DivideByZeroException e) { Console.WriteLine(e.Message); throw e; }
+            catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public double[] Get_throughputs()
@@ -362,7 +436,12 @@ namespace Movex.FTP
             return;
         }
 
-       public DownloadChannel(Socket socket, string[] paths, string from, int multi_single)
+        public int Get_index_current_transfer()
+        {
+            return (mIndexCurrentTransfer);
+        }
+
+        public DownloadChannel(Socket socket, string[] paths, string from, int multi_single)
         {
             mFilepaths = paths;
             mFrom = from;

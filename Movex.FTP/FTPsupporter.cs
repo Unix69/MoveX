@@ -31,7 +31,7 @@ namespace Movex.FTP
             //File send attributes and fields
             public const int Filenamelensize = 4;
             public const int Filesizesize = 8;
-            public const int Filedatasize = 1024 * 1024 * 100; //100MB
+            public const int Filedatasize = 1024 * 1024; //1MB
             public const int Tagsize = 4;
             public const int Numfilesize = 4;
             public const int Headersize = 4 + 4;
