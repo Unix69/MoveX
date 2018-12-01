@@ -35,7 +35,7 @@ namespace Movex.View
 
             // Setup IoC
             IoC.Setup();
-            IoC.FtpServer.SetSynchronization2(
+            IoC.FtpServer.SetSynchronization(
                 WindowDispatcher.WindowDispatcher.RequestAvailable,
                 WindowDispatcher.WindowDispatcher.Requests,
                 WindowDispatcher.WindowDispatcher.TypeRequests,

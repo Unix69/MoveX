@@ -127,28 +127,24 @@ namespace Movex.View
                 foreach (var item in addresses) { builder.AppendLine(item.ToString()); }
                 System.Windows.MessageBox.Show(builder.ToString());
 
-                ManualResetEvent[] UploadChannelAvailability = new ManualResetEvent[addresses.Length];
-                for (var i = 0; i < addresses.Length; i++){ UploadChannelAvailability[i] = new ManualResetEvent(false); }
+                // Thread con send
+                // 
+                // creo un UploadChannelInfoAvailability e mWindowAvailability per ogni address
+                // lancio un thread per ogni address e ad ognuno di esso fornisco i due qui sopra
+                // La SendAll 
 
 
-                var mFtpClientThread = new Thread(() => { IoC.FtpClient.Send(filepaths, addresses, UploadChannelAvailability); });
-                mFtpClientThread.Start();
-
-                for (var i = 0; i < addresses.Length; i++)
+                var WindowThread = new Thread(() =>
                 {
-                    {
-                        var u = i;
-                        var WindowThread = new Thread(() =>
-                        {
-                            new ProgressWindow(IoC.FtpClient, filepaths, addresses[u], UploadChannelAvailability[u]).Show();
-                            System.Windows.Threading.Dispatcher.Run();
-                        });
+                    var windowAvailability = new ManualResetEvent(false);
+                   
+                    new ProgressWindow(IoC.FtpClient, filepaths, addresses, windowAvailability).Show();
+                    windowAvailability.Set();
+                    System.Windows.Threading.Dispatcher.Run();
+                });
+                WindowThread.SetApartmentState(ApartmentState.STA);
+                WindowThread.Start();
 
-                        WindowThread.SetApartmentState(ApartmentState.STA);
-                        WindowThread.Start();
-
-                    }
-                }
             }
         }
         public void ClearTransferItemsList()
