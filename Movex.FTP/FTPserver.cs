@@ -37,7 +37,7 @@ namespace Movex.FTP
         #endregion
 
        
-        public void SetSynchronization2(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
+        public void SetSynchronization(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
             mRequestAvailable = requestAvailable;
             mRequests = requests;
@@ -104,25 +104,30 @@ namespace Movex.FTP
                 mPrivateMode = false;
             }
 
-            /*
             string response;
-            if (mAutomaticReception == false) { 
-            // Set the message in a concurrent stack
-            var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
-            var Id = "MyId";
+            if (mAutomaticReception == false)
+            { 
 
-            mRequests.Enqueue(Id);
-            mTypeRequests.TryAdd(Id, 101);
-            mMessages.TryAdd(Id, message);
-            var responseAvailable = new ManualResetEvent(false);
-            mSync.TryAdd(Id, responseAvailable);
-            var responseBag = new ConcurrentBag<string>();
-            mResponses.TryAdd(Id, responseBag);
-            mRequestAvailable.Set();
-            responseAvailable.WaitOne();
-            mResponses.TryGetValue(Id, out var responseContainer);
-            responseContainer.TryTake(out response);
-            } else { response = "Yes"; }
+                // Set the message in a concurrent stack
+                var message = "Hai ricevuto una richiesta di trasferimento da: " + client.RemoteEndPoint.ToString() + "\r\n" + "Vuoi accettare?";
+                var Id = "MyId";
+
+                mRequests.Enqueue(Id);
+                mTypeRequests.TryAdd(Id, 101);
+                mMessages.TryAdd(Id, message);
+                var responseAvailable = new ManualResetEvent(false);
+                mSync.TryAdd(Id, responseAvailable);
+                var responseBag = new ConcurrentBag<string>();
+                mResponses.TryAdd(Id, responseBag);
+                mRequestAvailable.Set();
+                responseAvailable.WaitOne();
+                mResponses.TryGetValue(Id, out var responseContainer);
+                responseContainer.TryTake(out response);
+            }
+            else
+            {
+                response = "Yes";
+            }
 
             if (!response.Equals("Yes"))
             {
@@ -130,6 +135,7 @@ namespace Movex.FTP
                 goto Accept;
             }
 
+            /*
             string whereToSave;
             if (mAutomaticSave == false)
             {
@@ -155,6 +161,7 @@ namespace Movex.FTP
             if (whereToSave != null) path = Path.GetFullPath(whereToSave);
             path = path + @"\";
             */
+
             var path = @".\";
             var recvfrom = new Thread(new ThreadStart(() => FTPrecv(client, path)))
             {

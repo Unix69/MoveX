@@ -47,7 +47,7 @@ namespace Movex.View.Core
         #endregion
 
         #region Public Methods
-        public void SetSynchronization2(
+        public void SetSynchronization(
             ManualResetEvent requestAvailable,
             ConcurrentQueue<string> requests,
             ConcurrentDictionary<string, int> typeRequests,
@@ -55,7 +55,7 @@ namespace Movex.View.Core
             ConcurrentDictionary<string, ManualResetEvent> sync,
             ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
-            mServer.SetSynchronization2(requestAvailable, requests, typeRequests, messages, sync, responses);
+            mServer.SetSynchronization(requestAvailable, requests, typeRequests, messages, sync, responses);
         }
         public void SetPrivateMode(bool value) { mServer.SetPrivateMode(value); }
         public void SetAutomaticReception(bool value) { mServer.SetAutomaticReception(value); }

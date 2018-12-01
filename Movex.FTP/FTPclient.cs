@@ -439,11 +439,11 @@ namespace Movex.FTP
             StaticUchanInfos = newUploadChannelInfos;
 
             // This synchronization primitive say: Get the UchanInfo. It is now available
-            /*  mUchanAvailability.Set();
+            mUchanAvailability.Set();
 
-              // This synchornization primitive wait until Window(s) available
-              mWindowAvailability.WaitOne();
-              */
+            // This synchornization primitive wait until Window(s) available
+            mWindowAvailability.WaitOne();
+              
 
             ftp_thread.Name = "ClientFileSendAllThread";
             FTPstartAndWaitThread(ref ftp_thread);
@@ -489,10 +489,10 @@ namespace Movex.FTP
                 ftp_thread.Start();
 
                 // This synchronization primitive say: Get the UchanInfo. It is now available
-                //   mUchanAvailability.Set();
+                mUchanAvailability.Set();
 
                 // This synchornization primitive wait until Window(s) available
-                // mWindowAvailability.WaitOne();
+                mWindowAvailability.WaitOne();
 
                 ftp_thread.Join();
 
@@ -1088,7 +1088,10 @@ namespace Movex.FTP
 
             }
 
-            catch (Exception e) { throw new IOException("Cannot send to clients"); }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                throw new IOException("Cannot send to clients");
+            }
         }
 
 

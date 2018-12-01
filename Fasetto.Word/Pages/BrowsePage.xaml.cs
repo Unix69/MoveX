@@ -127,9 +127,17 @@ namespace Movex.View
                 foreach (var item in addresses) { builder.AppendLine(item.ToString()); }
                 System.Windows.MessageBox.Show(builder.ToString());
 
+                // Thread con send
+                // 
+                // creo un UploadChannelInfoAvailability e mWindowAvailability per ogni address
+                // lancio un thread per ogni address e ad ognuno di esso fornisco i due qui sopra
+                // La SendAll 
+
+
                 var WindowThread = new Thread(() =>
                 {
                     var windowAvailability = new ManualResetEvent(false);
+                   
                     new ProgressWindow(IoC.FtpClient, filepaths, addresses, windowAvailability).Show();
                     windowAvailability.Set();
                     System.Windows.Threading.Dispatcher.Run();
