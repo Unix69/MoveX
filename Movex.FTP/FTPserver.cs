@@ -33,12 +33,12 @@ namespace Movex.FTP
         private ConcurrentQueue<string> mRequests;
         private ConcurrentDictionary<string, int> mTypeRequests;
         private ConcurrentDictionary<string, string> mMessages;
-        private ConcurrentDictionary<string, ManualResetEvent> mSync;
+        private ConcurrentDictionary<string, ManualResetEvent[]> mSync;
         private ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
         #endregion
 
 
-        public void SetSynchronization2(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
+        public void SetSynchronization(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent[]> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
             mRequestAvailable = requestAvailable;
             mRequests = requests;
@@ -156,14 +156,32 @@ namespace Movex.FTP
             if (whereToSave != null) path = Path.GetFullPath(whereToSave);
             path = path + @"\";
             */
+
+            var downloadTransferAvailability = new ManualResetEvent(false);
+            var windowAvailability = new ManualResetEvent(false);
+
             var path = @".\";
-            var recvfrom = new Thread(new ThreadStart(() => FTPrecv(client, path)))
+            var recvfrom = new Thread(new ThreadStart(() => FTPrecv(client, path, downloadTransferAvailability, windowAvailability)))
             {
                 Priority = ThreadPriority.Highest,
                 Name = "ServerSessionThread"
             };
             recvfrom.Start();
 
+            // Genero la richiesta per l'interfaccia grafica
+            
+            var message = client.RemoteEndPoint.ToString();
+            var Id = "MyId3";
+            mRequests.Enqueue(Id);
+            mTypeRequests.TryAdd(Id, 104);
+            mMessages.TryAdd(Id, message);
+
+            var syncPrimitives = new ManualResetEvent[2];
+            syncPrimitives[0] = downloadTransferAvailability;
+            syncPrimitives[1] = windowAvailability;
+            mSync.TryAdd(Id, syncPrimitives);
+            mRequestAvailable.Set();
+            
             goto Accept;
         }
 
@@ -203,7 +221,7 @@ namespace Movex.FTP
 
 
 
-        private bool FTPmultiFile_s(ref Socket clientsocket, int tag, string path, DTransfer transfer)
+        private bool FTPmultiFile_s(ref Socket clientsocket, int tag, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
             var numfile = 0;
             string filename = null;
@@ -217,6 +235,9 @@ namespace Movex.FTP
                 transfer.AttachToInterface(dchan);
                 dchan.Set_socket(ref clientsocket);
                 dchan.Set_main_download_thread(Thread.CurrentThread);
+
+                downloadTransferAvailability.Set();
+                windowAvailability.WaitOne();
 
                 numfile = RecvNumfile(ref clientsocket);
                 if (!CheckNumfile(numfile, dchan)) { throw new IOException("Number of files not correct"); }
@@ -238,7 +259,7 @@ namespace Movex.FTP
 
 
 
-        private bool FTPsingleFile(ref Socket clientsocket, int tag, string path, DTransfer transfer)
+        private bool FTPsingleFile(ref Socket clientsocket, int tag, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
             var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), tag, path);
 
@@ -253,6 +274,8 @@ namespace Movex.FTP
             dchan.Set_num_trasf(1);
             dchan.Set_main_download_thread(Thread.CurrentThread);
 
+            downloadTransferAvailability.Set();
+            windowAvailability.WaitOne();
 
             try
             {
@@ -269,7 +292,7 @@ namespace Movex.FTP
         }
 
 
-        public string getBytesSufix(ref double bytes)
+        public string GetBytesSufix(ref double bytes)
         {
             string[] sufixes = { "", "K", "M", "G", "T", "P" };
             var s = 0;
@@ -281,16 +304,16 @@ namespace Movex.FTP
             return (sufixes[s]);
         }
 
-        public string getConvertedNumber(long bytes)
+        public string GetConvertedNumber(long bytes)
         {
             double b = bytes;
-            string sufix = getBytesSufix(ref b);
+            string sufix = GetBytesSufix(ref b);
             float r = (float)b;
             return (r.ToString() + " " + sufix + "b");
         }
 
 
-        private bool FTPtree(ref Socket clientsocket, string path, DTransfer transfer)
+        private bool FTPtree(ref Socket clientsocket, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
             var numele = 0;
             var dirpaths = new List<string>();
@@ -324,7 +347,7 @@ namespace Movex.FTP
                     throw new IOException("Bad tag");
                 }
 
-                FTPfilesByTree(ref clientsocket, filepaths.ToArray(), path, tag, transfer);
+                FTPfilesByTree(ref clientsocket, filepaths.ToArray(), path, tag, transfer, downloadTransferAvailability, windowAvailability);
                 return (true);
             }
             catch (Exception e) { throw e; }
@@ -334,7 +357,7 @@ namespace Movex.FTP
         }
 
 
-        private bool FTPmultiTree(ref Socket clientsocket, string path, DTransfer transfer)
+        private bool FTPmultiTree(ref Socket clientsocket, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
             try
             {
@@ -344,7 +367,7 @@ namespace Movex.FTP
                 for (var i = 0; i < numtrees; i++) {
                     tag = RecvTag(ref clientsocket);
                     if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
-                    if (!FTPtree(ref clientsocket, path, transfer)) { throw new IOException("Cannot receive tree"); }
+                    if (!FTPtree(ref clientsocket, path, transfer, downloadTransferAvailability, windowAvailability)) { throw new IOException("Cannot receive tree"); }
                 }
                 return (true);
             }
@@ -353,7 +376,7 @@ namespace Movex.FTP
         }
 
 
-        private bool FTPfilesByTree(ref Socket clientsocket, string[] paths, string path, int t, DTransfer transfer) {
+        private bool FTPfilesByTree(ref Socket clientsocket, string[] paths, string path, int t, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability) {
             var numfile = 0;
             string filename = null;
             var tag = 0;
@@ -367,6 +390,9 @@ namespace Movex.FTP
                 mDchansDataLock.ReleaseMutex();
                 transfer.AttachToInterface(dchan);
                 dchan.Set_socket(ref clientsocket);
+
+                downloadTransferAvailability.Set();
+                windowAvailability.WaitOne();
 
                 if (t == FTPsupporter.Tags.Filesend)
                 {
@@ -554,7 +580,7 @@ namespace Movex.FTP
         }
 
 
-         private void FTPrecv(Socket clientsocket, string path) {
+         private void FTPrecv(Socket clientsocket, string path, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability) {
             var result = false;
             var tag = 0;   
             var tos = 0;
@@ -574,7 +600,7 @@ namespace Movex.FTP
                 if (!CheckTotalNFiles(nfiles)) { throw new IOException("Bad Total Number of Files"); }
 
 
-                Console.WriteLine("Recpt: Receive from Client dim=" + getConvertedNumber(tot) + " nfiles="+nfiles);
+                Console.WriteLine("Recpt: Receive from Client dim=" + GetConvertedNumber(tot) + " nfiles="+nfiles);
 
 
                 if (tot > DiskCapability(path)) {
@@ -604,26 +630,26 @@ namespace Movex.FTP
                     case FTPsupporter.Tags.Filesend:
                         {
 
-                            result = FTPsingleFile(ref clientsocket, tag, path, transfer);
+                            result = FTPsingleFile(ref clientsocket, tag, path, transfer, downloadTransferAvailability, windowAvailability);
                             break;
 
                         }
                     case FTPsupporter.Tags.Multifilesend:
                         {
-                            result = FTPmultiFile_s(ref clientsocket, tag, path, transfer);
+                            result = FTPmultiFile_s(ref clientsocket, tag, path, transfer, downloadTransferAvailability, windowAvailability);
                             break;
                         }
                     case FTPsupporter.Tags.Treesend:
                         {
 
-                            result = FTPtree(ref clientsocket, path, transfer);
+                            result = FTPtree(ref clientsocket, path, transfer, downloadTransferAvailability, windowAvailability);
                             break;
 
                         }
                     case FTPsupporter.Tags.Multitreesend:
                         {
 
-                            result = FTPmultiTree(ref clientsocket, path, transfer);
+                            result = FTPmultiTree(ref clientsocket, path, transfer, downloadTransferAvailability, windowAvailability);
                             break;
 
                         }
@@ -702,7 +728,7 @@ namespace Movex.FTP
             var throughputs = olddchan.Get_throughputs();
             for (var i = 0; i < olddchan.Get_num_trasf(); i++)
             {
-                Console.WriteLine(i + " - filename " + filenames[i] + "  filesize " + getConvertedNumber(filesizes[i]) + "\n sended " + getConvertedNumber(received[i]) + " throughput " + getConvertedNumber((long)throughputs[i]) + "/s\n\n");
+                Console.WriteLine(i + " - filename " + filenames[i] + "  filesize " + GetConvertedNumber(filesizes[i]) + "\n sended " + GetConvertedNumber(received[i]) + " throughput " + GetConvertedNumber((long)throughputs[i]) + "/s\n\n");
             }
             mDchansDataLock.WaitOne();
             var result = mDchans.Remove(olddchan);
@@ -829,7 +855,7 @@ namespace Movex.FTP
 
             var path = dchan.Get_filepaths()[n];
             var binarybuffer = new BinaryWriter(File.Open(path + filename, FileMode.Append));
-            Console.WriteLine("Recpt: write file=" + filename + " size=" + getConvertedNumber(filesize));
+            Console.WriteLine("Recpt: write file=" + filename + " size=" + GetConvertedNumber(filesize));
 
             var throughputs = dchan.Get_throughputs();
             var remainingtimes = dchan.Get_remaining_times();
@@ -843,9 +869,9 @@ namespace Movex.FTP
                 var filedata_buff = new byte[(toreceive > FTPsupporter.Sizes.Filedatasize ? FTPsupporter.Sizes.Filedatasize : toreceive)];
                 nrecv = Receive(ref clientsocket, ref filedata_buff, dchan, n);
                 binarybuffer.Write(filedata_buff, 0 , nrecv);
-                Console.WriteLine("Recpt: received " + getConvertedNumber(received) + " toreceive " + getConvertedNumber(toreceive) 
-                    + " nrecv " + getConvertedNumber(nrecv) +
-                        " remaining time =" + remainingtimes[n] + "s  throughput =" + getConvertedNumber((long)throughputs[n])+"/s");
+                Console.WriteLine("Recpt: received " + GetConvertedNumber(received) + " toreceive " + GetConvertedNumber(toreceive) 
+                    + " nrecv " + GetConvertedNumber(nrecv) +
+                        " remaining time =" + remainingtimes[n] + "s  throughput =" + GetConvertedNumber((long)throughputs[n])+"/s");
                 received += (long) nrecv;
             }
 

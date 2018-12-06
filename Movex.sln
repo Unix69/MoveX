@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.View.Core", "Fasetto.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.Network", "Movex.Networking\Movex.Network.csproj", "{38AFC9F0-0BEE-469B-BE19-ADFAAF2DD799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.ContextMenu", "..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\CountLines\CountLines\Movex.ContextMenu.csproj", "{4635E1DD-3AEF-41DD-B825-701803155D42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.ContextMenu", "..\..\..\..\..\Visual Studio 2017\Projects\CountLines\CountLines\Movex.ContextMenu.csproj", "{4635E1DD-3AEF-41DD-B825-701803155D42}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D8F22D2F-97EC-4969-BFF5-AADE58C5A334} = {D8F22D2F-97EC-4969-BFF5-AADE58C5A334}
 	EndProjectSection
@@ -22,17 +22,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.ShortcutView", "Movex
 		{CAC0A047-D879-4A29-8136-BE1E33F5F35C} = {CAC0A047-D879-4A29-8136-BE1E33F5F35C}
 	EndProjectSection
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Movex.Installer", "..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\MovexInstaller\MovexInstaller\MovexInstaller.vdproj", "{2AA03884-3B53-4C87-B5FB-8AF508AB21F9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.ProgressView", "Movex.ProgressView\Movex.ProgressView.csproj", "{C6086FC4-FC83-4FE8-870D-F2841E2F9F4C}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Movex.Installer", "..\..\..\..\..\Visual Studio 2017\Projects\MovexInstaller\MovexInstaller\MovexInstaller.vdproj", "{2AA03884-3B53-4C87-B5FB-8AF508AB21F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.FTP", "Movex.FTP\Movex.FTP.csproj", "{661F9279-AFC6-4C1F-95F9-D0936B7A398E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{059623B1-0448-45AB-9DC7-C5608CC72B9C} = {059623B1-0448-45AB-9DC7-C5608CC72B9C}
-		{C6086FC4-FC83-4FE8-870D-F2841E2F9F4C} = {C6086FC4-FC83-4FE8-870D-F2841E2F9F4C}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.MessageView", "Movex.MessageView\Movex.MessageView.csproj", "{059623B1-0448-45AB-9DC7-C5608CC72B9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,20 +56,15 @@ Global
 		{2AA03884-3B53-4C87-B5FB-8AF508AB21F9}.Debug|Any CPU.Build.0 = Debug
 		{2AA03884-3B53-4C87-B5FB-8AF508AB21F9}.Release|Any CPU.ActiveCfg = Release
 		{2AA03884-3B53-4C87-B5FB-8AF508AB21F9}.Release|Any CPU.Build.0 = Release
-		{C6086FC4-FC83-4FE8-870D-F2841E2F9F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6086FC4-FC83-4FE8-870D-F2841E2F9F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6086FC4-FC83-4FE8-870D-F2841E2F9F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6086FC4-FC83-4FE8-870D-F2841E2F9F4C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{661F9279-AFC6-4C1F-95F9-D0936B7A398E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{661F9279-AFC6-4C1F-95F9-D0936B7A398E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{661F9279-AFC6-4C1F-95F9-D0936B7A398E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{661F9279-AFC6-4C1F-95F9-D0936B7A398E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{059623B1-0448-45AB-9DC7-C5608CC72B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{059623B1-0448-45AB-9DC7-C5608CC72B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{059623B1-0448-45AB-9DC7-C5608CC72B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{059623B1-0448-45AB-9DC7-C5608CC72B9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D92336A2-B683-4A01-AA36-6D73721CC7F8}
 	EndGlobalSection
 EndGlobal

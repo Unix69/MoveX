@@ -34,7 +34,7 @@ namespace Movex.View
             TransferItemList.ItemsSource        = mTransferItemList.Items;
             mTransferItemList.TransferAvailable = mTransferItemList.Items.Count == 0 ? false : true;
 
-            ((App)(Application.Current)).SetBrowsePage(this);
+            ((App)(Application.Current)).SetBrowsePage(this); 
         }
         #endregion
 
@@ -123,27 +123,35 @@ namespace Movex.View
             // Ask to the FTP Client Service to send data
             if (!(filepaths == null) && !(addresses == null))
             {
-                foreach (var item in filepaths) { builder.AppendLine(item); }
-                foreach (var item in addresses) { builder.AppendLine(item.ToString()); }
-                System.Windows.MessageBox.Show(builder.ToString());
-
-                // Thread con send
-                // 
-                // creo un UploadChannelInfoAvailability e mWindowAvailability per ogni address
-                // lancio un thread per ogni address e ad ognuno di esso fornisco i due qui sopra
-                // La SendAll 
-
-
-                var WindowThread = new Thread(() =>
+                Console.WriteLine("The users selected for the upload are: " + addresses.Length.ToString());
+                var TransferAvailabilities = new ManualResetEvent[addresses.Length];
+                var WindowsAvailabilities = new ManualResetEvent[addresses.Length];
+                for (var k = 0; k < WindowsAvailabilities.Length; k++)
                 {
-                    var windowAvailability = new ManualResetEvent(false);
-                   
-                    new ProgressWindow(IoC.FtpClient, filepaths, addresses, windowAvailability).Show();
-                    windowAvailability.Set();
-                    System.Windows.Threading.Dispatcher.Run();
-                });
-                WindowThread.SetApartmentState(ApartmentState.STA);
-                WindowThread.Start();
+                    WindowsAvailabilities[k] = new ManualResetEvent(false);
+                    TransferAvailabilities[k] = new ManualResetEvent(false);
+                }
+                for (var i=0; i<addresses.Length; i++)
+                {
+                     // Scope valid for each thread only
+                    {       
+                        var index = i;
+                        var WindowThread = new Thread(() =>
+                        {
+                            var address = addresses[index];
+                            var windowAvailability = WindowsAvailabilities[index];
+                            var uTransferAvailability = TransferAvailabilities[index];
+
+                            new ProgressWindow(address, uTransferAvailability).Show();
+                            windowAvailability.Set();
+                            System.Windows.Threading.Dispatcher.Run();   
+                        });
+                        WindowThread.SetApartmentState(ApartmentState.STA);
+                        WindowThread.Start();
+                    }
+                }
+
+                IoC.FtpClient.Send(filepaths, addresses, WindowsAvailabilities, TransferAvailabilities);
 
             }
         }

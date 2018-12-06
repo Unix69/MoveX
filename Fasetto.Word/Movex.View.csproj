@@ -178,6 +178,9 @@
     <Compile Include="ViewModels\WindowViewModel.cs" />
     <Compile Include="WindowDispatcher\WindowDispatcher.cs" />
     <Compile Include="WindowDispatcher\IWindowDispatcher.cs" />
+    <Compile Include="Window\ProgressWindow\DownloadProgressWindow.xaml.cs">
+      <DependentUpon>DownloadProgressWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window\ProgressWindow\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
@@ -292,6 +295,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Window\ProgressWindow\DownloadProgressWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Window\ProgressWindow\ProgressWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -366,10 +373,6 @@
     <ProjectReference Include="..\Movex.FTP\Movex.FTP.csproj">
       <Project>{661f9279-afc6-4c1f-95f9-d0936b7a398e}</Project>
       <Name>Movex.FTP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Movex.MessageView\Movex.MessageView.csproj">
-      <Project>{059623b1-0448-45ab-9dc7-c5608cc72b9c}</Project>
-      <Name>Movex.MessageView</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

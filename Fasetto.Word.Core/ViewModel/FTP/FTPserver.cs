@@ -52,7 +52,7 @@ namespace Movex.View.Core
             ConcurrentQueue<string> requests,
             ConcurrentDictionary<string, int> typeRequests,
             ConcurrentDictionary<string, string> messages,
-            ConcurrentDictionary<string, ManualResetEvent> sync,
+            ConcurrentDictionary<string, ManualResetEvent[]> sync,
             ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
             mServer.SetSynchronization(requestAvailable, requests, typeRequests, messages, sync, responses);

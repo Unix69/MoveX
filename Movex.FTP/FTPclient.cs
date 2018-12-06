@@ -19,7 +19,6 @@ namespace Movex.FTP
         private List<UploadChannel> mUchans;
         private Mutex mUchansDataLock;
 
-        private ManualResetEvent[] mUchanAvailability;
         private UTransfer[] mTransfer;
 
         public FTPclient()
@@ -51,22 +50,22 @@ namespace Movex.FTP
             catch (Exception e) { throw e; }
         }
 
-        private void FTPsingleClientTree_serial(Socket clientsocket, IPAddress ipaddress, string root, UTransfer transfer)
+        private void FTPsingleClientTree_serial(Socket clientsocket, IPAddress ipaddress, string root, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
             try
             {
-                var result = FTPsingleClientTree_s(ref clientsocket, root, ipaddress, transfer);
+                var result = FTPsingleClientTree_s(ref clientsocket, root, ipaddress, transfer, uTransferAvailability, windowAvailability);
                 return;
             }
             catch (Exception e) { throw e; }
 
         }
 
-        private void FTPsingleClientMultiTree_serial(Socket clientsocket, IPAddress ipaddress, string[] roots, UTransfer transfer)
+        private void FTPsingleClientMultiTree_serial(Socket clientsocket, IPAddress ipaddress, string[] roots, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
             try
             {
-                var result = FTPsingleClientMultiTree_s(ref clientsocket, ipaddress, roots, transfer);
+                var result = FTPsingleClientMultiTree_s(ref clientsocket, ipaddress, roots, transfer, uTransferAvailability, windowAvailability);
                 return;
             }
             catch (Exception e)
@@ -130,7 +129,7 @@ namespace Movex.FTP
 
         }
 
-        public string getBytesSufix(ref double bytes)
+        public string GetBytesSufix(ref double bytes)
         {
             string[] sufixes = { "", "K", "M", "G", "T", "P" };
             var s = 0;
@@ -142,10 +141,10 @@ namespace Movex.FTP
             return (sufixes[s]);
         }
 
-        public string getConvertedNumber(long bytes)
+        public string GetConvertedNumber(long bytes)
         {
             double b = bytes;
-            string sufix = getBytesSufix(ref b);
+            string sufix = GetBytesSufix(ref b);
             float r = (float)b;
             return (r.ToString() + " " + sufix + "b");
         }
@@ -161,7 +160,7 @@ namespace Movex.FTP
             catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
-        private bool FTPsingleClientTree_s(ref Socket clientsocket, string root, IPAddress ipaddress, UTransfer transfer)
+        private bool FTPsingleClientTree_s(ref Socket clientsocket, string root, IPAddress ipaddress, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
             try
             {
@@ -192,7 +191,7 @@ namespace Movex.FTP
                     if (!SendDepth(ref clientsocket, depth[i])) { throw new IOException("Cannot send depth"); }
                 }
 
-                var result = FTPsendbytree(filepaths.ToArray(), filenames, ipaddress, ref clientsocket, transfer);
+                var result = FTPsendbytree(filepaths.ToArray(), filenames, ipaddress, ref clientsocket, transfer, uTransferAvailability, windowAvailability);
 
                 return (result);
             }
@@ -200,7 +199,7 @@ namespace Movex.FTP
 
         }
 
-        private bool FTPsingleClientMultiTree_s(ref Socket clientsocket, IPAddress ipaddress, string[] roots, UTransfer transfer)
+        private bool FTPsingleClientMultiTree_s(ref Socket clientsocket, IPAddress ipaddress, string[] roots, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
             try
             {
@@ -219,7 +218,7 @@ namespace Movex.FTP
 
                 foreach (var root in roots)
                 {
-                    result = FTPsingleClientTree_s(ref clientsocket, root, ipaddress, transfer);
+                    result = FTPsingleClientTree_s(ref clientsocket, root, ipaddress, transfer, uTransferAvailability, windowAvailability);
                 }
                 return (result);
 
@@ -400,13 +399,15 @@ namespace Movex.FTP
 
         }
 
-        private bool FTPFiles(string[] paths, IPAddress ipaddress, ref Socket clientsocket, UTransfer transfer)
+        private bool FTPFiles(string[] paths, IPAddress ipaddress, ref Socket clientsocket, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
             try
             {
                 var filenames = ExtractFilesAndPaths(ref paths);
                 var newUploadChannel = GetUploadChannel(ref clientsocket, paths, filenames, ipaddress);
                 transfer.AttachToInterface(newUploadChannel);
+                uTransferAvailability.Set();
+                windowAvailability.WaitOne();
                 Files(paths, ipaddress);
                 transfer.DetachFromInterface(newUploadChannel);
                 if (!RefreshCannels(newUploadChannel))
@@ -428,7 +429,7 @@ namespace Movex.FTP
 
         }
 
-        private bool FTPsendbytree(string[] paths, string[] filenames, IPAddress ipaddress, ref Socket connectedsockets, UTransfer transfer)
+        private bool FTPsendbytree(string[] paths, string[] filenames, IPAddress ipaddress, ref Socket connectedsockets, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
             var clientsockets = connectedsockets;
             try
@@ -436,6 +437,8 @@ namespace Movex.FTP
 
                 var newUploadChannel = GetUploadChannel(ref clientsockets, paths, filenames, ipaddress);
                 transfer.AttachToInterface(newUploadChannel);
+                uTransferAvailability.Set();
+                windowAvailability.WaitOne();
                 Files(filenames, ipaddress);
                 transfer.DetachFromInterface(newUploadChannel);
                 if (!RefreshCannels(newUploadChannel)) { throw new IOException("Channels Unrefreshable"); }
@@ -456,6 +459,22 @@ namespace Movex.FTP
 
             return;
         }
+
+        public UTransfer GetTransfer(string ipAddress)
+        {
+            foreach (var uTransfer in mTransfer)
+            {
+                var candidate = uTransfer.GetTo();
+                if (candidate != null && candidate.Equals(ipAddress))
+                {
+                    return uTransfer;
+                }
+            }
+            
+            // Case: it couldn't find it
+            return(null);
+        }
+
 
         public UploadChannel GetChannel(string ipaddress)
         {
@@ -737,15 +756,15 @@ namespace Movex.FTP
                 var x = 1;
                 var remainingtimes = uchan.Get_remaining_times();
                 var throughputs = uchan.Get_throughputs();
-                Console.WriteLine("Send: filename " + filename + " filesize " + getConvertedNumber(filesize) + " /");
+                Console.WriteLine("Send: filename " + filename + " filesize " + GetConvertedNumber(filesize) + " /");
                 while (readed < filesize)
                 {
                     toread = filesize - readed;
                     var filedata_buff = new byte[(toread > FTPsupporter.Sizes.Filedatasize ? FTPsupporter.Sizes.Filedatasize : toread)];
                     var nread = readFileStream.Read(filedata_buff, 0, filedata_buff.Length);
                     sended = Send(ref clientsocket, ref filedata_buff, uchan, n);
-                    Console.WriteLine("Send: readed =" + getConvertedNumber(readed) + " toread =" + getConvertedNumber(toread) + " nread =" + getConvertedNumber(nread) +
-                        " remaining time =" + remainingtimes[n] + "s  throughput =" + getConvertedNumber((long)throughputs[n]) + "/s");
+                    Console.WriteLine("Send: readed =" + GetConvertedNumber(readed) + " toread =" + GetConvertedNumber(toread) + " nread =" + GetConvertedNumber(nread) +
+                        " remaining time =" + remainingtimes[n] + "s  throughput =" + GetConvertedNumber((long)throughputs[n]) + "/s");
                     if (sended != nread)
                     {
                         readFileStream.Dispose();
@@ -862,7 +881,7 @@ namespace Movex.FTP
             var throughputs = olduchan.Get_throughputs();
             for (var i = 0; i < olduchan.Get_num_trasf(); i++)
             {
-                Console.WriteLine(i + " - filename " + filenames[i] + "  filesize " + getConvertedNumber(filesizes[i]) + "\n sended " + getConvertedNumber(sended[i]) + " throughput " + getConvertedNumber((long)throughputs[i]) + "/s\n\n");
+                Console.WriteLine(i + " - filename " + filenames[i] + "  filesize " + GetConvertedNumber(filesizes[i]) + "\n sended " + GetConvertedNumber(sended[i]) + " throughput " + GetConvertedNumber((long)throughputs[i]) + "/s\n\n");
             }
             mUchansDataLock.WaitOne();
 
@@ -877,18 +896,18 @@ namespace Movex.FTP
 
         }
 
-        private void FTPTrees(string[] paths, IPAddress ipaddress, ref Socket clientsocket, UTransfer transfer)
+        private void FTPTrees(string[] paths, IPAddress ipaddress, ref Socket clientsocket, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
             var multifile = false;
             if (paths.Length > 1) { multifile = true; }
 
             if (!multifile)
             {
-                FTPsingleClientTree_serial(clientsocket, ipaddress, paths[0], transfer);
+                FTPsingleClientTree_serial(clientsocket, ipaddress, paths[0], transfer, uTransferAvailability, windowAvailability);
             }
             else
             {
-                FTPsingleClientMultiTree_serial(clientsocket, ipaddress, paths, transfer);
+                FTPsingleClientMultiTree_serial(clientsocket, ipaddress, paths, transfer, uTransferAvailability, windowAvailability);
             }
             return;
 
@@ -974,7 +993,7 @@ namespace Movex.FTP
             return (true);
         }
 
-        public void FTPsendAlltoClient(int tos, string[] directories, string[] files, IPAddress ipaddress, ref Socket clientsocket, ManualResetEvent uchanAvailability, UTransfer transfer)
+        public void FTPsendAlltoClient(int tos, string[] directories, string[] files, IPAddress ipaddress, ref Socket clientsocket, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability, UTransfer transfer)
         {
             try
             {
@@ -1004,18 +1023,17 @@ namespace Movex.FTP
                 }
 
                 transfer.StartTransfer();
-                uchanAvailability.Set();
 
                 Console.WriteLine("Send: Start Transfer with client " + clientsocket.RemoteEndPoint.ToString());
 
                 if (directories != null)
                 {
-                    FTPTrees(directories, ipaddress, ref clientsocket, transfer);
+                    FTPTrees(directories, ipaddress, ref clientsocket, transfer, uTransferAvailability, windowAvailability);
                 }
 
                 if (files != null)
                 {
-                    FTPFiles(files, ipaddress, ref clientsocket, transfer);
+                    FTPFiles(files, ipaddress, ref clientsocket, transfer, uTransferAvailability, windowAvailability);
                 }
 
                 //wait the ack
@@ -1050,7 +1068,7 @@ namespace Movex.FTP
             return;
         }
 
-        public bool FTPsendAll(string[] paths, IPAddress[] ipaddresses, ManualResetEvent[] uchansAvailability)
+        public bool FTPsendAll(string[] paths, IPAddress[] ipaddresses, ManualResetEvent[] WindowsAvailabilities, ManualResetEvent[] TransfersAvailabilities)
         {
            
 
@@ -1071,9 +1089,6 @@ namespace Movex.FTP
                 collect.Name = "CollectDataThread";
                 collect.Start();
 
-
-               
-                mUchanAvailability = uchansAvailability;
                 clientsockets = GetSocketsForClients(ipaddresses);
 
                 collect.Join();
@@ -1083,7 +1098,7 @@ namespace Movex.FTP
                 {
                     {
                         var index = i;
-                        nsendto[index] = new Thread(new ThreadStart(() => FTPsendAlltoClient(tos, directories, files, ipaddresses[index], ref clientsockets[index], uchansAvailability[index], mTransfer[index])))
+                        nsendto[index] = new Thread(new ThreadStart(() => FTPsendAlltoClient(tos, directories, files, ipaddresses[index], ref clientsockets[index], TransfersAvailabilities[index], WindowsAvailabilities[index], mTransfer[index])))
                         {
                             Priority = ThreadPriority.Highest,
                             Name = "ClientThread" + index

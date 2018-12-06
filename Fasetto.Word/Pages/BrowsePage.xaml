@@ -141,7 +141,8 @@
 		<!-- Send Button -->
 		<StackPanel	Grid.Row="2"
 					Margin="30 30 30 20"
-					VerticalAlignment="Bottom" Visibility="{Binding TransferItemListDesignModel.TransferAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}, ConverterParameter=True}">
+					VerticalAlignment="Bottom" Visibility="{Binding TransferItemListDesignModel.TransferAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}, ConverterParameter=True}">
+
 			<Button Style="{StaticResource SendButton}"
 					HorizontalAlignment="Right"
 					Click="SendButton_Click" />

@@ -24,12 +24,14 @@ namespace Movex.FTP
             ip[0] = IPAddress.Parse("127.0.0.1");
             paths[0] = @".\ciao.txt";
             paths[1] = @".\ciao.txt";
+            /*
             ManualResetEvent[] transferAvailability = new ManualResetEvent[1];
             transferAvailability[0] = new ManualResetEvent(false);
             client.FTPsendAll(paths, ip, transferAvailability);
             serverThread.Join();
             serverThread.Interrupt();
             serverThread = null;
+            */
             return;
 
         }

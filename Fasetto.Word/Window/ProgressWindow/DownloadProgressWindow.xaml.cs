@@ -12,7 +12,7 @@ namespace Movex.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ProgressWindow : System.Windows.Window
+    public partial class DownloadProgressWindow : System.Windows.Window
     {
         #region Private members
         private Movex.View.Core.FTPclient mFtpClient;
@@ -26,13 +26,13 @@ namespace Movex.View
         #endregion
 
         // Constructor(s)
-        public ProgressWindow()
+        public DownloadProgressWindow()
         {
             InitializeComponent();
             DataContext = new WindowViewModel(this);
         }
 
-        public ProgressWindow(IPAddress address, ManualResetEvent uTransferAvailability)
+        public DownloadProgressWindow(IPAddress address, ManualResetEvent uTransferAvailability)
         {
             // Initialize Window
             InitializeComponent();

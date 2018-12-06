@@ -3,6 +3,7 @@ using System.Net;
 using Movex.FTP;
 using System.Threading;
 using System.Collections.Generic;
+using System;
 
 namespace Movex.View.Core
 {
@@ -32,15 +33,21 @@ namespace Movex.View.Core
         /// <summary>
         /// Send a file using the FTP Client
         /// </summary>
-        public void Send(string[] filepaths, IPAddress[] ipaddress, ManualResetEvent[] uchanAvailability)
+        public void Send(string[] filepaths, IPAddress[] ipaddress, ManualResetEvent[] WindowsAvailabilities, ManualResetEvent[] TransfersAvailabilities)
         {
-            mClient.FTPsendAll(filepaths, ipaddress, uchanAvailability);
+            // TODO: valutare la possibilità di sganciare un thread
+            mClient.FTPsendAll(filepaths, ipaddress, WindowsAvailabilities, TransfersAvailabilities);
         }
 
 
 
         public UploadChannel GetChannel(IPAddress address) {
             return(mClient.GetChannel(address.ToString()));
+        }
+
+        public UTransfer GetTransfer(IPAddress mAddress)
+        {
+            return (mClient.GetTransfer(mAddress.ToString()));
         }
 
         #endregion

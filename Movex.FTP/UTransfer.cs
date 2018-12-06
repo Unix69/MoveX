@@ -85,7 +85,16 @@ namespace Movex.FTP
         }
         public long GetToTransfer() { return (mToTransfer); }
         public float GetTransferPerc() {
-            return ((GetTransfered() / mToTransfer) * 100);
+            try
+            {
+                return ((GetTransfered() / mToTransfer) * 100);
+            }
+            catch (DivideByZeroException e) {
+                Console.WriteLine(e.Message);
+                return (0);
+            }
+            catch (Exception e) { throw e; }
+            
         }
         public long GetTransferComplete() {
             if (mUchan != null) {
@@ -96,6 +105,13 @@ namespace Movex.FTP
         public long GetTotTransferToDo() {
             return (mTotNTransfer);
         }
-
+        public string GetTo()
+        {
+            if (mUchan != null)
+            {
+                return mUchan.Get_to();
+            }
+            return (null);
+        }
     }
 }
