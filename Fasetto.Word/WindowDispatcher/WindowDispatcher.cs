@@ -9,7 +9,7 @@ using System.Windows;
 using Movex.View.Core;
 using System.Net;
 
-namespace Movex.View.WindowDispatcher
+namespace Movex.View
 {
     public class WindowDispatcher : IWindowDispatcher
     {

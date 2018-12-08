@@ -23,12 +23,6 @@ namespace Movex.View
         #endregion
 
         #region Constructor
-        // Constructor(s)
-        public DownloadProgressWindow()
-        {
-            InitializeComponent();
-            DataContext = new WindowViewModel(this);
-        }
         public DownloadProgressWindow(IPAddress address, ManualResetEvent dTransferAvailability)
         {
             // Initialize Window

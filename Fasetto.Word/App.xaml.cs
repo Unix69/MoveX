@@ -13,9 +13,7 @@ namespace Movex.View
     {
         private System.Windows.Forms.NotifyIcon mNotifyIcon;
         private bool mIsExit;
-        
-        private bool mPrivateMode;
-        private WindowDispatcher.WindowDispatcher mWindowDispatcher;
+        private WindowDispatcher mWindowDispatcher;
 
         #region Instance Members for project-inner-access
         private BrowsePage mBrowsePage;
@@ -24,24 +22,22 @@ namespace Movex.View
 
         protected override void OnStartup(StartupEventArgs e)
         {
-
             base.OnStartup(e);
-            mPrivateMode = true;
 
             // Launch the WindowDispatcher (it runs in background)
-            mWindowDispatcher = new WindowDispatcher.WindowDispatcher();
+            mWindowDispatcher = new WindowDispatcher();
             mWindowDispatcher.Init();
             mWindowDispatcher.Start();
 
             // Setup IoC
             IoC.Setup();
             IoC.FtpServer.SetSynchronization(
-                WindowDispatcher.WindowDispatcher.RequestAvailable,
-                WindowDispatcher.WindowDispatcher.Requests,
-                WindowDispatcher.WindowDispatcher.TypeRequests,
-                WindowDispatcher.WindowDispatcher.Messages,
-                WindowDispatcher.WindowDispatcher.Sync,
-                WindowDispatcher.WindowDispatcher.Responses
+                WindowDispatcher.RequestAvailable,
+                WindowDispatcher.Requests,
+                WindowDispatcher.TypeRequests,
+                WindowDispatcher.Messages,
+                WindowDispatcher.Sync,
+                WindowDispatcher.Responses
                 );
            
             // Setup MainWindow

@@ -9,7 +9,7 @@
 		WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
-        x:Name="ProgressView"
+        x:Name="DownloadProgressView"
         Icon="../../Images/Logo/logo-small.png"
         MinWidth="{Binding WindowMinimumWidth}"
         MinHeight="{Binding WindowMinimumHeight}"
@@ -17,7 +17,7 @@
 		Width="500">
 
 	<Window.Resources>
-		<Style TargetType="{x:Type local:ProgressWindow}">
+		<Style TargetType="{x:Type local:DownloadProgressWindow}">
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="{x:Type Window}">
