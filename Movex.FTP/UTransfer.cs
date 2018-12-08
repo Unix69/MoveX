@@ -14,12 +14,12 @@ namespace Movex.FTP
         private long mTransfered;
         private long mNTransfer;
         private long mTotNTransfer;
+
         public UTransfer() {
             mToTransfer = 0;
             mTransfered = 0;
             mNTransfer = 0;
             mTotNTransfer = 0;
-
         }
         public UTransfer(long totntransfer, long transfered, long totransfer)
         {
@@ -28,6 +28,7 @@ namespace Movex.FTP
             mToTransfer = totransfer;
             mTransfered = transfered;
         }
+
         public void StartTransfer() {
             mStartTimeMillisec = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
         }
@@ -107,11 +108,8 @@ namespace Movex.FTP
         }
         public string GetTo()
         {
-            if (mUchan != null)
-            {
-                return mUchan.Get_to();
-            }
-            return (null);
+            if (mUchan == null) { return null; }
+            else return mUchan.Get_to();
         }
     }
 }
