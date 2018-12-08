@@ -9,7 +9,6 @@ namespace Movex.View.Core
 {
     public class FTPserver
     {
-
         #region private Properties
         private Movex.FTP.FTPserver mServer;
         private Thread mServerThread;
@@ -61,7 +60,10 @@ namespace Movex.View.Core
         public void SetAutomaticReception(bool value) { mServer.SetAutomaticReception(value); }
         public void SetAutomaticSave(bool value) { mServer.SetAutomaticSave(value); }
         public void SetDownloadDefaultFolder(string path) { mServer.SetDownloadDefaultFolder(path); }
-
+        public DTransfer GetTransfer(string ipAddress)
+        {
+            return mServer.GetTransfer(ipAddress);
+        }
         #endregion
     }
 }

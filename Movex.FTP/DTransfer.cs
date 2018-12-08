@@ -116,7 +116,10 @@ namespace Movex.FTP
         {
             return ((GetTransfered() / mToTransfer) * 100);
         }
-
-
+        public string GetFrom()
+        {            
+            if (mDchan == null) { return null; }
+            else return mDchan.Get_from();
+        }
     }
 }

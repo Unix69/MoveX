@@ -15,24 +15,21 @@ namespace Movex.View
     public partial class DownloadProgressWindow : System.Windows.Window
     {
         #region Private members
-        private Movex.View.Core.FTPclient mFtpClient;
-        private string[] mPaths;
-        private int mIndexCurrentTransfer;
         private IPAddress mAddress;
         private Thread mFtpClientThread;
-        private UTransfer mUploadTransfer;
-        private ManualResetEvent mUTransferAvailability;
+        private DTransfer mDownloadTransfer;
+        private ManualResetEvent mDTransferAvailability;
         private event EventHandler TransferCompleted;
         #endregion
 
+        #region Constructor
         // Constructor(s)
         public DownloadProgressWindow()
         {
             InitializeComponent();
             DataContext = new WindowViewModel(this);
         }
-
-        public DownloadProgressWindow(IPAddress address, ManualResetEvent uTransferAvailability)
+        public DownloadProgressWindow(IPAddress address, ManualResetEvent dTransferAvailability)
         {
             // Initialize Window
             InitializeComponent();
@@ -40,22 +37,22 @@ namespace Movex.View
 
             // Assigning member(s)
             mAddress = address;
-            mUTransferAvailability = uTransferAvailability;
-            mIndexCurrentTransfer = 0;
+            mDTransferAvailability = dTransferAvailability;
 
             // Manage event(s)
             Loaded += OnLoad;
             ContentRendered += Window_ContentRendered;
             TransferCompleted += Window_Close;
         }
+        #endregion
 
         #region Event Handler(s)
         private void OnLoad(object sender, RoutedEventArgs e)
         {
             // Wait for data from FTPclient to load them in the Window
-            mUTransferAvailability.WaitOne();
-            mUploadTransfer = IoC.FtpClient.GetTransfer(mAddress);
-            AssignTransferInfoToViewModel(mUploadTransfer);
+            mDTransferAvailability.WaitOne();
+            mDownloadTransfer = IoC.FtpServer.GetTransfer(mAddress.ToString());
+            AssignTransferInfoToViewModel(mDownloadTransfer);
         }
         private void Window_ContentRendered(object sender, EventArgs e)
         {
@@ -68,8 +65,6 @@ namespace Movex.View
             worker.ProgressChanged += Worker_ProgressChanged;
             worker.RunWorkerAsync();
         }
-
-
         private bool ChangeInterface() {
 
             return (true);
@@ -78,9 +73,9 @@ namespace Movex.View
         {
             string progress;
 
-            while (! ((progress = mUploadTransfer.GetTransferPerc().ToString()).Equals("100")) )
+            while (! ((progress = mDownloadTransfer.GetTransferPerc().ToString()).Equals("100")) )
             {
-                if (int.TryParse(progress, out int x))
+                if (int.TryParse(progress, out var x))
                 {
                     (sender as BackgroundWorker).ReportProgress(x);
                 }
@@ -89,7 +84,7 @@ namespace Movex.View
 
             // IF 100% COMPLETED: 1. show the perc
             if (!(progress == null) && progress.Equals("100"))
-                if (int.TryParse(progress, out int x))
+                if (int.TryParse(progress, out var x))
                     (sender as BackgroundWorker).ReportProgress(x);
 
             // IF 100% COMPLETED: 2. wait a second
@@ -101,16 +96,14 @@ namespace Movex.View
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-
-            var filename = mUploadTransfer.GetTransferFilename();
+            var filename = mDownloadTransfer.GetTransferFilename();
             if (filename != null)
             {
                 IoC.Progress.Filename = filename;
             }
 
-            IoC.Progress.Percentage = mUploadTransfer.GetTransferPerc().ToString();
-            IoC.Progress.RemainingTime = mUploadTransfer.GetRemainingTime().ToString();
-
+            IoC.Progress.Percentage = mDownloadTransfer.GetTransferPerc().ToString();
+            IoC.Progress.RemainingTime = mDownloadTransfer.GetRemainingTime().ToString();
         }
         private void Window_Close(object sender, EventArgs e)
         {
@@ -123,24 +116,25 @@ namespace Movex.View
         }
         #endregion
 
-        private void AssignTransferInfoToViewModel(UTransfer uTransfer)
+        #region Utility method(s)
+        private void AssignTransferInfoToViewModel(DTransfer dTransfer)
         {
-
-            var ipAddress = uTransfer.GetTo();
+            var ipAddress = dTransfer.GetFrom();
             if (ipAddress != null)
             {
                 IoC.Progress.IpAddress = ipAddress;
                 IoC.Progress.User = ipAddress;
             }
             
-            var filename = uTransfer.GetTransferFilename();
+            var filename = dTransfer.GetTransferFilename();
             if (filename != null)
             {
                 IoC.Progress.Filename = filename;
             }
 
-            IoC.Progress.Percentage = uTransfer.GetTransferPerc().ToString();
-            IoC.Progress.RemainingTime = uTransfer.GetRemainingTime().ToString();
+            IoC.Progress.Percentage = dTransfer.GetTransferPerc().ToString();
+            IoC.Progress.RemainingTime = dTransfer.GetRemainingTime().ToString();
         }
+        #endregion
     }
 }
