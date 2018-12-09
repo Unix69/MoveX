@@ -9,6 +9,9 @@ namespace Movex.Network
 {
     public class User
     {
+
+        #region Private members
+
         private string mUsername;
         private string mProfilePicturePath;
         private string mMessage;
@@ -17,6 +20,10 @@ namespace Movex.Network
         private UdpManager mConnManager;
         private Thread mListenThread;
         private bool mPrivateMode;
+
+        #endregion
+
+        #region Constructor(s)
 
         /// <summary>
         /// Constructor for the User class
@@ -31,6 +38,10 @@ namespace Movex.Network
             mFriendList = new List<RestrictedUser>();
             mConnManager = new UdpManager(RestrictMe(), mPrivateMode);
         }
+
+        #endregion
+
+        #region Getter(s) and Setter(s)
 
         /// <summary>
         /// Set the username of the User
@@ -82,6 +93,49 @@ namespace Movex.Network
         }
 
         /// <summary>
+        /// Set private mode for the User (make it hidden)
+        /// </summary>
+        /// <param name="v"></param>
+        public void SetPrivateMode(bool v)
+        {
+            mPrivateMode = v;
+            mConnManager.SetPrivateMode(v);
+        }
+
+        /// <summary>
+        /// Return the list of friends
+        /// </summary>
+        /// <returns></returns>
+        public List<RestrictedUser> GetFriendList()
+        {
+            return mFriendList;
+        }
+
+        /// <summary>
+        /// Extract the username from the friend whose ipaddress matches 
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
+        public string GetUsernameByIpAddress(string ipAddress)
+        {
+            // Search the user in the Friend List
+            foreach (var friend in mFriendList)
+            {
+                if (friend.mIpAddress.Equals(ipAddress))
+                {
+                    return friend.mUsername;
+                }
+            }
+
+            // If not found return null
+            return null;
+        }
+
+        #endregion
+
+        #region Routine Method(s)
+
+        /// <summary>
         /// Launch a thread that listen for messages and reply accordingly
         /// </summary>
         public void ListenForFriends()
@@ -119,37 +173,36 @@ namespace Movex.Network
         }
 
         /// <summary>
-        /// Collect the broadcast address specific information
-        /// </summary>
-        /// <returns></returns>
-        public string GetTechnicalInformation_BroadcastAddress()
-        {
-            return mConnManager.mBROADCAST.ToString();
-        }
-
-        /// <summary>
         /// Add a new friend to the list of friends
         /// </summary>
         /// <returns></returns>
         public void AddFriend(string FriendAsJsonObject)
         {
             var friend = new RestrictedUser();
-                friend = JsonConvert.DeserializeObject<RestrictedUser>(FriendAsJsonObject);   
+            friend = JsonConvert.DeserializeObject<RestrictedUser>(FriendAsJsonObject);
 
 
             if (!(mFriendList.Contains(friend)) && !(RestrictedUser.RestrictedUserAreEqual(friend, RestrictMe())))
                 mFriendList.Add(friend);
         }
 
-        public void SetPrivateMode(bool v)
-        {
-            mPrivateMode = v;
-            mConnManager.SetPrivateMode(v);
-        }
-
+        /// <summary>
+        /// Send a message to friends for being gone
+        /// </summary>
         public void SayByeToFriends()
         {
             mConnManager.SendByeMessage();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Collect the broadcast address specific information
+        /// </summary>
+        /// <returns></returns>
+        public string GetTechnicalInformation_BroadcastAddress()
+        {
+            return mConnManager.mBROADCAST.ToString();
         }
 
         /// <summary>
@@ -180,15 +233,6 @@ namespace Movex.Network
                 mMessage = mMessage,
                 mProfilePictureFilename = Path.GetFileName(mProfilePicturePath)
             };
-        }
-
-        /// <summary>
-        /// Return the list of friends
-        /// </summary>
-        /// <returns></returns>
-        public List<RestrictedUser> GetFriendList()
-        {
-            return mFriendList;
         }
 
         /// <summary>

@@ -6,8 +6,8 @@ using System.Net.Sockets;
 using System.IO;
 using System.Threading;
 using System.Collections.Concurrent;
-using System.Runtime.InteropServices;
 using System.Security;
+
 namespace Movex.FTP
 {
     public class FTPserver
@@ -102,6 +102,8 @@ namespace Movex.FTP
                 mVisible.ReleaseMutex();
                 mPrivateMode = false;
             }
+
+
 
             /*
             string response;

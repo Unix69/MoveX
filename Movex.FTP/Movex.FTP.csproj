@@ -49,17 +49,21 @@
     <Compile Include="DownloadChannel.cs" />
     <Compile Include="DTransfer.cs" />
     <Compile Include="FTPclient.cs" />
-    <Compile Include="FTPhelper.cs" />
     <Compile Include="FTPserver.cs" />
     <Compile Include="FTPsupporter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StackHelper.cs" />
     <Compile Include="UTransfer.cs" />
     <Compile Include="UploadChannel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Movex.Networking\Movex.Network.csproj">
+      <Project>{38afc9f0-0bee-469b-be19-adfaaf2dd799}</Project>
+      <Name>Movex.Network</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
