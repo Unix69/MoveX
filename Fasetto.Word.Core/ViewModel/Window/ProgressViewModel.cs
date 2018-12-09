@@ -18,8 +18,6 @@ namespace Movex.View.Core
         /// </summary>
         public string User { get; set; }
 
-
-
         /// <summary>
         /// The current ip
         /// </summary>
@@ -51,10 +49,6 @@ namespace Movex.View.Core
         /// </summary>
         private ManualResetEvent CloseWindowEvent { get; set; } = null;
 
-        /// <summary>
-        /// The Window containing this ViewModel
-        /// </summary>
-        //private Window WindowContainer { get; set; }
         #endregion
 
         #region Public Command
@@ -88,7 +82,6 @@ namespace Movex.View.Core
         {
             if (text != null) { Text = text; }
         }
-
         /// <summary>
         /// Stop the process
         /// </summary>
@@ -98,6 +91,8 @@ namespace Movex.View.Core
                 IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).InterruptUpload();
             }
         }
+
+        #endregion
 
         #region Internal Methods
 
@@ -110,19 +105,6 @@ namespace Movex.View.Core
             if (closeWindowEvent != null)
                 CloseWindowEvent = closeWindowEvent;
         }
-
-        /// <summary>
-        /// Set the WindowContainer
-        /// </summary>
-        /// <param name="wc"></param>
-        /*
-        internal void SetWindowContainer(Window wc)
-        {
-            WindowContainer = wc;
-        }
-        */
-
-        #endregion
 
         #endregion
     }

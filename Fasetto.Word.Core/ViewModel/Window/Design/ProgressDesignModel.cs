@@ -23,7 +23,7 @@ namespace Movex.View.Core
             User            = "Mario Rossi";
             Filename        = "file.txt";
             Percentage      = "0";
-            RemainingTime   = "30";
+            RemainingTime   = "30 sec";
         }
 
         #endregion

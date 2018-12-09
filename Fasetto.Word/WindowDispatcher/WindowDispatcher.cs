@@ -65,19 +65,19 @@ namespace Movex.View
                 RequestAvailable.Reset();
                 
                 // GET the REQUEST-ID
-                Requests.TryDequeue(out string Id);
+                Requests.TryDequeue(out var Id);
                 if (Id == null) goto waitForRequest;
 
                 // GET the REQUEST-TYPE
-                TypeRequests.TryGetValue(Id, out int type);
+                TypeRequests.TryGetValue(Id, out var type);
 
                 switch (type)
                 {
                     case YesNoRequest:
 
                         Sync.TryGetValue(Id, out var YesNoResponseAvailability);
-                        Messages.TryGetValue(Id, out string message);
-                        Responses.TryGetValue(Id, out ConcurrentBag<string> response);
+                        Messages.TryGetValue(Id, out var message);
+                        Responses.TryGetValue(Id, out var response);
 
                         var YesNoWindowThread = new Thread(() =>
                         {
@@ -93,8 +93,8 @@ namespace Movex.View
                     case WhereRequest:
 
                         Sync.TryGetValue(Id, out var WhereResponseAvailability);
-                        Messages.TryGetValue(Id, out string whereMessage);
-                        Responses.TryGetValue(Id, out ConcurrentBag<string> whereResponse);
+                        Messages.TryGetValue(Id, out var whereMessage);
+                        Responses.TryGetValue(Id, out var whereResponse);
 
                         var WhereWindowThread = new Thread(() =>
                         {
@@ -109,23 +109,26 @@ namespace Movex.View
 
                     case UploadTransferRequest:
 
-                    /*
-                    Sync.TryGetValue(Id, out ManualResetEvent windowAvailability);
-                    // Second sync primitive: Sync.TryGetValue(Id, out ManualResetEvent downloadTransferAvailability);
-                    Messages.TryGetValue(Id, out string ipAddress);
+                        /*
+                         * I am expecting:
+                         * syncPrimitives[0] as downloadTransferAvailability ManualResetEvent
+                         * syncPrimitives[1] as windowAvailability ManualResetEvent
+                         */
 
-                    var ProgressWindowThread = new Thread(() =>
-                    {
-                        var w = new ProgressWindow(IPAddress.Parse(ipAddress), downloadTransferAvailability);
-                        mWindows.Push(w);
-                        w.Show();
-                        windowAvailability.Set();
-                        System.Windows.Threading.Dispatcher.Run();
-                    });
-                    ProgressWindowThread.SetApartmentState(ApartmentState.STA);
-                    ProgressWindowThread.Start();
-                    break;
-                    */
+                        Sync.TryGetValue(Id, out var syncVariables);
+                        Messages.TryGetValue(Id, out var ipAddress);
+
+                        var UploadProgressWindowThread = new Thread(() =>
+                        {
+                            var w = new ProgressWindow(IPAddress.Parse(ipAddress), syncVariables[0]);
+                            mWindows.Push(w);
+                            w.Show();
+                            syncVariables[1].Set();
+                            System.Windows.Threading.Dispatcher.Run();
+                        });
+                        UploadProgressWindowThread.SetApartmentState(ApartmentState.STA);
+                        UploadProgressWindowThread.Start();
+                        break;
 
                     case DownloadTransferRequest:
 
@@ -136,18 +139,18 @@ namespace Movex.View
                          */
 
                         Sync.TryGetValue(Id, out var syncPrimitives);
-                        Messages.TryGetValue(Id, out var ipAddress);
+                        Messages.TryGetValue(Id, out var ip);
 
-                        var ProgressWindowThread = new Thread(() =>
+                        var DownloadProgressWindowThread = new Thread(() =>
                         {
-                            var w = new DownloadProgressWindow(IPAddress.Parse(ipAddress), syncPrimitives[0]);
+                            var w = new DownloadProgressWindow(IPAddress.Parse(ip), syncPrimitives[0]);
                             mWindows.Push(w);
                             w.Show();
                             syncPrimitives[1].Set();
                             System.Windows.Threading.Dispatcher.Run();
                         });
-                        ProgressWindowThread.SetApartmentState(ApartmentState.STA);
-                        ProgressWindowThread.Start();
+                        DownloadProgressWindowThread.SetApartmentState(ApartmentState.STA);
+                        DownloadProgressWindowThread.Start();
                         break;
 
                     default:
@@ -155,7 +158,6 @@ namespace Movex.View
                 }
                 
                 goto waitForRequest;
-
 
             });
             mLooper.Start();

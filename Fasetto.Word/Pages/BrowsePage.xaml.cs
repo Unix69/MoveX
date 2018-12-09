@@ -151,7 +151,9 @@ namespace Movex.View
                     }
                 }
 
-                IoC.FtpClient.Send(filepaths, addresses, WindowsAvailabilities, TransferAvailabilities);
+                var threadDelegate = new ThreadStart(() => IoC.FtpClient.Send(filepaths, addresses, WindowsAvailabilities, TransferAvailabilities));
+                var sendThread = new Thread(threadDelegate);
+                sendThread.Start();
 
             }
         }

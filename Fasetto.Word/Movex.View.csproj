@@ -181,6 +181,7 @@
     <Compile Include="Window\ProgressWindow\DownloadProgressWindow.xaml.cs">
       <DependentUpon>DownloadProgressWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window\ProgressWindow\HumanReadableTime.cs" />
     <Compile Include="Window\ProgressWindow\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>

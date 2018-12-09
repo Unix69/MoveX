@@ -1124,9 +1124,9 @@ namespace Movex.FTP
 
         private UTransfer[] GetTransferInterfaces(int numclients, string[] directories, string[] files)
         {
-            UTransfer[] ntransfer = new UTransfer[numclients];
+            var ntransfer = new UTransfer[numclients];
             long tot = 0;
-            List<string> filepaths = new List<string>();
+            var filepaths = new List<string>();
 
             if (directories != null)
             {

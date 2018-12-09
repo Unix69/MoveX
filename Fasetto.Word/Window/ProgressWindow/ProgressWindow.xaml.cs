@@ -109,7 +109,7 @@ namespace Movex.View
             }
 
             IoC.Progress.Percentage = mUploadTransfer.GetTransferPerc().ToString();
-            IoC.Progress.RemainingTime = mUploadTransfer.GetRemainingTime().ToString();
+            IoC.Progress.RemainingTime = HumanReadableTime.MillisecToHumanReadable(mUploadTransfer.GetRemainingTime());
 
         }
         private void Window_Close(object sender, EventArgs e)
@@ -140,7 +140,7 @@ namespace Movex.View
             }
 
             IoC.Progress.Percentage = uTransfer.GetTransferPerc().ToString();
-            IoC.Progress.RemainingTime = uTransfer.GetRemainingTime().ToString();
+            IoC.Progress.RemainingTime = HumanReadableTime.MillisecToHumanReadable(uTransfer.GetRemainingTime());
         }
     }
 }
