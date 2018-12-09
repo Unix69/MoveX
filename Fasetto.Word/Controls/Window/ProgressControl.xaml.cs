@@ -11,8 +11,5 @@ namespace Movex.View
         {
             InitializeComponent();            
         }
-
-        
-
     }
 }

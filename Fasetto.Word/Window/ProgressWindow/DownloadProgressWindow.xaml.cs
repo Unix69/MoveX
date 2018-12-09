@@ -97,7 +97,15 @@ namespace Movex.View
             }
 
             IoC.Progress.Percentage = mDownloadTransfer.GetTransferPerc().ToString();
-            IoC.Progress.RemainingTime = mDownloadTransfer.GetRemainingTime().ToString();
+            var RemainingTime = HumanReadableTime.MillisecToHumanReadable(mDownloadTransfer.GetRemainingTime());
+            if (RemainingTime == null)
+            {
+                IoC.Progress.RemainingTime = "Evaluating...";
+            }
+            else
+            {
+                IoC.Progress.RemainingTime = RemainingTime;
+            }
         }
         private void Window_Close(object sender, EventArgs e)
         {
@@ -117,7 +125,7 @@ namespace Movex.View
             if (ipAddress != null)
             {
                 IoC.Progress.IpAddress = ipAddress;
-                IoC.Progress.User = ipAddress;
+                IoC.Progress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
             }
             
             var filename = dTransfer.GetTransferFilename();
@@ -127,7 +135,15 @@ namespace Movex.View
             }
 
             IoC.Progress.Percentage = dTransfer.GetTransferPerc().ToString();
-            IoC.Progress.RemainingTime = dTransfer.GetRemainingTime().ToString();
+            var RemainingTime = HumanReadableTime.MillisecToHumanReadable(dTransfer.GetRemainingTime());
+            if (RemainingTime == null)
+            {
+                IoC.Progress.RemainingTime = "Evaluating...";
+            }
+            else
+            {
+                IoC.Progress.RemainingTime = RemainingTime;
+            }
         }
         #endregion
     }

@@ -170,6 +170,16 @@ namespace Movex.View.Core
         {
             mUser.Release();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
+        public string GetUsernameByIpAddress(string ipAddress)
+        {
+            return mUser.GetUsernameByIpAddress(ipAddress);
+        }
         #endregion
     }
 
