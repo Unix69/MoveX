@@ -59,11 +59,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Movex.Networking\Movex.Network.csproj">
-      <Project>{38afc9f0-0bee-469b-be19-adfaaf2dd799}</Project>
-      <Name>Movex.Network</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
