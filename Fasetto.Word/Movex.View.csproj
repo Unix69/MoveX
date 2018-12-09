@@ -148,6 +148,9 @@
     <Compile Include="Controls\Window\WhereControl.xaml.cs">
       <DependentUpon>WhereControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Window\MessageControl.xaml.cs">
+      <DependentUpon>MessageControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Window\YesNoControl.xaml.cs">
       <DependentUpon>YesNoControl.xaml</DependentUpon>
     </Compile>
@@ -178,6 +181,9 @@
     <Compile Include="ViewModels\WindowViewModel.cs" />
     <Compile Include="WindowDispatcher\WindowDispatcher.cs" />
     <Compile Include="WindowDispatcher\IWindowDispatcher.cs" />
+    <Compile Include="Window\MessageWindow\MessageWindow.xaml.cs">
+      <DependentUpon>MessageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window\ProgressWindow\DownloadProgressWindow.xaml.cs">
       <DependentUpon>DownloadProgressWindow.xaml</DependentUpon>
     </Compile>
@@ -248,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\Window\MessageControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\Window\YesNoControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -295,6 +305,10 @@
     <Page Include="Styles\Fonts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window\MessageWindow\MessageWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Window\ProgressWindow\DownloadProgressWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

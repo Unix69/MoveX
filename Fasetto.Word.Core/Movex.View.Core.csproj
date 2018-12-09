@@ -80,7 +80,8 @@
     <Compile Include="ViewModel\Transfer\TransferItemViewModel.cs" />
     <Compile Include="ViewModel\Window\Design\ProgressDesignModel.cs" />
     <Compile Include="ViewModel\Window\Design\WhereDesignModel.cs" />
-    <Compile Include="ViewModel\Window\Design\YesNoDesignModel.cs" />
+    <Compile Include="ViewModel\Window\Design\YesNoDesignModel - Copy.cs" />
+    <Compile Include="ViewModel\Window\Design\MessageDesignModel.cs" />
     <Compile Include="ViewModel\Window\ProgressViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="ViewModel\User\UserViewModel.cs" />
     <Compile Include="ViewModel\User\Design\UserDesignModel.cs" />
     <Compile Include="ViewModel\Window\WhereVIewModel.cs" />
+    <Compile Include="ViewModel\Window\MessageViewModel.cs" />
     <Compile Include="ViewModel\Window\YesNoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

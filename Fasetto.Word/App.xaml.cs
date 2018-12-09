@@ -16,8 +16,10 @@ namespace Movex.View
         private WindowDispatcher mWindowDispatcher;
 
         #region Instance Members for project-inner-access
+
         private BrowsePage mBrowsePage;
         private UserListControl mUserListControl;
+
         #endregion
 
         protected override void OnStartup(StartupEventArgs e)

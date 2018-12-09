@@ -17,7 +17,6 @@ namespace Movex.View
     /// </summary>
     public partial class BrowsePage : BasePage<BackboneViewModel>
     {
-
         #region Private members
         private List<string> mFilepaths;
         private TransferItemListDesignModel mTransferItemList;
@@ -123,7 +122,6 @@ namespace Movex.View
             // Ask to the FTP Client Service to send data
             if (!(filepaths == null) && !(addresses == null))
             {
-                Console.WriteLine("The users selected for the upload are: " + addresses.Length.ToString());
                 var TransferAvailabilities = new ManualResetEvent[addresses.Length];
                 var WindowsAvailabilities = new ManualResetEvent[addresses.Length];
                 for (var k = 0; k < WindowsAvailabilities.Length; k++)
@@ -155,22 +153,11 @@ namespace Movex.View
                 var sendThread = new Thread(threadDelegate);
                 sendThread.Start();
 
+                // Hide the MainWindow and clear the selection
+                ((App)(Application.Current)).MainWindow.Hide();
+                ClearTransferItemsList();
+
             }
-        }
-        public void ClearTransferItemsList()
-        {
-            // CLEAR items from the current TransferItemList
-            mTransferItemList.Items.Clear();
-            mTransferItemList.TransferAvailable = false;
-            mTransferItemList = null;
-            TransferItemList.Items.Refresh();
-
-            // RELEASE the member(s)
-            mFilepaths.Clear();
-            mFilepaths = null;
-
-            // Clear the selected users too
-            ((App)(Application.Current)).GetUserListControl().ClearSelectedUsers();
         }
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -215,7 +202,21 @@ namespace Movex.View
             }
 
         }
-        #endregion
+        public void ClearTransferItemsList()
+        {
+            // CLEAR items from the current TransferItemList
+            mTransferItemList.Items.Clear();
+            mTransferItemList.TransferAvailable = false;
+            mTransferItemList = null;
+            TransferItemList.Items.Refresh();
 
+            // RELEASE the member(s)
+            mFilepaths.Clear();
+            mFilepaths = null;
+
+            // Clear the selected users too
+            ((App)(Application.Current)).GetUserListControl().ClearSelectedUsers();
+        }
+        #endregion
     }
 }
