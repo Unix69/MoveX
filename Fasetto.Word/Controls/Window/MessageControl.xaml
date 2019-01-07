@@ -51,25 +51,11 @@
 											VerticalAlignment="Center"
 											HorizontalAlignment="Right">
 												<Button
-													x:Name="YesButton"
-													Style="{StaticResource YesButton}"
-													Click="YesButton_Click"
+													x:Name="OkButton"
+													Style="{StaticResource OkButton}"
+													Click="OkButton_Click"
 													Command="{Binding RelativeSource={RelativeSource FindAncestor, 
 AncestorType={x:Type Window}}, Path=DataContext.CloseCommand}" />
-											</StackPanel>
-										</Grid>
-										<Grid Grid.Column="1">
-											<StackPanel
-											Orientation="Horizontal"
-											VerticalAlignment="Center"
-											HorizontalAlignment="Right">
-												<Button
-													Name="NoButton"
-													Style="{StaticResource NoButton}"
-													Click="NoButton_Click"
-													Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-AncestorType={x:Type Window}}, Path=DataContext.CloseCommand}"
-													/>
 											</StackPanel>
 										</Grid>
 									</StackPanel>
