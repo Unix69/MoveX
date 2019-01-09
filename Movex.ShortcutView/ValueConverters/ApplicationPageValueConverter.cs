@@ -16,7 +16,7 @@ namespace Movex.ShortcutView
             switch ((ApplicationPage)value)
             {
 
-                case ApplicationPage.Chat:
+                case ApplicationPage.Browse:
                     return new ChatPage();
 
                 default:
