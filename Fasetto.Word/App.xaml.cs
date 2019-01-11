@@ -11,9 +11,14 @@ namespace Movex.View
     /// </summary>
     public partial class App : Application
     {
+
+        public enum Mode { Traditional, Contextual };
         private System.Windows.Forms.NotifyIcon mNotifyIcon;
         private bool mIsExit;
         private WindowDispatcher mWindowDispatcher;
+        private string[] mArgs;
+        private int mIndex;
+        private Mode mModeOn = Mode.Traditional;
 
         #region Instance Members for project-inner-access
 
@@ -24,7 +29,22 @@ namespace Movex.View
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Store the arguments passed (if any)
+            if (e.Args.Length > 0) {
+                mModeOn = Mode.Contextual;
+
+                mArgs = new string[e.Args.Length];
+                foreach (var arg in e.Args)
+                {
+                    mArgs[mIndex++] = arg;
+                }
+            }
+
             base.OnStartup(e);
+
+            // Initialize variables
+            mBrowsePage = null;
+            mUserListControl = null;
 
             // Launch the WindowDispatcher (it runs in background)
             mWindowDispatcher = new WindowDispatcher();
@@ -96,6 +116,12 @@ namespace Movex.View
             {
                 MainWindow.Show();
             }
+
+            if (mModeOn == Mode.Contextual)
+            {
+                IoC.Application.GoToPage(ApplicationPage.Browse);
+            }
+
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -107,13 +133,25 @@ namespace Movex.View
             }
         }
 
-        /// <summary>
-        /// Getter(s) and setter(s)
-        /// </summary>
-        /// <param name="control"></param>
+        /// Getter(s) and setter(s)        
         public void SetUserListControl(UserListControl control) { mUserListControl = control; }
         public UserListControl GetUserListControl() { return mUserListControl; }
         public void SetBrowsePage(BrowsePage browsePage) { mBrowsePage = browsePage; }
         public BrowsePage GetBrowsePage() { return mBrowsePage; }
+        public string[] GetArgs()
+        {
+            if (!(mArgs.Length == 0))
+            {
+                return mArgs;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public Mode GetModeOn()
+        {
+            return mModeOn;
+        }
     }
 }

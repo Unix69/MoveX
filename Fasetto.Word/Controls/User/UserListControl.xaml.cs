@@ -125,6 +125,10 @@ namespace Movex.View
                 Console.WriteLine("Cannot clear the current selection in UserListControl(ler).");
             }
         }
+        public int GetUsersSelectedNumber()
+        {
+            return UsersSelectedNumber;
+        }
         #endregion
 
     }

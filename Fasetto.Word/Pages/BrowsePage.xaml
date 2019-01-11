@@ -145,7 +145,8 @@
 
 			<Button Style="{StaticResource SendButton}"
 					HorizontalAlignment="Right"
-					Click="SendButton_Click" />
+					Click="SendButton_Click"
+					IsEnabled="{Binding TransferItemListDesignModel.UsersAvailable, Source={x:Static local:ViewModelLocator.Instance}}"/>
 		</StackPanel>
 
 	</Grid>

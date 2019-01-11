@@ -15,6 +15,11 @@ namespace Movex.View.Core
         /// </summary>
         public bool TransferAvailable { get; set; }
 
+        /// <summary>
+        /// Indicate available user(s) in the list of transfers
+        /// </summary>
+        public bool UsersAvailable { get; set; }
+
 
     }
 }

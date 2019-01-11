@@ -31,13 +31,71 @@ namespace Movex.View
 
             mTransferItemList                   = ViewModelLocator.TransferItemListDesignModel;
             TransferItemList.ItemsSource        = mTransferItemList.Items;
+            mTransferItemList.UsersAvailable    = ((App)(Application.Current)).GetUserListControl().GetUsersSelectedNumber() > 0 ? true : false;
             mTransferItemList.TransferAvailable = mTransferItemList.Items.Count == 0 ? false : true;
+           
+            ((App)(Application.Current)).SetBrowsePage(this);
+            
+            // Load the file(s) and the folder(s), if ready
+            if (((App)(Application.Current)).GetModeOn() == App.Mode.Contextual)
+            {
+                var arguments = ((App)(Application.Current)).GetArgs();
+                int TransferItemListCount;
 
-            ((App)(Application.Current)).SetBrowsePage(this); 
+                var files = new List<string>();
+                var folders = new List<string>();
+
+                FileAttributes attr;
+                foreach (var item in arguments)
+                {
+                    attr = File.GetAttributes(item);
+                    if (attr.HasFlag(FileAttributes.Directory))
+                    {
+                        folders.Add(item);
+                    }
+                    else
+                    {
+                        files.Add(item);
+                    }
+                }
+
+                if (folders.Count > 0) { 
+                    TransferItemListCount = mTransferItemList.Items.Count;
+                    AddFolders(folders, TransferItemListCount);
+                }
+
+                if (files.Count > 0)
+                {
+                    TransferItemListCount = mTransferItemList.Items.Count;
+                    AddFiles(files.ToArray(), TransferItemListCount);
+                }
+                
+            }
         }
         #endregion
 
         #region Utility methods
+        private void AddFiles(string[] enumerator, int TransferItemListCount)
+        {
+            foreach (var item in enumerator)
+            {
+                mFilepaths.Add(item);
+                mTransferItemList.Items.Add(new TransferItemViewModel(++TransferItemListCount, item, new FileInfo(item).Length));
+                TransferItemList.Items.Refresh();
+                mTransferItemList.TransferAvailable = true;
+            }
+        }
+        private void AddFolders(IEnumerable<string> enumerator, int TransferItemListCount)
+        {
+            foreach (var item in enumerator)
+            {
+                mFilepaths.Add(item);
+                var folderSize = Directory.GetFiles(item, "*", SearchOption.AllDirectories).Sum(t => (new FileInfo(t).Length));
+                mTransferItemList.Items.Add(new TransferItemViewModel(++TransferItemListCount, item, folderSize));
+                TransferItemList.Items.Refresh();
+                mTransferItemList.TransferAvailable = true;
+            }
+        }
         private void ScanButton_BrowseFiles(object sender, RoutedEventArgs e)
         {
             var defaultFilename = "Select a file";
@@ -53,26 +111,15 @@ namespace Movex.View
             {
                 if (!fileDialog.FileName.Contains(defaultFilename))
                 {
-                    var builder = new StringBuilder();
                     var enumerator = fileDialog.FileNames;
                     var TransferItemListCount = mTransferItemList.Items.Count;
-
-                    foreach (var item in enumerator)
-                    {
-                        builder.AppendLine(item);
-                        mFilepaths.Add(item);
-                        mTransferItemList.Items.Add(new TransferItemViewModel(++TransferItemListCount, item, new FileInfo(item).Length));
-                        TransferItemList.Items.Refresh();
-                        mTransferItemList.TransferAvailable = true;
-                    }
+                    AddFiles(enumerator, TransferItemListCount);
                 }
-                else {}
             }
         }
         private void ScanButton_BrowseFolders(object sender, RoutedEventArgs e)
         {
 
-            var builder = new StringBuilder();
             var dialog = new CommonOpenFileDialog()
             {
                 Multiselect = true,
@@ -94,16 +141,9 @@ namespace Movex.View
 
                 if (count > 0)
                 {
+                    var enumerator = dialog.FileNames;
                     var TransferItemListCount = mTransferItemList.Items.Count;
-                    foreach (var item in dialog.FileNames)
-                    {
-                        builder.AppendLine(item);
-                        mFilepaths.Add(item);
-                        var folderSize = Directory.GetFiles(item, "*", SearchOption.AllDirectories).Sum(t => (new FileInfo(t).Length));
-                        mTransferItemList.Items.Add(new TransferItemViewModel(++TransferItemListCount, item, folderSize));
-                        TransferItemList.Items.Refresh();
-                        mTransferItemList.TransferAvailable = true;
-                    }
+                    AddFolders(enumerator, TransferItemListCount);
                 }
             }
             catch (Exception)
