@@ -257,6 +257,10 @@ namespace Movex.View
             // Clear the selected users too
             ((App)(Application.Current)).GetUserListControl().ClearSelectedUsers();
         }
+        public void UpdateUsersAvailable(int n)
+        {
+            mTransferItemList.UsersAvailable = n > 0 ? true : false;
+        }
         #endregion
     }
 }

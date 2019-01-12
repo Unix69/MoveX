@@ -22,6 +22,9 @@
 			<!-- Action button(s) --> 
 			<RowDefinition Height="Auto" />
 			
+			<!-- Warning message(s) -->
+			<RowDefinition Height="Auto" />
+
 		</Grid.RowDefinitions>
 
 		<Border Grid.Row="0"
@@ -130,7 +133,7 @@
 
 		<!-- Cancel Button -->
 		<StackPanel Grid.Row="2" 
-					Margin="30 30 180 20"
+					Margin="30 30 180 0"
 					VerticalAlignment="Bottom" Visibility="{Binding TransferItemListDesignModel.TransferAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}, ConverterParameter=True}">
 			<Button Style="{StaticResource CancelButton}"
 					HorizontalAlignment="Right"
@@ -140,7 +143,7 @@
 		
 		<!-- Send Button -->
 		<StackPanel	Grid.Row="2"
-					Margin="30 30 30 20"
+					Margin="30 30 30 0"
 					VerticalAlignment="Bottom" Visibility="{Binding TransferItemListDesignModel.TransferAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}, ConverterParameter=True}">
 
 			<Button Style="{StaticResource SendButton}"
@@ -148,6 +151,28 @@
 					Click="SendButton_Click"
 					IsEnabled="{Binding TransferItemListDesignModel.UsersAvailable, Source={x:Static local:ViewModelLocator.Instance}}"/>
 		</StackPanel>
+
+		<TextBlock
+					Grid.Row="3"
+					Margin="30 0 200 20"
+					Foreground="Red"
+					FontSize="{StaticResource FontSizeRegular}"
+					FontFamily="{StaticResource LatoRegular}"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Center"
+					Text="●"
+					Visibility="{Binding TransferItemListDesignModel.UsersAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}}"/>
+
+		<TextBlock
+					Grid.Row="3"
+					Margin="30 0 30 20"
+					Foreground="{StaticResource BackgroundLightBrush}"
+					FontSize="{StaticResource FontSizeRegular}"
+					FontFamily="{StaticResource LatoRegular}"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Center"
+					Text="Nessun utente selezionato." 
+					Visibility="{Binding TransferItemListDesignModel.UsersAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}}"/>
 
 	</Grid>
 

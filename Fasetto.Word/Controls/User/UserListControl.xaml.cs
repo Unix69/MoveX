@@ -79,6 +79,7 @@ namespace Movex.View
 
                 // Udpate the UI updating the value
                 UserListDesignModel.ItemsSelected = n;
+                ((App)(Application.Current)).GetBrowsePage().UpdateUsersAvailable(n);
 
                 // Routing interface
                 if (n == 0) {
