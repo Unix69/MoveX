@@ -240,7 +240,6 @@ namespace Movex.View
             {
                 Console.WriteLine(exception.Message);
             }
-
         }
         public void ClearTransferItemsList()
         {
@@ -256,6 +255,9 @@ namespace Movex.View
 
             // Clear the selected users too
             ((App)(Application.Current)).GetUserListControl().ClearSelectedUsers();
+
+            // Clear the ModeOn putting it as Traditional
+            ((App)(Application.Current)).SetModeOn(App.Mode.Traditional);
         }
         public void UpdateUsersAvailable(int n)
         {

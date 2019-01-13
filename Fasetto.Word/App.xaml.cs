@@ -11,7 +11,6 @@ namespace Movex.View
     /// </summary>
     public partial class App : Application
     {
-
         public enum Mode { Traditional, Contextual };
         private System.Windows.Forms.NotifyIcon mNotifyIcon;
         private bool mIsExit;
@@ -20,11 +19,9 @@ namespace Movex.View
         private int mIndex;
         private Mode mModeOn = Mode.Traditional;
 
-        #region Instance Members for project-inner-access
-
+        #region Members for project-inner-access
         private BrowsePage mBrowsePage;
         private UserListControl mUserListControl;
-
         #endregion
 
         protected override void OnStartup(StartupEventArgs e)
@@ -121,7 +118,6 @@ namespace Movex.View
             {
                 IoC.Application.GoToPage(ApplicationPage.Browse);
             }
-
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -152,6 +148,10 @@ namespace Movex.View
         public Mode GetModeOn()
         {
             return mModeOn;
+        }
+        public void SetModeOn(Mode modeOn)
+        {
+            mModeOn = modeOn;
         }
     }
 }

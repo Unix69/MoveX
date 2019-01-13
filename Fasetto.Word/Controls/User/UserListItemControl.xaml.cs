@@ -15,8 +15,18 @@ namespace Movex.View
 
         private void CheckBox_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            ((App)(Application.Current)).GetUserListControl().RefreshAndGetUsersSelectedNumber();
-            // In this case I do not need to catch the value returned.
+            int n;
+
+            var userListControl = ((App)(Application.Current)).GetUserListControl();
+            if (userListControl != null)
+            {
+                n = userListControl.RefreshAndGetUsersSelectedNumber();
+                var browsePage = ((App)(Application.Current)).GetBrowsePage();
+                if (browsePage != null)
+                {
+                    browsePage.UpdateUsersAvailable(n);
+                }
+            }
         }
     }
 }

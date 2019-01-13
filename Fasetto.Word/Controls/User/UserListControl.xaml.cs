@@ -79,15 +79,23 @@ namespace Movex.View
 
                 // Udpate the UI updating the value
                 UserListDesignModel.ItemsSelected = n;
-                ((App)(Application.Current)).GetBrowsePage().UpdateUsersAvailable(n);
 
                 // Routing interface
                 if (n == 0) {
-                    ((App)(Application.Current)).GetBrowsePage().ClearTransferItemsList();
-                    ((App)(Application.Current)).SetBrowsePage(null);
-                    IoC.Application.GoToPage(ApplicationPage.Landing);
+                    /* TODO: evaluate to remove this piece of code
+                     * 
+                    if (((App)(Application.Current)).GetModeOn() == App.Mode.Traditional)
+                    {
+                        ((App)(Application.Current)).GetBrowsePage().ClearTransferItemsList();
+                        ((App)(Application.Current)).SetBrowsePage(null);
+                        IoC.Application.GoToPage(ApplicationPage.Landing);
+                    }
+                    */
                 }
-                if (n > 0) { IoC.Application.GoToPage(ApplicationPage.Browse); }
+                else if (n > 0) {
+                    IoC.Application.GoToPage(ApplicationPage.Browse);
+                    ((App)(Application.Current)).GetBrowsePage().UpdateUsersAvailable(n);
+                }
                 
                 // Return the vale
                 return n;

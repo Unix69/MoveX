@@ -15,8 +15,18 @@
 					HorizontalAlignment="Center"
 					Visibility="{Binding UserItemViewModel.FriendsAvailable, Source={x:Static local:ViewModelLocator.Instance}, Converter = {local:BooleanToVisiblityConverter}, ConverterParameter=True}">
 
+				<TextBlock
+					Margin="5 5 0 5"
+					Foreground="Red"
+					FontSize="{StaticResource FontSizeRegular}"
+					FontFamily="{StaticResource LatoRegular}"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Center"
+					Text="●"
+					Visibility="{Binding ItemsSelected, Converter = {local:IntegerToVisiblityConverter}}"/>
+
 				<TextBlock Text="{Binding ItemsSelected}"
-					   Margin="10 5 0 5"
+					   Margin="5 5 0 5"
 					   TextTrimming="CharacterEllipsis"
 					   HorizontalAlignment="Center"
 					   Foreground="{StaticResource ForegroundMainBrush}"
