@@ -160,7 +160,7 @@ namespace Movex.FTP
             var downloadTransferAvailability = new ManualResetEvent(false);
             var windowAvailability = new ManualResetEvent(false);
 
-            var path = @".\";
+            var path = mDownloadDefaultFolder;
             var recvfrom = new Thread(new ThreadStart(() => FTPrecv(client, path, downloadTransferAvailability, windowAvailability)))
             {
                 Priority = ThreadPriority.Highest,

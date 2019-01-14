@@ -33,14 +33,14 @@
 					TextTrimming="CharacterEllipsis"
                     FontFamily="{StaticResource LatoRegular}"
 				    FontSize="{StaticResource FontSizeLarge}"
-					Margin="0 0 0 20"/>
+					Margin="0 0 0 10"/>
 		
 
 		<TextBlock Grid.Column="1"
 					   VerticalAlignment="Center"
 					   HorizontalAlignment="Center"
 					   Text="Seleziona un utente per"
-					   Foreground="{StaticResource ForegroundMainBrush}"
+					   Foreground="{StaticResource ForegroundLightBrush}"
                        TextTrimming="CharacterEllipsis"
                        FontFamily="{StaticResource LatoRegular}"
 					   FontSize="{StaticResource FontSizeRegular}"/>
@@ -49,7 +49,7 @@
 					   VerticalAlignment="Center"
 					   HorizontalAlignment="Center"
 					   Text="iniziare ad inviare documenti."
-					   Foreground="{StaticResource ForegroundMainBrush}"
+					   Foreground="{StaticResource ForegroundLightBrush}"
                        TextTrimming="CharacterEllipsis"
                        FontFamily="{StaticResource LatoRegular}"
 				       FontSize="{StaticResource FontSizeRegular}"/>

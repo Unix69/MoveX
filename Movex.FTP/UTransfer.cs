@@ -85,7 +85,7 @@ namespace Movex.FTP
             }
         }
         public long GetToTransfer() { return (mToTransfer); }
-        public float GetTransferPerc() {
+        public double GetTransferPerc() {
             try
             {
                 return ((GetTransfered() / mToTransfer) * 100);
