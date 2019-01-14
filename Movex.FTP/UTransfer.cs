@@ -85,10 +85,12 @@ namespace Movex.FTP
             }
         }
         public long GetToTransfer() { return (mToTransfer); }
-        public double GetTransferPerc() {
+        public float GetTransferPerc() {
             try
             {
-                return ((GetTransfered() / mToTransfer) * 100);
+                var ratio = ((float) GetTransfered() / mToTransfer);
+                var perc = (ratio * 100);
+                return perc;
             }
             catch (DivideByZeroException e) {
                 Console.WriteLine(e.Message);

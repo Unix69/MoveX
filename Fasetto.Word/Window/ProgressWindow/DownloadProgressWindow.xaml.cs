@@ -67,7 +67,7 @@ namespace Movex.View
         {
             string progress;
 
-            while (! ((progress = mDownloadTransfer.GetTransferPerc().ToString()).Equals("100")) )
+            while (! ((progress = ((int)mDownloadTransfer.GetTransferPerc()).ToString()).Equals("100")) )
             {
                 if (int.TryParse(progress, out var x))
                 {
@@ -96,7 +96,7 @@ namespace Movex.View
                 IoC.Progress.Filename = filename;
             }
 
-            IoC.Progress.Percentage = mDownloadTransfer.GetTransferPerc().ToString();
+            IoC.Progress.Percentage = ((int)mDownloadTransfer.GetTransferPerc()).ToString();
             var RemainingTime = HumanReadableTime.MillisecToHumanReadable(mDownloadTransfer.GetRemainingTime());
             if (RemainingTime == null)
             {
@@ -134,7 +134,7 @@ namespace Movex.View
                 IoC.Progress.Filename = filename;
             }
 
-            IoC.Progress.Percentage = dTransfer.GetTransferPerc().ToString();
+            IoC.Progress.Percentage = ((int)dTransfer.GetTransferPerc()).ToString();
             var RemainingTime = HumanReadableTime.MillisecToHumanReadable(dTransfer.GetRemainingTime());
             if (RemainingTime == null)
             {
