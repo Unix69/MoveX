@@ -62,7 +62,7 @@
 			<TextBlock Grid.Column="1"
 					   VerticalAlignment="Center"
 					   HorizontalAlignment="Center"
-					   Text="Nessun utente disponibile"
+					   Text="Nessun utente disponibile."
 					   Foreground="{StaticResource ForegroundMainBrush}"
                        TextTrimming="CharacterEllipsis"
                        FontFamily="{StaticResource LatoRegular}" />

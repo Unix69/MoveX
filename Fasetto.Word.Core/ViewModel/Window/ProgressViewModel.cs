@@ -12,7 +12,6 @@ namespace Movex.View.Core
     public class ProgressViewModel : BaseViewModel
     {
         #region Public Properties
-
         /// <summary>
         /// The current user
         /// </summary>
@@ -39,29 +38,23 @@ namespace Movex.View.Core
         public string RemainingTime { get; set; }
 
         public string Text { get; set; }
-
         #endregion
 
         #region Private Properties
-
         /// <summary>
         /// The handler to signal the caller thread that the window has been closed
         /// </summary>
         private ManualResetEvent CloseWindowEvent { get; set; } = null;
-
         #endregion
 
         #region Public Command
-
         /// <summary>
         /// The command to close the settings menu
         /// </summary>
         public ICommand StopCommand { get; set; }
-
         #endregion
 
         #region Constructor
-
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -69,11 +62,9 @@ namespace Movex.View.Core
         {
             StopCommand = new RelayCommand(Stop);
         }
-
         #endregion
 
         #region Public Methods
-
         /// <summary>
         /// Set the message for the Window
         /// </summary>
@@ -87,15 +78,14 @@ namespace Movex.View.Core
         /// </summary>
         public void Stop()
         {
-            if (! IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).IsInterrupted()){
+            if (!IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).IsInterrupted()) {
                 IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).InterruptUpload();
+                CloseWindowEvent.Set();
             }
         }
-
         #endregion
 
         #region Internal Methods
-
         /// <summary>
         /// Set the handler for the CloseWindowEvent
         /// </summary>
@@ -105,7 +95,6 @@ namespace Movex.View.Core
             if (closeWindowEvent != null)
                 CloseWindowEvent = closeWindowEvent;
         }
-
         #endregion
     }
 }

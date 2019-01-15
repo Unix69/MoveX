@@ -5,14 +5,13 @@ using System.ComponentModel;
 using Movex.View.Core;
 using System.Net;
 using Movex.FTP;
-using System.Collections.Generic;
 
 namespace Movex.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ProgressWindow.xaml
     /// </summary>
-    public partial class ProgressWindow : System.Windows.Window
+    public partial class ProgressWindow : Window
     {
         #region Private members
         private Movex.View.Core.FTPclient mFtpClient;
@@ -25,13 +24,12 @@ namespace Movex.View
         private event EventHandler TransferCompleted;
         #endregion
 
-        // Constructor(s)
+        #region Constructor(s)
         public ProgressWindow()
         {
             InitializeComponent();
             DataContext = new WindowViewModel(this);
         }
-
         public ProgressWindow(IPAddress address, ManualResetEvent uTransferAvailability)
         {
             // Initialize Window
@@ -48,6 +46,7 @@ namespace Movex.View
             ContentRendered += Window_ContentRendered;
             TransferCompleted += Window_Close;
         }
+        #endregion
 
         #region Event Handler(s)
         private void OnLoad(object sender, RoutedEventArgs e)
@@ -67,12 +66,6 @@ namespace Movex.View
             worker.DoWork += Worker_DoWork;
             worker.ProgressChanged += Worker_ProgressChanged;
             worker.RunWorkerAsync();
-        }
-
-
-        private bool ChangeInterface() {
-
-            return (true);
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -127,6 +120,7 @@ namespace Movex.View
         }
         #endregion
 
+        #region Utility method(s)
         private void AssignTransferInfoToViewModel(UTransfer uTransfer)
         {
             var ipAddress = uTransfer.GetTo();
@@ -154,5 +148,6 @@ namespace Movex.View
                 IoC.Progress.RemainingTime = RemainingTime;
             }
         }
+        #endregion
     }
 }
