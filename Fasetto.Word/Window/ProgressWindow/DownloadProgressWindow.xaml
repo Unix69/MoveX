@@ -114,7 +114,7 @@
             />
 	</WindowChrome.WindowChrome>
 
-	<local:ProgressControl/>
+	<local:ProgressControl x:Name="InternalProgressControl"/>
 	
 
 </Window>

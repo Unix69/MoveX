@@ -15,11 +15,16 @@ namespace Movex.View
     public partial class DownloadProgressWindow : System.Windows.Window
     {
         #region Private members
+        private string[] mPaths;
+        private int mIndexCurrentTransfer;
         private IPAddress mAddress;
-        private Thread mFtpClientThread;
+        private Thread mInterruptTransferWaiter;
         private DTransfer mDownloadTransfer;
         private ManualResetEvent mDTransferAvailability;
+        private ManualResetEvent mCloseWindow;
         private event EventHandler TransferCompleted;
+        private event EventHandler TransferInterrupted;
+        private ProgressDesignModel mProgress;
         #endregion
 
         #region Constructor
@@ -28,6 +33,13 @@ namespace Movex.View
             // Initialize Window
             InitializeComponent();
             DataContext = new WindowViewModel(this);
+
+            // Set the internal ProgressControl
+            mCloseWindow = new ManualResetEvent(false);
+            mProgress = (ProgressDesignModel)InternalProgressControl.DataContext;
+            mProgress.SetCloseWindowEventHandler(mCloseWindow);
+            mInterruptTransferWaiter = new Thread(() => OnTransferInterrupted());
+            mInterruptTransferWaiter.Start();
 
             // Assigning member(s)
             mAddress = address;
@@ -59,10 +71,6 @@ namespace Movex.View
             worker.ProgressChanged += Worker_ProgressChanged;
             worker.RunWorkerAsync();
         }
-        private bool ChangeInterface() {
-
-            return (true);
-        }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             string progress;
@@ -93,28 +101,28 @@ namespace Movex.View
             var filename = mDownloadTransfer.GetTransferFilename();
             if (filename != null)
             {
-                IoC.Progress.Filename = filename;
+                mProgress.Filename = filename;
             }
 
-            IoC.Progress.Percentage = ((int)mDownloadTransfer.GetTransferPerc()).ToString();
+            mProgress.Percentage = ((int)mDownloadTransfer.GetTransferPerc()).ToString();
             var RemainingTime = HumanReadableTime.MillisecToHumanReadable(mDownloadTransfer.GetRemainingTime());
             if (RemainingTime == null)
             {
-                IoC.Progress.RemainingTime = "Evaluating...";
+                mProgress.RemainingTime = "Evaluating...";
             }
             else
             {
-                IoC.Progress.RemainingTime = RemainingTime;
+                mProgress.RemainingTime = RemainingTime;
             }
         }
         private void Window_Close(object sender, EventArgs e)
         {
-            if (mFtpClientThread != null)
-            { 
-                mFtpClientThread.Interrupt();
-                mFtpClientThread = null;
-            }
             Dispatcher.BeginInvoke(new Action(() => { Close(); }));
+        }
+        private void OnTransferInterrupted()
+        {
+            mCloseWindow.WaitOne();
+            TransferInterrupted.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -124,25 +132,25 @@ namespace Movex.View
             var ipAddress = dTransfer.GetFrom();
             if (ipAddress != null)
             {
-                IoC.Progress.IpAddress = ipAddress;
-                IoC.Progress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
+                mProgress.IpAddress = ipAddress;
+                mProgress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
             }
             
             var filename = dTransfer.GetTransferFilename();
             if (filename != null)
             {
-                IoC.Progress.Filename = filename;
+                mProgress.Filename = filename;
             }
 
-            IoC.Progress.Percentage = ((int)dTransfer.GetTransferPerc()).ToString();
+            mProgress.Percentage = ((int)dTransfer.GetTransferPerc()).ToString();
             var RemainingTime = HumanReadableTime.MillisecToHumanReadable(dTransfer.GetRemainingTime());
             if (RemainingTime == null)
             {
-                IoC.Progress.RemainingTime = "Evaluating...";
+                mProgress.RemainingTime = "Evaluating...";
             }
             else
             {
-                IoC.Progress.RemainingTime = RemainingTime;
+                mProgress.RemainingTime = RemainingTime;
             }
         }
         #endregion

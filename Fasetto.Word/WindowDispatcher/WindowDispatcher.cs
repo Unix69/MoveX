@@ -120,7 +120,7 @@ namespace Movex.View
 
                         var UploadProgressWindowThread = new Thread(() =>
                         {
-                            var w = new ProgressWindow(IPAddress.Parse(ipAddress), syncVariables[0]);
+                            var w = new UploadProgressWindow(IPAddress.Parse(ipAddress), syncVariables[0]);
                             mWindows.Push(w);
                             w.Show();
                             syncVariables[1].Set();

@@ -83,14 +83,11 @@ namespace Movex.View.Core
                 CloseWindowEvent.Set();
             }
         }
-        #endregion
-
-        #region Internal Methods
         /// <summary>
         /// Set the handler for the CloseWindowEvent
         /// </summary>
         /// <param name="closeWindowEvent"></param>
-        internal void SetCloseWindowEventHandler(ManualResetEvent closeWindowEvent)
+        public void SetCloseWindowEventHandler(ManualResetEvent closeWindowEvent)
         {
             if (closeWindowEvent != null)
                 CloseWindowEvent = closeWindowEvent;

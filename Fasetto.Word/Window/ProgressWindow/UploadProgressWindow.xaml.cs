@@ -11,30 +11,34 @@ namespace Movex.View
     /// <summary>
     /// Interaction logic for ProgressWindow.xaml
     /// </summary>
-    public partial class ProgressWindow : Window
+    public partial class UploadProgressWindow : Window
     {
         #region Private members
-        private Movex.View.Core.FTPclient mFtpClient;
         private string[] mPaths;
         private int mIndexCurrentTransfer;
         private IPAddress mAddress;
-        private Thread mFtpClientThread;
+        private Thread mInterruptTransferWaiter;
         private UTransfer mUploadTransfer;
         private ManualResetEvent mUTransferAvailability;
+        private ManualResetEvent mCloseWindow;
         private event EventHandler TransferCompleted;
+        private event EventHandler TransferInterrupted;
+        private ProgressDesignModel mProgress;
         #endregion
 
         #region Constructor(s)
-        public ProgressWindow()
-        {
-            InitializeComponent();
-            DataContext = new WindowViewModel(this);
-        }
-        public ProgressWindow(IPAddress address, ManualResetEvent uTransferAvailability)
+        public UploadProgressWindow(IPAddress address, ManualResetEvent uTransferAvailability)
         {
             // Initialize Window
             InitializeComponent();
             DataContext = new WindowViewModel(this);
+
+            // Set the internal ProgressControl
+            mCloseWindow = new ManualResetEvent(false);
+            mProgress = (ProgressDesignModel)InternalProgressControl.DataContext;
+            mProgress.SetCloseWindowEventHandler(mCloseWindow);
+            mInterruptTransferWaiter = new Thread(() => OnTransferInterrupted());
+            mInterruptTransferWaiter.Start();
 
             // Assigning member(s)
             mAddress = address;
@@ -44,6 +48,7 @@ namespace Movex.View
             // Manage event(s)
             Loaded += OnLoad;
             ContentRendered += Window_ContentRendered;
+            TransferInterrupted += Window_Close;
             TransferCompleted += Window_Close;
         }
         #endregion
@@ -73,7 +78,7 @@ namespace Movex.View
 
             while (! ((progress = ((int)mUploadTransfer.GetTransferPerc()).ToString()).Equals("100")) )
             {
-                if (int.TryParse(progress, out int x))
+                if (int.TryParse(progress, out var x))
                 {
                     (sender as BackgroundWorker).ReportProgress(x);
                 }
@@ -82,7 +87,7 @@ namespace Movex.View
 
             // IF 100% COMPLETED: 1. show the perc
             if (!(progress == null) && progress.Equals("100"))
-                if (int.TryParse(progress, out int x))
+                if (int.TryParse(progress, out var x))
                     (sender as BackgroundWorker).ReportProgress(x);
 
             // IF 100% COMPLETED: 2. wait a second
@@ -98,25 +103,26 @@ namespace Movex.View
             var filename = mUploadTransfer.GetTransferFilename();
             if (filename != null)
             {
-                IoC.Progress.Filename = filename;
+                mProgress.Filename = filename;
             }
 
-            IoC.Progress.Percentage = ((int)mUploadTransfer.GetTransferPerc()).ToString();
+            mProgress.Percentage = ((int)mUploadTransfer.GetTransferPerc()).ToString();
 
             var RemainingTime = HumanReadableTime.MillisecToHumanReadable(mUploadTransfer.GetRemainingTime());
             if (RemainingTime != null)
             {
-                IoC.Progress.RemainingTime = RemainingTime;
+                mProgress.RemainingTime = RemainingTime;
             }
         }
         private void Window_Close(object sender, EventArgs e)
         {
-            if (mFtpClientThread != null)
-            { 
-                mFtpClientThread.Interrupt();
-                mFtpClientThread = null;
-            }
             Dispatcher.BeginInvoke(new Action(() => { Close(); }));
+            IoC.FtpClient.Reset();
+        }
+        private void OnTransferInterrupted()
+        {
+            mCloseWindow.WaitOne();
+            TransferInterrupted.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -126,26 +132,26 @@ namespace Movex.View
             var ipAddress = uTransfer.GetTo();
             if (ipAddress != null)
             {
-                IoC.Progress.IpAddress = ipAddress;
-                IoC.Progress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
+                mProgress.IpAddress = ipAddress;
+                mProgress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
             }
             
             var filename = uTransfer.GetTransferFilename();
             if (filename != null)
             {
-                IoC.Progress.Filename = filename;
+                mProgress.Filename = filename;
             }
 
-            IoC.Progress.Percentage = ((int)uTransfer.GetTransferPerc()).ToString();
+            mProgress.Percentage = ((int)uTransfer.GetTransferPerc()).ToString();
 
             var RemainingTime = HumanReadableTime.MillisecToHumanReadable(uTransfer.GetRemainingTime());
             if (RemainingTime == null)
             {
-                IoC.Progress.RemainingTime = "Evaluating...";
+                mProgress.RemainingTime = "Evaluating...";
             }
             else
             {
-                IoC.Progress.RemainingTime = RemainingTime;
+                mProgress.RemainingTime = RemainingTime;
             }
         }
         #endregion

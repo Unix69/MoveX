@@ -27,7 +27,11 @@
 
 								<!-- Blue background image -->
 								<Grid.Background >
-									<ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500" ImageSource="../../Images/Backgrounds/emoji-background.png" />
+									<ImageBrush
+										TileMode="Tile"
+										ViewportUnits="Absolute"
+										Viewport="0 0 500 500"
+										ImageSource="../../Images/Backgrounds/emoji-background.png" />
 								</Grid.Background>
 
 								<Grid Height="25" Margin="30 0 30 0">
@@ -44,7 +48,7 @@
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center"
 											Name="Percentage"
-											Text="{Binding ProgressDesignModel.Percentage, Source={x:Static local:ViewModelLocator.Instance}}"
+											Text="{Binding Percentage}"
 											/>
 
 										<TextBlock FontFamily="{StaticResource LatoRegular}"
@@ -60,18 +64,23 @@
 										<Button Style="{StaticResource IconButton}"
 												FontSize="50"
 												Content="{StaticResource FontAwesomeCancelIcon}"
-												Command="{Binding ProgressDesignModel.StopCommand, Source={x:Static local:ViewModelLocator.Instance}}"/>
+												Command="{Binding StopCommand}" />
 									</StackPanel>
 								</Grid>
 
-								<Border Grid.Row="1" CornerRadius="3" Margin="30 0 30 0">
-									<ProgressBar VerticalAlignment="Bottom"
-									 Height="30"
-									 Width="Auto"
-									 Minimum="0"
-									 Maximum="100"
-									 Name="ProgBar"
-									 Value="{Binding ProgressDesignModel.Percentage, Source={x:Static local:ViewModelLocator.Instance}}"/>
+								<Border
+									Grid.Row="1"
+									CornerRadius="3"
+									Margin="30 0 30 0">
+									
+									<ProgressBar
+										VerticalAlignment="Bottom"
+										Height="30"
+										Width="Auto"
+										Minimum="0"
+										Maximum="100"
+										Name="ProgBar"
+										Value="{Binding Percentage}" />
 
 								</Border>
 
@@ -95,7 +104,7 @@
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center"
 											Name="User"
-											Text="{Binding ProgressDesignModel.User, Source={x:Static local:ViewModelLocator.Instance}}" />
+											Text="{Binding User}" />
 									</StackPanel>
 								</Grid>
 								
@@ -119,7 +128,7 @@
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center"
 											Name="Filename" 
-											Text="{Binding ProgressDesignModel.Filename, Source={x:Static local:ViewModelLocator.Instance}}" />
+											Text="{Binding Filename}" />
 									</StackPanel>
 								</Grid>
 
@@ -141,7 +150,7 @@
 													FontSize="14"
 													HorizontalAlignment="Center" 
 													VerticalAlignment="Center"
-													Text="{Binding ProgressDesignModel.RemainingTime, Source={x:Static local:ViewModelLocator.Instance}}" />
+													Text="{Binding RemainingTime}" />
 									</StackPanel>
 								</Grid>
 
@@ -155,8 +164,6 @@
 		</Style>
 	</UserControl.Resources>
 
-	<ContentControl
-		DataContext="{Binding ProgressDesignModel.Instance, Source={x:Static local:ViewModelLocator.Instance}}"
-        Style="{StaticResource ContentStyle}" />
+	<ContentControl Style="{StaticResource ContentStyle}" />
 
 </UserControl>

@@ -64,8 +64,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\SecureStringHelpers.cs" />
     <Compile Include="ViewModel\BackboneViewModel.cs" />
-    <Compile Include="ViewModel\FTP\FTPserver.cs" />
-    <Compile Include="ViewModel\FTP\FTPclient.cs" />
+    <Compile Include="FTP\FTPserver.cs" />
+    <Compile Include="FTP\FTPclient.cs" />
     <Compile Include="ViewModel\Input\Design\TextEntryListDesignModel.cs" />
     <Compile Include="ViewModel\Input\TextEntryListViewModel.cs" />
     <Compile Include="ViewModel\Input\ToggleListViewModel.cs" />

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using Movex.View.Core;
 
 namespace Movex.View
 {
@@ -9,7 +10,8 @@ namespace Movex.View
     {
         public ProgressControl()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            DataContext = new ProgressDesignModel();
         }
     }
 }

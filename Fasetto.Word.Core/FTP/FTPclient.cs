@@ -35,11 +35,14 @@ namespace Movex.View.Core
         /// </summary>
         public void Send(string[] filepaths, IPAddress[] ipaddress, ManualResetEvent[] WindowsAvailabilities, ManualResetEvent[] TransfersAvailabilities)
         {
-            // TODO: valutare la possibilità di sganciare un thread
             mClient.FTPsendAll(filepaths, ipaddress, WindowsAvailabilities, TransfersAvailabilities);
         }
 
-
+        public void Reset()
+        {
+            mClient = null;
+            mClient = new Movex.FTP.FTPclient();
+        }
 
         public UploadChannel GetChannel(IPAddress address) {
             return(mClient.GetChannel(address.ToString()));

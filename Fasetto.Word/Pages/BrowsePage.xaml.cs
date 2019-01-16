@@ -180,7 +180,7 @@ namespace Movex.View
                             var windowAvailability = WindowsAvailabilities[index];
                             var uTransferAvailability = TransferAvailabilities[index];
 
-                            new ProgressWindow(address, uTransferAvailability).Show();
+                            new UploadProgressWindow(address, uTransferAvailability).Show();
                             windowAvailability.Set();
                             System.Windows.Threading.Dispatcher.Run();   
                         });

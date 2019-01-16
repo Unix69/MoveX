@@ -188,8 +188,8 @@
       <DependentUpon>DownloadProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Window\ProgressWindow\HumanReadableTime.cs" />
-    <Compile Include="Window\ProgressWindow\ProgressWindow.xaml.cs">
-      <DependentUpon>ProgressWindow.xaml</DependentUpon>
+    <Compile Include="Window\ProgressWindow\UploadProgressWindow.xaml.cs">
+      <DependentUpon>UploadProgressWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Window\WhereWindow\WhereWindow.xaml.cs">
       <DependentUpon>WhereWindow.xaml</DependentUpon>
@@ -314,7 +314,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Window\ProgressWindow\ProgressWindow.xaml">
+    <Page Include="Window\ProgressWindow\UploadProgressWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

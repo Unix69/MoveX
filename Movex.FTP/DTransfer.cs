@@ -114,7 +114,7 @@ namespace Movex.FTP
         }
         public float GetTransferPerc()
         {
-            return ((GetTransfered() / mToTransfer) * 100);
+            return (((float)GetTransfered() / mToTransfer) * 100);
         }
         public string GetFrom()
         {            
