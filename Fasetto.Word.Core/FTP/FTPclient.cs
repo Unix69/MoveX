@@ -37,22 +37,18 @@ namespace Movex.View.Core
         {
             mClient.FTPsendAll(filepaths, ipaddress, WindowsAvailabilities, TransfersAvailabilities);
         }
-
         public void Reset()
         {
             mClient = null;
             mClient = new Movex.FTP.FTPclient();
         }
-
         public UploadChannel GetChannel(IPAddress address) {
             return(mClient.GetChannel(address.ToString()));
         }
-
         public UTransfer GetTransfer(IPAddress mAddress)
         {
             return (mClient.GetTransfer(mAddress.ToString()));
         }
-
         #endregion
     }
 }

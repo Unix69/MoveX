@@ -18,26 +18,14 @@ namespace Movex.View
             DataContext = new WindowViewModel(this);
         }
 
-        public MessageWindow(ManualResetEvent MessageWindowAvailability)
+        public MessageWindow(string message)
         {
             InitializeComponent();
             DataContext = new WindowViewModel(this);
 
-            // Passing a synchronization primitive to the YesNoControl
-            var control = MessageWindow_ProgressControl;
-            control.SetResponseAvailability(MessageWindowAvailability);
-        }
-
-        public MessageWindow(ManualResetEvent MessageWindowAvailability, string message, ConcurrentBag<string> response)
-        {
-            InitializeComponent();
-            DataContext = new WindowViewModel(this);
-
-            // Passing a synchronization primitive to the YesNoControl
-            var control = MessageWindow_ProgressControl;
-            control.SetResponseAvailability(MessageWindowAvailability);
+            // Passing a synchronization primitive to the MessageControl
+            var control = MessageWindow_MessageControl;
             control.SetMessage(message);
-            control.SetResponse(response);
         }
 
 

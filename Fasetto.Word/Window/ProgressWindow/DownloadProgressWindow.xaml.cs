@@ -38,6 +38,7 @@ namespace Movex.View
             mCloseWindow = new ManualResetEvent(false);
             mProgress = (ProgressDesignModel)InternalProgressControl.DataContext;
             mProgress.SetCloseWindowEventHandler(mCloseWindow);
+            mProgress.Type = "Download";
             mInterruptTransferWaiter = new Thread(() => OnTransferInterrupted());
             mInterruptTransferWaiter.Start();
 
@@ -48,6 +49,7 @@ namespace Movex.View
             // Manage event(s)
             Loaded += OnLoad;
             ContentRendered += Window_ContentRendered;
+            TransferInterrupted += Window_Close;
             TransferCompleted += Window_Close;
         }
         #endregion
@@ -73,7 +75,7 @@ namespace Movex.View
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            string progress;
+            var progress = "0";
 
             while (! ((progress = ((int)mDownloadTransfer.GetTransferPerc()).ToString()).Equals("100")) )
             {
@@ -130,6 +132,10 @@ namespace Movex.View
         private void AssignTransferInfoToViewModel(DTransfer dTransfer)
         {
             var ipAddress = dTransfer.GetFrom();
+            if (ipAddress.Contains(":"))
+            {
+                ipAddress = ipAddress.Split(':')[0];
+            }
             if (ipAddress != null)
             {
                 mProgress.IpAddress = ipAddress;

@@ -18,6 +18,7 @@ namespace Movex.View
         private const int WhereRequest = 102;
         private const int UploadTransferRequest = 103;
         private const int DownloadTransferRequest = 104;
+        private const int MessageRequest = 105;
         #endregion
 
         #region Private member(s)
@@ -151,6 +152,21 @@ namespace Movex.View
                         });
                         DownloadProgressWindowThread.SetApartmentState(ApartmentState.STA);
                         DownloadProgressWindowThread.Start();
+                        break;
+
+                    case MessageRequest:
+
+                        Messages.TryGetValue(Id, out var msg);
+
+                        var MessageWindowThread = new Thread(() =>
+                        {
+                            var w = new MessageWindow(msg);
+                            mWindows.Push(w);
+                            w.Show();
+                            System.Windows.Threading.Dispatcher.Run();
+                        });
+                        MessageWindowThread.SetApartmentState(ApartmentState.STA);
+                        MessageWindowThread.Start();
                         break;
 
                     default:

@@ -37,12 +37,20 @@ namespace Movex.View.Core
         /// </summary>
         public string RemainingTime { get; set; }
 
+        /// <summary>
+        /// The text in the ProgressViewModel
+        /// </summary>
         public string Text { get; set; }
+
+        /// <summary>
+        /// The current type of ProgressViewModel
+        /// </summary>
+        public string Type { get; set; }
         #endregion
 
         #region Private Properties
         /// <summary>
-        /// The handler to signal the caller thread that the window has been closed
+        /// The handler to signal the caller thread that the window must be closed
         /// </summary>
         private ManualResetEvent CloseWindowEvent { get; set; } = null;
         #endregion
@@ -78,10 +86,24 @@ namespace Movex.View.Core
         /// </summary>
         public void Stop()
         {
-            if (!IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).IsInterrupted()) {
-                IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).InterruptUpload();
-                CloseWindowEvent.Set();
+            if (Type == "Upload")
+            {
+                if (!IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).IsInterrupted())
+                {
+                    IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).InterruptUpload();
+                    CloseWindowEvent.Set();
+                }
             }
+            else if (Type == "Download")
+            {
+                if (!IoC.FtpServer.GetChannel(IPAddress.Parse(IpAddress)).IsInterrupted())
+                {
+                    IoC.FtpServer.GetChannel(IPAddress.Parse(IpAddress)).InterruptDownload();
+                    CloseWindowEvent.Set();
+                }
+            }
+
+            
         }
         /// <summary>
         /// Set the handler for the CloseWindowEvent

@@ -116,6 +116,6 @@
 				GlassFrameThickness="0" />
 	</WindowChrome.WindowChrome>
 
-	<local:YesNoControl x:Name="MessageWindow_ProgressControl" />
+	<local:MessageControl x:Name="MessageWindow_MessageControl" />
 
 </Window>

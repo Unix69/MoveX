@@ -20,6 +20,13 @@ namespace Movex.View.Core
         /// </summary>
         public FTPserver()
         {
+            Init();
+        }
+        #endregion
+
+        #region Core Method(s)
+        private void Init()
+        {
             var PrivateMode = Convert.ToBoolean(IoC.User.PrivateMode);
             var AutomaticReception = Convert.ToBoolean(IoC.User.AutomaticReception);
             var AutomaticSave = Convert.ToBoolean(IoC.User.AutomaticSave);
@@ -29,20 +36,15 @@ namespace Movex.View.Core
             mServerThread = new Thread(new ThreadStart(() => mServer.FTPstart()));
             mServerThread.Start();
         }
-        #endregion
-
-        #region Destructor
-
         public void Shutdown()
         {
-
-            // mServerThread.Abort();
-            // mServerThread.Join();
-            // mServerThread.Interrupt();
             mServerThread = null;
-
         }
-
+        public void Reset()
+        {
+            Shutdown();
+            Init();
+        }
         #endregion
 
         #region Public Methods
@@ -63,6 +65,10 @@ namespace Movex.View.Core
         public DTransfer GetTransfer(string ipAddress)
         {
             return mServer.GetTransfer(ipAddress);
+        }
+        public DownloadChannel GetChannel(IPAddress address)
+        {
+            return mServer.GetChannel(address.ToString());
         }
         #endregion
     }

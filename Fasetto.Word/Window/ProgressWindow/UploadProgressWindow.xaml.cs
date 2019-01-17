@@ -37,6 +37,7 @@ namespace Movex.View
             mCloseWindow = new ManualResetEvent(false);
             mProgress = (ProgressDesignModel)InternalProgressControl.DataContext;
             mProgress.SetCloseWindowEventHandler(mCloseWindow);
+            mProgress.Type = "Upload";
             mInterruptTransferWaiter = new Thread(() => OnTransferInterrupted());
             mInterruptTransferWaiter.Start();
 
@@ -74,13 +75,19 @@ namespace Movex.View
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            string progress;
+            var progress = "0";
+            var lastProgress = "0";
+            var interruptionRisk = 0;
 
-            while (! ((progress = ((int)mUploadTransfer.GetTransferPerc()).ToString()).Equals("100")) )
+            while (!((progress = ((int)mUploadTransfer.GetTransferPerc()).ToString()).Equals("100")))
             {
                 if (int.TryParse(progress, out var x))
                 {
+                    if (progress.Equals(lastProgress)) { interruptionRisk++; } else { interruptionRisk = 0; }
+                    if (interruptionRisk >= 35) { mCloseWindow.Set(); }
+
                     (sender as BackgroundWorker).ReportProgress(x);
+                    lastProgress = progress;
                 }
                 Thread.Sleep(100);
             }
@@ -123,6 +130,16 @@ namespace Movex.View
         {
             mCloseWindow.WaitOne();
             TransferInterrupted.Invoke(this, EventArgs.Empty);
+
+            // Launch a message window
+            var MessageWindowThread = new Thread(() =>
+            {
+                var w = new MessageWindow("Il trasferimento è stato interrotto.");
+                w.Show();
+                System.Windows.Threading.Dispatcher.Run();
+            });
+            MessageWindowThread.SetApartmentState(ApartmentState.STA);
+            MessageWindowThread.Start();
         }
         #endregion
 

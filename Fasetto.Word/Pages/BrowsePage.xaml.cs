@@ -194,6 +194,7 @@ namespace Movex.View
                 sendThread.Start();
 
                 // Hide the MainWindow and clear the selection
+                IoC.Application.GoToPage(ApplicationPage.Landing);
                 ((App)(Application.Current)).MainWindow.Hide();
                 ClearTransferItemsList();
 

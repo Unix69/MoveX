@@ -217,7 +217,7 @@ namespace Movex.FTP
             string filename = null;
             try
             {
-                var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), tag, path);
+                var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString().Split(':')[0], tag, path);
 
                 mDchansDataLock.WaitOne();
                 mDchans.Add(dchan);
@@ -247,7 +247,7 @@ namespace Movex.FTP
         }
         private bool FTPsingleFile(ref Socket clientsocket, int tag, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
-            var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), tag, path);
+            var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString().Split(':')[0], tag, path);
 
             mDchansDataLock.WaitOne();
             mDchans.Add(dchan);
@@ -360,7 +360,7 @@ namespace Movex.FTP
             try
             {
 
-                var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString(), t, path);
+                var dchan = new DownloadChannel(clientsocket.LocalEndPoint.ToString().Split(':')[0], t, path);
 
                 mDchansDataLock.WaitOne();
                 mDchans.Add(dchan);
@@ -414,12 +414,27 @@ namespace Movex.FTP
             return (filenametemp + estension);
 
         }
-        private DownloadChannel GetChannel(string filepath, string ipaddress)
+        public DownloadChannel GetChannel(string filepath, string ipaddress)
         {
             mDchansDataLock.WaitOne();
             foreach (var dchan in mDchans)
             {
                 if (dchan.Get_path().Equals(filepath) && dchan.Get_from().ToString().Equals(ipaddress))
+                {
+                    mDchansDataLock.ReleaseMutex();
+                    return (dchan);
+                }
+
+            }
+            mDchansDataLock.ReleaseMutex();
+            return (null);
+        }
+        public DownloadChannel GetChannel(string ipaddress)
+        {
+            mDchansDataLock.WaitOne();
+            foreach (var dchan in mDchans)
+            {
+                if (dchan.Get_from().ToString().Equals(ipaddress))
                 {
                     mDchansDataLock.ReleaseMutex();
                     return (dchan);
@@ -874,7 +889,8 @@ namespace Movex.FTP
         public void SetAutomaticSave(bool value) { mAutomaticSave = Convert.ToBoolean(value); }
         public void SetAutomaticReception(bool value) { mAutomaticReception = Convert.ToBoolean(value); }
         public void SetDownloadDefaultFolder(string path) { mDownloadDefaultFolder = path; }
-        private DownloadChannel GetChannel(string ipaddress)
+        /*
+        public DownloadChannel GetChannel(string ipaddress)
         {
             foreach (var dchan in mDchans)
             {
@@ -887,6 +903,7 @@ namespace Movex.FTP
 
             return (null);
         }
+        */
         public DTransfer GetTransfer(string ipAddress)
         {
             // Check input syntax
