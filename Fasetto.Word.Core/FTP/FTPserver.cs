@@ -32,9 +32,18 @@ namespace Movex.View.Core
             var AutomaticSave = Convert.ToBoolean(IoC.User.AutomaticSave);
             var DonwloadDefaultFolder = IoC.User.DownloadDefaultFolder;
 
-            mServer = new Movex.FTP.FTPserver(2000, PrivateMode, AutomaticReception, AutomaticSave, DonwloadDefaultFolder);
-            mServerThread = new Thread(new ThreadStart(() => mServer.FTPstart()));
-            mServerThread.Start();
+            try
+            {
+                mServer = new Movex.FTP.FTPserver(2000, PrivateMode, AutomaticReception, AutomaticSave, DonwloadDefaultFolder);
+                mServerThread = new Thread(new ThreadStart(() => mServer.FTPstart()));
+                mServerThread.Start();
+            }
+            catch
+            {
+                Reset();
+            }
+
+
         }
         public void Shutdown()
         {

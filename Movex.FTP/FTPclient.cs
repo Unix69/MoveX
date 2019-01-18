@@ -10,16 +10,26 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.Security;
 using Movex;
+using System.Collections.Concurrent;
 
 namespace Movex.FTP
 {
     public class FTPclient
     {
 
+        #region Member(s)
         private List<UploadChannel> mUchans;
         private Mutex mUchansDataLock;
-
         private UTransfer[] mTransfer;
+
+        // Member(s) useful for syncrhonization with Movex.View.Core
+        private ManualResetEvent mRequestAvailable;
+        private ConcurrentQueue<string> mRequests;
+        private ConcurrentDictionary<string, int> mTypeRequests;
+        private ConcurrentDictionary<string, string> mMessages;
+        private ConcurrentDictionary<string, ManualResetEvent[]> mSync;
+        private ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
+        #endregion
 
         public FTPclient()
         {
@@ -1152,7 +1162,21 @@ namespace Movex.FTP
             }
             return (ntransfer);
         }
-
-
+        public void SetSynchronization(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent[]> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
+        {
+            mRequestAvailable = requestAvailable;
+            mRequests = requests;
+            mTypeRequests = typeRequests;
+            mMessages = messages;
+            mSync = sync;
+            mResponses = responses;
+        }
+        private void Reset()
+        {
+            var Id = "FtpClientId";
+            mRequests.Enqueue(Id);
+            mTypeRequests.TryAdd(Id, 106);
+            mRequestAvailable.Set();
+        }
     }
 }

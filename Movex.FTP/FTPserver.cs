@@ -921,5 +921,12 @@ namespace Movex.FTP
             if (dTransfer is DTransfer) { return dTransfer; }
             else return null;                        
         }
+        private void Reset()
+        {
+            var Id = "FtpServerId";
+            mRequests.Enqueue(Id);
+            mTypeRequests.TryAdd(Id, 107);
+            mRequestAvailable.Set();
+        }
     }
 }

@@ -19,6 +19,8 @@ namespace Movex.View
         private const int UploadTransferRequest = 103;
         private const int DownloadTransferRequest = 104;
         private const int MessageRequest = 105;
+        private const int ResetFtpClient = 106;
+        private const int ResetFtpServer = 107;
         #endregion
 
         #region Private member(s)
@@ -167,6 +169,16 @@ namespace Movex.View
                         });
                         MessageWindowThread.SetApartmentState(ApartmentState.STA);
                         MessageWindowThread.Start();
+                        break;
+
+                    case ResetFtpClient:
+
+                        IoC.FtpClient.Reset();
+                        break;
+
+                    case ResetFtpServer:
+
+                        IoC.FtpServer.Reset();
                         break;
 
                     default:

@@ -4,6 +4,7 @@ using Movex.FTP;
 using System.Threading;
 using System.Collections.Generic;
 using System;
+using System.Collections.Concurrent;
 
 namespace Movex.View.Core
 {
@@ -23,13 +24,30 @@ namespace Movex.View.Core
         /// </summary>
         public FTPclient()
         {
-            mClient = new Movex.FTP.FTPclient();
+            try
+            {
+                mClient = new Movex.FTP.FTPclient();
+            } catch(Exception e)
+            {
+                Reset();
+            }
+
+            
         }
 
         #endregion
 
         #region Public Methods
-
+        public void SetSynchronization(
+            ManualResetEvent requestAvailable,
+            ConcurrentQueue<string> requests,
+            ConcurrentDictionary<string, int> typeRequests,
+            ConcurrentDictionary<string, string> messages,
+            ConcurrentDictionary<string, ManualResetEvent[]> sync,
+            ConcurrentDictionary<string, ConcurrentBag<string>> responses)
+        {
+            mClient.SetSynchronization(requestAvailable, requests, typeRequests, messages, sync, responses);
+        }
         /// <summary>
         /// Send a file using the FTP Client
         /// </summary>
