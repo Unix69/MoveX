@@ -8,7 +8,7 @@ namespace Movex.FTP
 {
   public class DTransfer
     {
-
+         
         private DownloadChannel mDchan;
         private long mStartTimeMillisec;
         private long mToTransfer;
@@ -36,7 +36,7 @@ namespace Movex.FTP
 
         public void StartTransfer()
         {
-            mStartTimeMillisec = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
+            mStartTimeMillisec = DateTime.Now.Millisecond;
         }
        
 
@@ -66,8 +66,19 @@ namespace Movex.FTP
         {
             try
             {
-                var var_milliseconds = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
-                return ((mToTransfer - GetTransfered()) / (GetTransfered() / (var_milliseconds - mStartTimeMillisec)));
+                var timeTaken = DateTime.Now.Millisecond - mStartTimeMillisec;
+                Console.WriteLine("TimeTaken: " + timeTaken.ToString());
+
+                var processed = GetTransfered();
+                Console.WriteLine("Processed: " + processed.ToString());
+
+                var left = (mToTransfer - GetTransfered());
+                Console.WriteLine("Left: " + left);
+
+                var remainingTime = timeTaken * ((float)left/processed);
+                Console.WriteLine("remainingTime: " + remainingTime.ToString());
+
+                return (long)remainingTime;
             }
             catch (DivideByZeroException e) { return (0); }
             catch (Exception e) { throw e; }
