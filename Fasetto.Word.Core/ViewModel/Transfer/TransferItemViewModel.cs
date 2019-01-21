@@ -29,28 +29,11 @@ namespace Movex.View.Core
         /// <summary>
         /// The Size (dimension) of the item to be sent
         /// </summary>
-        public long Size { get; set; }
+        public string Size { get; set; }
 
         #endregion
 
         #region Constructor
-
-        /// <summary>
-        /// Default construcor
-        /// </summary>
-        public TransferItemViewModel() { }
-
-        /// <summary>
-        /// Constructor taking the properties as input
-        /// </summary>
-        /// <param name="path">The path of the file to be sent.</param>
-        /// <param name="size">The size (dimensione) of the file to be sent.</param>
-        public TransferItemViewModel(string path, long size)
-        {
-            Path = path;
-            Size = size;
-        }
-
         /// <summary>
         /// Constructor taking the properties as input
         /// </summary>
@@ -62,9 +45,30 @@ namespace Movex.View.Core
             Index = index;
             AlternationIndex = index % 2;
             Path = path;
-            Size = size;
+            Size = GetConvertedNumber(size);
         }
 
+        #endregion
+
+        #region Utility methods
+        public string GetBytesSufix(ref double bytes)
+        {
+            string[] sufixes = { "", "K", "M", "G", "T", "P" };
+            var s = 0;
+            while (bytes > 1024)
+            {
+                bytes /= 1024;
+                s++;
+            }
+            return (sufixes[s]);
+        }
+        public string GetConvertedNumber(long bytes)
+        {
+            double b = bytes;
+            var sufix = GetBytesSufix(ref b);
+            var r = Math.Round(b,2);
+            return (r.ToString() + " " + sufix + "b");
+        }
         #endregion
 
     }

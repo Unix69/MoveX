@@ -124,7 +124,6 @@
 						<ListView.View>
 							<GridView AllowsColumnReorder="False">
 								<GridView.Columns>
-									<GridViewColumn Width="50" Header="ID" DisplayMemberBinding="{Binding Path=Index}"/>
 									<GridViewColumn Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={local:StarWidthValueConverter}}"  Header="Percorso" DisplayMemberBinding="{Binding Path=Path}" />
 									<GridViewColumn Width="100" Header="Dimensione" DisplayMemberBinding="{Binding Path=Size}" />
 								</GridView.Columns>
