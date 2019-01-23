@@ -36,7 +36,7 @@ namespace Movex.FTP
 
         public void StartTransfer()
         {
-            mStartTimeMillisec = DateTime.Now.Millisecond;
+            mStartTimeMillisec = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
         }
        
 
@@ -50,6 +50,7 @@ namespace Movex.FTP
             if (mDchan != null)
             {
                 mTransfered += dchan.GetTotReceived();
+                mNTransfer += dchan.GetCompleteTransfer();
             }
             mDchan = null;
         }
@@ -66,19 +67,13 @@ namespace Movex.FTP
         {
             try
             {
-                var timeTaken = DateTime.Now.Millisecond - mStartTimeMillisec;
-                Console.WriteLine("TimeTaken: " + timeTaken.ToString());
-
+                var timeNow = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
+                var timeTaken = timeNow - mStartTimeMillisec;
                 var processed = GetTransfered();
-                Console.WriteLine("Processed: " + processed.ToString());
-
                 var left = (mToTransfer - GetTransfered());
-                Console.WriteLine("Left: " + left);
+                var remainingTime = timeTaken * ((float)left / processed);
 
-                var remainingTime = timeTaken * ((float)left/processed);
-                Console.WriteLine("remainingTime: " + remainingTime.ToString());
-
-                return (long)remainingTime;
+                return ((long)remainingTime);
             }
             catch (DivideByZeroException e) { return (0); }
             catch (Exception e) { throw e; }
@@ -125,7 +120,17 @@ namespace Movex.FTP
         }
         public float GetTransferPerc()
         {
-            return (((float)GetTransfered() / mToTransfer) * 100);
+            try
+            {
+                var perc = ((float)GetTransfered() / mToTransfer) * 100;
+                return perc;
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.WriteLine(e.Message);
+                return (0);
+            }
+            catch (Exception e) { throw e; }
         }
         public string GetFrom()
         {            

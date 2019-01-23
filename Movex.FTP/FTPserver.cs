@@ -604,7 +604,7 @@ namespace Movex.FTP
                 tag = RecvTag(ref clientsocket);
                 if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
 
-
+                transfer.StartTransfer();
                 switch (tag)
                 {
                     case FTPsupporter.Tags.Filesend:
@@ -889,21 +889,7 @@ namespace Movex.FTP
         public void SetAutomaticSave(bool value) { mAutomaticSave = Convert.ToBoolean(value); }
         public void SetAutomaticReception(bool value) { mAutomaticReception = Convert.ToBoolean(value); }
         public void SetDownloadDefaultFolder(string path) { mDownloadDefaultFolder = path; }
-        /*
-        public DownloadChannel GetChannel(string ipaddress)
-        {
-            foreach (var dchan in mDchans)
-            {
-                if (dchan.Get_from().ToString().Equals(ipaddress))
-                {
-                    return (dchan);
-                }
 
-            }
-
-            return (null);
-        }
-        */
         public DTransfer GetTransfer(string ipAddress)
         {
             // Check input syntax

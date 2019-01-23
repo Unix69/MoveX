@@ -85,11 +85,22 @@ namespace Movex.FTP
             }
         }
         public long GetToTransfer() { return (mToTransfer); }
+        public long GetTransferComplete()
+        {
+            if (mUchan != null)
+            {
+                return (mNTransfer + mUchan.GetCompleteTransfer());
+            }
+            return (mNTransfer);
+        }
+        public long GetTotTransferToDo()
+        {
+            return (mTotNTransfer);
+        }
         public float GetTransferPerc() {
             try
             {
-                var ratio = ((float) GetTransfered() / mToTransfer);
-                var perc = (ratio * 100);
+                var perc = ((float)GetTransfered() / mToTransfer) * 100;
                 return perc;
             }
             catch (DivideByZeroException e) {
@@ -99,15 +110,8 @@ namespace Movex.FTP
             catch (Exception e) { throw e; }
             
         }
-        public long GetTransferComplete() {
-            if (mUchan != null) {
-                return (mNTransfer + mUchan.GetCompleteTransfer());
-            }
-            return (mNTransfer);
-        }
-        public long GetTotTransferToDo() {
-            return (mTotNTransfer);
-        }
+       
+       
         public string GetTo()
         {
             if (mUchan == null) { return null; }
