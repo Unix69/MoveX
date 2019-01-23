@@ -212,17 +212,34 @@ namespace Movex.FTP
 
 
         public void InterruptUpload() {
-           
-            if (mMain_upload_thread == null) { return; }
-
             try
             {
-                mInterrupted = true;
-                mMain_upload_thread.Interrupt();
-                mMain_upload_thread.Abort();
+
+                try
+                {
+                    if (mSocket != null)
+                    {
+                        mSocket.Shutdown(SocketShutdown.Both);
+                        mSocket.Dispose();
+                        mSocket.Close();
+                    }
+                }
+
+                catch (SocketException e) { Console.WriteLine(e.Message); return; }
+                catch (ObjectDisposedException e) { Console.WriteLine(e.Message); return; }
+                catch (Exception e) { Console.WriteLine(e.Message); return; }
+
+
+                if (mMain_upload_thread != null)
+                {
+                    mMain_upload_thread.Interrupt();
+                    mInterrupted = true;
+                    mMain_upload_thread.Abort();
+                }
             }
             catch (SecurityException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadStateException e) { Console.WriteLine(e.Message); throw e; }
+
         }
 
         public bool IsInterrupted() {

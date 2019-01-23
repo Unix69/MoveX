@@ -88,19 +88,13 @@ namespace Movex.View.Core
         {
             if (Type == "Upload")
             {
-                if (!IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).IsInterrupted())
-                {
-                    IoC.FtpClient.GetChannel(IPAddress.Parse(IpAddress)).InterruptUpload();
-                    CloseWindowEvent.Set();
-                }
+                IoC.FtpClient.InterruptUpload(IPAddress.Parse(IpAddress));
+                CloseWindowEvent.Set();
             }
             else if (Type == "Download")
             {
-                if (!IoC.FtpServer.GetChannel(IPAddress.Parse(IpAddress)).IsInterrupted())
-                {
-                    IoC.FtpServer.GetChannel(IPAddress.Parse(IpAddress)).InterruptDownload();
-                    CloseWindowEvent.Set();
-                }
+                IoC.FtpServer.InterruptDownload(IPAddress.Parse(IpAddress));
+                CloseWindowEvent.Set();
             }
 
             

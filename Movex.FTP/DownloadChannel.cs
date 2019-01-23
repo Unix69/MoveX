@@ -195,7 +195,22 @@ namespace Movex.FTP
         {
             try
             {
-                
+
+                try
+                {
+                    if (mSocket != null)
+                    {
+                        mSocket.Shutdown(SocketShutdown.Both);
+                        mSocket.Dispose();
+                        mSocket.Close();
+                    }
+                }
+
+                catch (SocketException e) { Console.WriteLine(e.Message); return; }
+                catch (ObjectDisposedException e) { Console.WriteLine(e.Message); return; }
+                catch (Exception e) { Console.WriteLine(e.Message); return; }
+
+
                 if (mMain_download_thread != null)
                 {
                     mMain_download_thread.Interrupt();

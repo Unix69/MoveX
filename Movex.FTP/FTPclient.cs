@@ -46,7 +46,9 @@ namespace Movex.FTP
                 var result = FTPsingleFile_s(ipaddress);
                 return;
             }
-            catch (Exception e) { throw e; }
+            
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
 
         }
 
@@ -57,7 +59,9 @@ namespace Movex.FTP
                 var result = FTPmultiFile_s(ipaddress);
                 return;
             }
-            catch (Exception e) { throw e; }
+            
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
         private void FTPsingleClientTree_serial(Socket clientsocket, IPAddress ipaddress, string root, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
@@ -67,7 +71,8 @@ namespace Movex.FTP
                 var result = FTPsingleClientTree_s(ref clientsocket, root, ipaddress, transfer, uTransferAvailability, windowAvailability);
                 return;
             }
-            catch (Exception e) { throw e; }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
 
         }
 
@@ -78,10 +83,9 @@ namespace Movex.FTP
                 var result = FTPsingleClientMultiTree_s(ref clientsocket, ipaddress, roots, transfer, uTransferAvailability, windowAvailability);
                 return;
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+
 
 
         }
@@ -100,7 +104,10 @@ namespace Movex.FTP
                 return (true);
             }
 
-            catch (Exception e) { throw e; }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+
+
 
 
         }
@@ -135,7 +142,9 @@ namespace Movex.FTP
 
                 return (true);
             }
-            catch (Exception e) { throw e; }
+       
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
 
         }
 
@@ -154,8 +163,8 @@ namespace Movex.FTP
         public string GetConvertedNumber(long bytes)
         {
             double b = bytes;
-            string sufix = GetBytesSufix(ref b);
-            float r = (float)b;
+            var sufix = GetBytesSufix(ref b);
+            var r = (float)b;
             return (r.ToString() + " " + sufix + "b");
         }
 
@@ -205,7 +214,8 @@ namespace Movex.FTP
 
                 return (result);
             }
-            catch (Exception e) { throw e; }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
 
         }
 
@@ -233,7 +243,10 @@ namespace Movex.FTP
                 return (result);
 
             }
-            catch (Exception e) { throw e; }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+
+
 
         }
 
@@ -271,7 +284,6 @@ namespace Movex.FTP
             {
                 while (clientsocket.Connected) ;
                 clientsocket.Shutdown(SocketShutdown.Both);
-                clientsocket.Dispose();
                 clientsocket.Close();
             }
             catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
@@ -454,12 +466,15 @@ namespace Movex.FTP
                 if (!RefreshCannels(newUploadChannel)) { throw new IOException("Channels Unrefreshable"); }
                 return (true);
             }
-            catch (Exception e) { throw e; }
+            
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
 
         }
 
         private void Files(string[] filenames, IPAddress ipaddress)
         {
+            try {
             var multifile = false;
 
             if (filenames.Length > 1) { multifile = true; }
@@ -468,6 +483,9 @@ namespace Movex.FTP
             else { FTPmultiFile_serial(ipaddress); }
 
             return;
+            }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public UTransfer GetTransfer(string ipAddress)
@@ -693,7 +711,7 @@ namespace Movex.FTP
 
         }
 
-        private bool InterruptUpload(IPAddress ipaddress)
+        public bool InterruptUpload(IPAddress ipaddress)
         {
             var uchan = GetChannel(ipaddress.ToString());
             if (uchan == null){ return (false); }
@@ -815,25 +833,29 @@ namespace Movex.FTP
 
         private bool SendElement(ref Socket clientsocket, string element)
         {
-
-            var elementlen_buff = BitConverter.GetBytes(element.Length);
-            var element_buff = Encoding.ASCII.GetBytes(element);
-            var bufferOut = new byte[FTPsupporter.Sizes.Elementlensize + element.Length];
-
-            elementlen_buff.CopyTo(bufferOut, 0);
-            element_buff.CopyTo(bufferOut, FTPsupporter.Sizes.Elementlensize);
-
-            var sended = Send(ref clientsocket, ref bufferOut, null, 0);
-            if (sended != (FTPsupporter.Sizes.Elementsizesize + element.Length))
+            try
             {
-                throw new IOException("Cannot send element");
+                var elementlen_buff = BitConverter.GetBytes(element.Length);
+                var element_buff = Encoding.ASCII.GetBytes(element);
+                var bufferOut = new byte[FTPsupporter.Sizes.Elementlensize + element.Length];
+
+                elementlen_buff.CopyTo(bufferOut, 0);
+                element_buff.CopyTo(bufferOut, FTPsupporter.Sizes.Elementlensize);
+
+                var sended = Send(ref clientsocket, ref bufferOut, null, 0);
+                if (sended != (FTPsupporter.Sizes.Elementsizesize + element.Length))
+                {
+                    throw new IOException("Cannot send element");
+                }
+                return (true);
             }
-            return (true);
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
 
         }
 
         private bool SendDepth(ref Socket clientsocket, int depth)
         {
+            try { 
             var depth_buff = BitConverter.GetBytes(depth);
             var sended = Send(ref clientsocket, ref depth_buff, null, 0);
             if (sended != FTPsupporter.Sizes.Depthsize)
@@ -841,10 +863,13 @@ namespace Movex.FTP
                 throw new IOException("Cannot send depth");
             }
             return (true);
+            }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
         }
 
         private bool SendNumele(ref Socket clientsocket, int numele)
         {
+            try { 
             var numele_buff = BitConverter.GetBytes(numele);
             var sended = Send(ref clientsocket, ref numele_buff, null, 0);
             if (sended != FTPsupporter.Sizes.Numelementsize)
@@ -852,10 +877,13 @@ namespace Movex.FTP
                 throw new IOException("Cannot send number of elements");
             }
             return (true);
+            }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
         }
 
         private bool SendTotNFiles(ref Socket clientsocket, long numfiles)
         {
+            try { 
             var numele_buff = BitConverter.GetBytes(numfiles);
             var sended = Send(ref clientsocket, ref numele_buff, null, 0);
             if (sended != FTPsupporter.Sizes.Filesizesize)
@@ -863,6 +891,8 @@ namespace Movex.FTP
                 throw new IOException("Cannot send number of elements");
             }
             return (true);
+            }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
         }
 
         private void CloseBufferW(BinaryWriter binarybuffer)
@@ -908,6 +938,7 @@ namespace Movex.FTP
 
         private void FTPTrees(string[] paths, IPAddress ipaddress, ref Socket clientsocket, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
+            try {
             var multifile = false;
             if (paths.Length > 1) { multifile = true; }
 
@@ -920,8 +951,11 @@ namespace Movex.FTP
                 FTPsingleClientMultiTree_serial(clientsocket, ipaddress, paths, transfer, uTransferAvailability, windowAvailability);
             }
             return;
+            }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
 
-        }
+}
 
         private int GetToS(string[] dirpaths, string[] filepaths)
         {
@@ -966,11 +1000,13 @@ namespace Movex.FTP
                 return (received);
 
             }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
             catch (Exception e) { throw e; }
         }
 
         private int RecvAck(ref Socket clientsocket)
         {
+            try { 
             var bufferIn = new byte[FTPsupporter.Sizes.Tagsize];
             var received = Receive(ref clientsocket, bufferIn);
             if (received == 0)
@@ -979,6 +1015,10 @@ namespace Movex.FTP
             }
             var tag = BitConverter.ToInt32(bufferIn, 0);
             return (tag);
+            }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+
         }
 
         private bool CheckAck(int ack)
@@ -993,6 +1033,7 @@ namespace Movex.FTP
 
         public bool SendTotalBytes(ref Socket clientsocket, long n)
         {
+            try { 
             byte[] bufferOut = new byte[FTPsupporter.Sizes.Filesizesize];
             bufferOut = BitConverter.GetBytes(n);
             var sended = Send(ref clientsocket, ref bufferOut, null, 0);
@@ -1001,6 +1042,8 @@ namespace Movex.FTP
                 throw new IOException("Cannot send total bytes size");
             }
             return (true);
+            }
+            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
         }
 
         public void FTPsendAlltoClient(int tos, string[] directories, string[] files, IPAddress ipaddress, ref Socket clientsocket, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability, UTransfer transfer)
@@ -1056,7 +1099,7 @@ namespace Movex.FTP
                 Console.WriteLine("Send: Connection with client " + clientsocket.RemoteEndPoint.ToString() + " ended succesfully");
                 WaitClient(ref clientsocket);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { Console.WriteLine(e.Message + " / server interrupted connection"); }
             catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadInterruptedException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadAbortException e) { Console.WriteLine(e.Message); throw e; }

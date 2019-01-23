@@ -67,6 +67,10 @@ namespace Movex.View.Core
         {
             return (mClient.GetTransfer(mAddress.ToString()));
         }
+        public void InterruptUpload(IPAddress address)
+        {
+            mClient.InterruptUpload(address);
+        }
         #endregion
     }
 }

@@ -84,7 +84,7 @@ namespace Movex.View
                 if (int.TryParse(progress, out var x))
                 {
                     if (progress.Equals(lastProgress)) { interruptionRisk++; } else { interruptionRisk = 0; }
-                    if (interruptionRisk >= 35) { mCloseWindow.Set(); }
+                    if (interruptionRisk >= 35) {  mCloseWindow.Set(); }
 
                     (sender as BackgroundWorker).ReportProgress(x);
                     lastProgress = progress;

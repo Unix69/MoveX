@@ -79,6 +79,10 @@ namespace Movex.View.Core
         {
             return mServer.GetChannel(address.ToString());
         }
+        public void InterruptDownload(IPAddress ipAdress)
+        {
+            mServer.InterruptDownload(ipAdress);
+        }
         #endregion
     }
 }
