@@ -57,17 +57,6 @@ namespace Movex.FTP
         }
         #endregion
 
-        public void SetSynchronization(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent[]> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
-        {
-            mRequestAvailable = requestAvailable;
-            mRequests = requests;
-            mTypeRequests = typeRequests;
-            mMessages = messages;
-            mSync = sync;
-            mResponses = responses;
-
-            mWindowRequester = new WindowRequester(requestAvailable, requests, typeRequests, messages, sync, responses);
-        }
         private void CloseBufferW(BinaryWriter binarybuffer)
         {
             binarybuffer.Flush();
@@ -96,92 +85,55 @@ namespace Movex.FTP
 
             Accept:
 
-            var client = mServersocket.Accept();
+                var client = mServersocket.Accept();
 
+                if (mPrivateMode == true) {
+                    mVisible.WaitOne();
+                    mVisible.ReleaseMutex();
+                    mPrivateMode = false;
+                }
 
-            if (mPrivateMode == true) {
-                mVisible.WaitOne();
-                mVisible.ReleaseMutex();
-                mPrivateMode = false;
-            }
+                // FIRST STEP: Ask the user if he wants to accept the request.
+                string response;
+                if (mAutomaticReception == false)
+                {
+                    var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
+                    response = mWindowRequester.AddYesNoWindow(message);
+                }
+                else
+                {
+                    response = "Yes";
+                }
+                if (!response.Equals("Yes"))
+                {
+                    client.Close();
+                    goto Accept;
+                }
 
+                // SECOND STEP: Ask the user the download folder.
+                string whereToSave;
+                if (mAutomaticSave == false)
+                {
+                    var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
+                    whereToSave = mWindowRequester.AddWhereWindow(message);
+                    whereToSave = NormalizePath(whereToSave);
+                }
+                else
+                {
+                    whereToSave = mDownloadDefaultFolder;
+                }
 
-
-            /*
-            string response;
-            if (mAutomaticReception == false) { 
-            // Set the message in a concurrent stack
-            var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
-            var Id = "MyId";
-
-            mRequests.Enqueue(Id);
-            mTypeRequests.TryAdd(Id, 101);
-            mMessages.TryAdd(Id, message);
-            var responseAvailable = new ManualResetEvent(false);
-            mSync.TryAdd(Id, responseAvailable);
-            var responseBag = new ConcurrentBag<string>();
-            mResponses.TryAdd(Id, responseBag);
-            mRequestAvailable.Set();
-            responseAvailable.WaitOne();
-            mResponses.TryGetValue(Id, out var responseContainer);
-            responseContainer.TryTake(out response);
-            } else { response = "Yes"; }
-
-            if (!response.Equals("Yes"))
-            {
-                client.Close();
-                goto Accept;
-            }
-
-            string whereToSave;
-            if (mAutomaticSave == false)
-            {
-
-                var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
-                var Id = "MyId2";
-                mRequests.Enqueue(Id);
-                mTypeRequests.TryAdd(Id, 102);
-                mMessages.TryAdd(Id, message);
-                var whereResponseAvailable = new ManualResetEvent(false);
-                mSync.TryAdd(Id, whereResponseAvailable);
-                var whereResponseBag = new ConcurrentBag<string>();
-                mResponses.TryAdd(Id, whereResponseBag);
-                mRequestAvailable.Set();
-                whereResponseAvailable.WaitOne();
-                mResponses.TryGetValue(Id, out var whereResponseContainer);
-                whereResponseContainer.TryTake(out whereToSave);
-            }
-            else { whereToSave = mDownloadDefaultFolder; }
-
-
-            var path = @".\Downloads\";
-            if (whereToSave != null) path = Path.GetFullPath(whereToSave);
-            path = path + @"\";
-            */
-
-            var downloadTransferAvailability = new ManualResetEvent(false);
-            var windowAvailability = new ManualResetEvent(false);
-
-            var path = mDownloadDefaultFolder;
-            var recvfrom = new Thread(new ThreadStart(() => FTPrecv(client, path, downloadTransferAvailability, windowAvailability)))
-            {
-                Priority = ThreadPriority.Highest,
-                Name = "ServerSessionThread"
-            };
-            recvfrom.Start();
-
-            // Genero la richiesta per l'interfaccia grafica
-            var message = client.RemoteEndPoint.ToString().Split(':')[0];
-            var Id = "MyId3";
-            mRequests.Enqueue(Id);
-            mTypeRequests.TryAdd(Id, 104);
-            mMessages.TryAdd(Id, message);
-
-            var syncPrimitives = new ManualResetEvent[2];
-            syncPrimitives[0] = downloadTransferAvailability;
-            syncPrimitives[1] = windowAvailability;
-            mSync.TryAdd(Id, syncPrimitives);
-            mRequestAvailable.Set();
+                // THIRD STEP: Show the DownloadProgressBar
+                var ipAddress = IPAddress.Parse(client.RemoteEndPoint.ToString().Split(':')[0]);
+                var downloadTransferAvailability = new ManualResetEvent(false);
+                var windowAvailability = new ManualResetEvent(false);
+                var recvfrom = new Thread(new ThreadStart(() => FTPrecv(client, whereToSave, downloadTransferAvailability, windowAvailability)))
+                {
+                    Priority = ThreadPriority.Highest,
+                    Name = "ServerSessionThread"
+                };
+                recvfrom.Start();
+                mWindowRequester.AddDownloadProgressWindow(ipAddress, windowAvailability, downloadTransferAvailability);
             
             goto Accept;
         }
@@ -281,8 +233,6 @@ namespace Movex.FTP
 
 
         }
-
-
         public string GetBytesSufix(ref double bytes)
         {
             string[] sufixes = { "", "K", "M", "G", "T", "P" };
@@ -953,12 +903,11 @@ namespace Movex.FTP
             return (numele > 0 && numele <= System.Int32.MaxValue);
         }
 
-        // GETTER(s) AND SETTER(s)
+        #region Getter(s) and Setter(s)
         public void SetPrivateMode(bool value) { mPrivateMode = Convert.ToBoolean(value); }
         public void SetAutomaticSave(bool value) { mAutomaticSave = Convert.ToBoolean(value); }
         public void SetAutomaticReception(bool value) { mAutomaticReception = Convert.ToBoolean(value); }
         public void SetDownloadDefaultFolder(string path) { mDownloadDefaultFolder = path; }
-
         public DTransfer GetTransfer(string ipAddress)
         {
             // Check input syntax
@@ -974,14 +923,20 @@ namespace Movex.FTP
 
             // Return the Download Transfer
             if (dTransfer is DTransfer) { return dTransfer; }
-            else return null;                        
+            else return null;
         }
-        private void Reset()
+        #endregion
+
+        #region Utility function(s)
+        private string NormalizePath(string path)
         {
-            var Id = "FtpServerId";
-            mRequests.Enqueue(Id);
-            mTypeRequests.TryAdd(Id, 107);
-            mRequestAvailable.Set();
+            var normalized = path;
+
+            normalized = normalized.Replace("\r", "");
+            normalized = normalized.Replace("\n", "");
+            normalized = normalized + @"\";
+
+            return normalized;
         }
         private void CheckSocketConnection(ref Socket clientsocket)
         {
@@ -998,5 +953,23 @@ namespace Movex.FTP
             catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
             catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
         }
+        public void SetSynchronization(
+            ManualResetEvent requestAvailable,
+            ConcurrentQueue<string> requests,
+            ConcurrentDictionary<string, int> typeRequests,
+            ConcurrentDictionary<string, string> messages,
+            ConcurrentDictionary<string, ManualResetEvent[]> sync,
+            ConcurrentDictionary<string, ConcurrentBag<string>> responses)
+        {
+            mRequestAvailable = requestAvailable;
+            mRequests = requests;
+            mTypeRequests = typeRequests;
+            mMessages = messages;
+            mSync = sync;
+            mResponses = responses;
+
+            mWindowRequester = new WindowRequester(requestAvailable, requests, typeRequests, messages, sync, responses);
+        }
+        #endregion
     }
 }

@@ -43,7 +43,7 @@ namespace Movex.View
         public void AddUploadProgressWindow(
             IPAddress ipAddress,
             ManualResetEvent windowAvailability,
-            ManualResetEvent downloadTransferAvailability)
+            ManualResetEvent uploadTransferAvailability)
         {
             var Id = "AddUploadProgressWindow";
             var ip = ipAddress.ToString();
@@ -52,7 +52,7 @@ namespace Movex.View
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 103);
             mMessages.TryAdd(Id, ip);
-            syncPrimitives[0] = downloadTransferAvailability;
+            syncPrimitives[0] = uploadTransferAvailability;
             syncPrimitives[1] = windowAvailability;
             mSync.TryAdd(Id, syncPrimitives);
             mRequestAvailable.Set();

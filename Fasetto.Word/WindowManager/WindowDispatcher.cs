@@ -79,6 +79,11 @@ namespace Movex.View
                 {
                     case YesNoRequest:
 
+                        /*
+                         * I am expecting:
+                         * syncPrimitives[0] as YesNoResponseAvailability ManualResetEvent
+                         */
+
                         Sync.TryGetValue(Id, out var YesNoResponseAvailability);
                         Messages.TryGetValue(Id, out var message);
                         Responses.TryGetValue(Id, out var response);
@@ -94,6 +99,11 @@ namespace Movex.View
                         break;
 
                     case WhereRequest:
+
+                        /*
+                         * I am expecting:
+                         * syncPrimitives[0] as WhereResponseAvailability ManualResetEvent
+                         */
 
                         Sync.TryGetValue(Id, out var WhereResponseAvailability);
                         Messages.TryGetValue(Id, out var whereMessage);
