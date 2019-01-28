@@ -21,10 +21,11 @@ namespace Movex.View
         private const int MessageRequest = 105;
         private const int ResetFtpClient = 106;
         private const int ResetFtpServer = 107;
+        private const int RemoveUploadTransferWindow = 108;
+        private const int RemoveDownloadTransferWindow = 109;
         #endregion
 
         #region Private member(s)
-        private ConcurrentStack<Window> mWindows;
         private Thread mInternaThread;
         private Thread mLooper;
         #endregion
@@ -40,7 +41,6 @@ namespace Movex.View
 
         public void Init()
         {
-            mWindows = new ConcurrentStack<Window>();
             RequestAvailable = new ManualResetEvent(false);
             Requests = new ConcurrentQueue<string>();
             TypeRequests = new ConcurrentDictionary<string, int>();
@@ -55,7 +55,6 @@ namespace Movex.View
         public void Stop() {
             mLooper.Abort();
             mInternaThread.Abort();
-            mWindows.Clear();
             mLooper = null;
             mInternaThread = null;
         }
@@ -64,6 +63,8 @@ namespace Movex.View
         {
             mLooper = new Thread(() =>
             {
+                var threads = new List<Thread>();
+
                 waitForRequest: RequestAvailable.WaitOne();
                 RequestAvailable.Reset();
                 
@@ -85,7 +86,6 @@ namespace Movex.View
                         var YesNoWindowThread = new Thread(() =>
                         {
                             var w = new YesNoWindow(YesNoResponseAvailability[0], message, response);
-                            mWindows.Push(w);
                             w.Show();
                             System.Windows.Threading.Dispatcher.Run();
                         });
@@ -102,7 +102,6 @@ namespace Movex.View
                         var WhereWindowThread = new Thread(() =>
                         {
                             var w = new WhereWindow(WhereResponseAvailability[0], whereMessage, whereResponse);
-                            mWindows.Push(w);
                             w.Show();
                             System.Windows.Threading.Dispatcher.Run();
                         });
@@ -114,7 +113,7 @@ namespace Movex.View
 
                         /*
                          * I am expecting:
-                         * syncPrimitives[0] as downloadTransferAvailability ManualResetEvent
+                         * syncPrimitives[0] as uploadTransferAvailability ManualResetEvent
                          * syncPrimitives[1] as windowAvailability ManualResetEvent
                          */
 
@@ -124,12 +123,13 @@ namespace Movex.View
                         var UploadProgressWindowThread = new Thread(() =>
                         {
                             var w = new UploadProgressWindow(IPAddress.Parse(ipAddress), syncVariables[0]);
-                            mWindows.Push(w);
                             w.Show();
                             syncVariables[1].Set();
                             System.Windows.Threading.Dispatcher.Run();
                         });
                         UploadProgressWindowThread.SetApartmentState(ApartmentState.STA);
+                        UploadProgressWindowThread.Name = ipAddress;
+                        threads.Add(UploadProgressWindowThread);
                         UploadProgressWindowThread.Start();
                         break;
 
@@ -147,12 +147,13 @@ namespace Movex.View
                         var DownloadProgressWindowThread = new Thread(() =>
                         {
                             var w = new DownloadProgressWindow(IPAddress.Parse(ip), syncPrimitives[0]);
-                            mWindows.Push(w);
                             w.Show();
                             syncPrimitives[1].Set();
                             System.Windows.Threading.Dispatcher.Run();
                         });
                         DownloadProgressWindowThread.SetApartmentState(ApartmentState.STA);
+                        DownloadProgressWindowThread.Name = ip;
+                        threads.Add(DownloadProgressWindowThread);
                         DownloadProgressWindowThread.Start();
                         break;
 
@@ -163,7 +164,6 @@ namespace Movex.View
                         var MessageWindowThread = new Thread(() =>
                         {
                             var w = new MessageWindow(msg);
-                            mWindows.Push(w);
                             w.Show();
                             System.Windows.Threading.Dispatcher.Run();
                         });
@@ -179,6 +179,34 @@ namespace Movex.View
                     case ResetFtpServer:
 
                         IoC.FtpServer.Reset();
+                        break;
+
+                    case RemoveUploadTransferWindow:
+
+                        Messages.TryGetValue(Id, out var ipAddressReceiver);
+
+                        foreach (var t in threads.ToList())
+                        {
+                            if (ipAddressReceiver.Equals(t.Name))
+                            {
+                                t.Abort();
+                                threads.Remove(t);
+                            }
+                        }
+                        break;
+
+                    case RemoveDownloadTransferWindow:
+
+                        Messages.TryGetValue(Id, out var ipAddressSender);
+
+                        foreach (var t in threads.ToList())
+                        {
+                            if (ipAddressSender.Equals(t.Name))
+                            {
+                                t.Abort();
+                                threads.Remove(t);
+                            }                                
+                        }
                         break;
 
                     default:

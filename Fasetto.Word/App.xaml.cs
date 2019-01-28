@@ -18,6 +18,7 @@ namespace Movex.View
         private string[] mArgs;
         private int mIndex;
         private Mode mModeOn = Mode.Traditional;
+        private WindowRequester mWindowRequester;
 
         #region Members for project-inner-access
         private BrowsePage mBrowsePage;
@@ -51,6 +52,22 @@ namespace Movex.View
             // Setup IoC
             IoC.Setup();
             IoC.FtpServer.SetSynchronization(
+                WindowDispatcher.RequestAvailable,
+                WindowDispatcher.Requests,
+                WindowDispatcher.TypeRequests,
+                WindowDispatcher.Messages,
+                WindowDispatcher.Sync,
+                WindowDispatcher.Responses
+                );
+            IoC.FtpClient.SetSynchronization(
+                WindowDispatcher.RequestAvailable,
+                WindowDispatcher.Requests,
+                WindowDispatcher.TypeRequests,
+                WindowDispatcher.Messages,
+                WindowDispatcher.Sync,
+                WindowDispatcher.Responses
+                );
+            mWindowRequester = new WindowRequester(
                 WindowDispatcher.RequestAvailable,
                 WindowDispatcher.Requests,
                 WindowDispatcher.TypeRequests,
@@ -129,7 +146,7 @@ namespace Movex.View
             }
         }
 
-        /// Getter(s) and setter(s)        
+        #region Getter(s) and Setter(s)
         public void SetUserListControl(UserListControl control) { mUserListControl = control; }
         public UserListControl GetUserListControl() { return mUserListControl; }
         public void SetBrowsePage(BrowsePage browsePage) { mBrowsePage = browsePage; }
@@ -145,13 +162,9 @@ namespace Movex.View
                 return null;
             }
         }
-        public Mode GetModeOn()
-        {
-            return mModeOn;
-        }
-        public void SetModeOn(Mode modeOn)
-        {
-            mModeOn = modeOn;
-        }
+        public Mode GetModeOn() { return mModeOn; }
+        public void SetModeOn(Mode modeOn) { mModeOn = modeOn; }
+        public WindowRequester GetWindowRequester() { return mWindowRequester; }
+        #endregion
     }
 }

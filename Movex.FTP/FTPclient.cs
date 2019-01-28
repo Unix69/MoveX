@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Threading;
-using System.Text.RegularExpressions;
 using System.Security;
-using Movex;
 using System.Collections.Concurrent;
 
 namespace Movex.FTP
@@ -29,6 +25,7 @@ namespace Movex.FTP
         private ConcurrentDictionary<string, string> mMessages;
         private ConcurrentDictionary<string, ManualResetEvent[]> mSync;
         private ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
+        private WindowRequester mWindowRequester;
         #endregion
 
         public FTPclient()
@@ -1034,7 +1031,7 @@ namespace Movex.FTP
         public bool SendTotalBytes(ref Socket clientsocket, long n)
         {
             try { 
-            byte[] bufferOut = new byte[FTPsupporter.Sizes.Filesizesize];
+            var bufferOut = new byte[FTPsupporter.Sizes.Filesizesize];
             bufferOut = BitConverter.GetBytes(n);
             var sended = Send(ref clientsocket, ref bufferOut, null, 0);
             if (sended != FTPsupporter.Sizes.Filesizesize)
@@ -1099,7 +1096,15 @@ namespace Movex.FTP
                 Console.WriteLine("Send: Connection with client " + clientsocket.RemoteEndPoint.ToString() + " ended succesfully");
                 WaitClient(ref clientsocket);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message + " / server interrupted connection"); }
+            catch (SocketException e) {
+
+                var message = "Il trasferimento è stato interrotto.";
+                var ipAddress = ipaddress.ToString();
+
+                Console.WriteLine(e.Message + " / " + message);
+                mWindowRequester.RemoveUploadProgressWindow(ipAddress);
+                mWindowRequester.AddMessageWindow(message);
+            }
             catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadInterruptedException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadAbortException e) { Console.WriteLine(e.Message); throw e; }
@@ -1132,14 +1137,16 @@ namespace Movex.FTP
                 var directories = new string[numelements];
                 var numclients = ipaddresses.Length;
                 Socket[] clientsockets = null;
-                Thread[] nsendto = new Thread[numclients];
-                int tos = 0;
+                var nsendto = new Thread[numclients];
+                var tos = 0;
 
 
 
-                Thread collect = new Thread(new ThreadStart(() => CollectData(numclients, paths, ref directories, ref files, ref tos)));
-                collect.Priority = ThreadPriority.Highest;
-                collect.Name = "CollectDataThread";
+                var collect = new Thread(new ThreadStart(() => CollectData(numclients, paths, ref directories, ref files, ref tos)))
+                {
+                    Priority = ThreadPriority.Highest,
+                    Name = "CollectDataThread"
+                };
                 collect.Start();
 
                 clientsockets = GetSocketsForClients(ipaddresses);
@@ -1213,6 +1220,8 @@ namespace Movex.FTP
             mMessages = messages;
             mSync = sync;
             mResponses = responses;
+
+            mWindowRequester = new WindowRequester(requestAvailable, requests, typeRequests, messages, sync, responses);
         }
         private void Reset()
         {

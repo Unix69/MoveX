@@ -12,7 +12,6 @@ namespace Movex.FTP
 {
     public class FTPserver
     {
-
         #region Private members
         // Member(s) useful for Network Functionality
         private Socket mServersocket;
@@ -36,6 +35,7 @@ namespace Movex.FTP
         private ConcurrentDictionary<string, string> mMessages;
         private ConcurrentDictionary<string, ManualResetEvent[]> mSync;
         private ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
+        private WindowRequester mWindowRequester;
         #endregion
 
         #region Constructor
@@ -65,6 +65,8 @@ namespace Movex.FTP
             mMessages = messages;
             mSync = sync;
             mResponses = responses;
+
+            mWindowRequester = new WindowRequester(requestAvailable, requests, typeRequests, messages, sync, responses);
         }
         private void CloseBufferW(BinaryWriter binarybuffer)
         {
@@ -665,7 +667,15 @@ namespace Movex.FTP
                 return;
             }
             catch (OutOfMemoryException e) { Console.WriteLine(e.Message); throw e; }
-            catch (SocketException e) { Console.WriteLine(e.Message + " / client nterrupted connection "); }
+            catch (SocketException e) {
+
+                var message = "Il trasferimento è stato interrotto.";
+                var ipAddress = clientsocket.RemoteEndPoint.ToString().Split(':')[0];
+
+                Console.WriteLine(e.Message + " / " + message);
+                mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
+                mWindowRequester.AddMessageWindow(message);
+            }
             catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadInterruptedException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadAbortException e) { Console.WriteLine(e.Message); throw e; }

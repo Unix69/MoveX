@@ -21,6 +21,7 @@ namespace Movex.View
         private List<string> mFilepaths;
         private TransferItemListDesignModel mTransferItemList;
         private TransferItemViewModel mSelectedItem;
+        private WindowRequester mWindowRequestr;
         #endregion
 
         #region Constructor
@@ -29,11 +30,12 @@ namespace Movex.View
             InitializeComponent();
             mFilepaths = new List<string>();
 
+            mWindowRequestr                     = ((App)(Application.Current)).GetWindowRequester();
             mTransferItemList                   = ViewModelLocator.TransferItemListDesignModel;
             TransferItemList.ItemsSource        = mTransferItemList.Items;
             mTransferItemList.UsersAvailable    = ((App)(Application.Current)).GetUserListControl().GetUsersSelectedNumber() > 0 ? true : false;
             mTransferItemList.TransferAvailable = mTransferItemList.Items.Count == 0 ? false : true;
-           
+            
             ((App)(Application.Current)).SetBrowsePage(this);
             
             // Load the file(s) and the folder(s), if ready
@@ -174,18 +176,7 @@ namespace Movex.View
                      // Scope valid for each thread only
                     {       
                         var index = i;
-                        var WindowThread = new Thread(() =>
-                        {
-                            var address = addresses[index];
-                            var windowAvailability = WindowsAvailabilities[index];
-                            var uTransferAvailability = TransferAvailabilities[index];
-
-                            new UploadProgressWindow(address, uTransferAvailability).Show();
-                            windowAvailability.Set();
-                            System.Windows.Threading.Dispatcher.Run();   
-                        });
-                        WindowThread.SetApartmentState(ApartmentState.STA);
-                        WindowThread.Start();
+                        mWindowRequestr.AddUploadProgressWindow(addresses[index], WindowsAvailabilities[index], TransferAvailabilities[index]);
                     }
                 }
 

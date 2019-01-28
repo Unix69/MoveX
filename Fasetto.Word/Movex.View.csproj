@@ -179,8 +179,9 @@
     <Compile Include="ViewManager\Window.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModels\WindowViewModel.cs" />
-    <Compile Include="WindowDispatcher\WindowDispatcher.cs" />
-    <Compile Include="WindowDispatcher\IWindowDispatcher.cs" />
+    <Compile Include="WindowManager\WindowDispatcher.cs" />
+    <Compile Include="WindowManager\IWindowDispatcher.cs" />
+    <Compile Include="WindowManager\WindowRequester.cs" />
     <Compile Include="Window\MessageWindow\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
