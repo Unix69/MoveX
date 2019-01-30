@@ -154,11 +154,16 @@ namespace Movex.View
                         Sync.TryGetValue(Id, out var syncPrimitives);
                         Messages.TryGetValue(Id, out var ip);
 
+                        Console.WriteLine("[WindowDispatcher.cs] [DownloadTransferRequest] User's IpAddress: " + ip);
+                        Console.WriteLine("[WindowDispatcher.cs] [DownloadTransferRequest] Received WindowAvailability Handle: " + syncPrimitives[1].Handle.ToInt64().ToString());
+                        Console.WriteLine("[WindowDispatcher.cs] [DownloadTransferRequest] Receveid DownlaodTransferAvailability Handle: " + syncPrimitives[0].Handle.ToInt64().ToString());
+
                         var DownloadProgressWindowThread = new Thread(() =>
                         {
                             var w = new DownloadProgressWindow(IPAddress.Parse(ip), syncPrimitives[0]);
                             w.Show();
                             syncPrimitives[1].Set();
+                            Console.WriteLine("[WindowDispatcher.cs] [DownloadTransferRequest] Set the DonwloadProgressWindow as available. The transfer can take action.");
                             System.Windows.Threading.Dispatcher.Run();
                         });
                         DownloadProgressWindowThread.SetApartmentState(ApartmentState.STA);

@@ -12,9 +12,14 @@ namespace Movex.View.Core
     {
 
         #region Private Properties
-
         Movex.FTP.FTPclient mClient;
-
+        // Useful for sync with Movex.FTP
+        ManualResetEvent mRequestAvailable;
+        ConcurrentQueue<string> mRequests;
+        ConcurrentDictionary<string, int> mTypeRequests;
+        ConcurrentDictionary<string, string> mMessages;
+        ConcurrentDictionary<string, ManualResetEvent[]> mSync;
+        ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
         #endregion
 
         #region Constructor
@@ -46,6 +51,15 @@ namespace Movex.View.Core
             ConcurrentDictionary<string, ManualResetEvent[]> sync,
             ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
+            // Copy them in the instance of the Movex.View.Core.FTPClient
+            mRequestAvailable = requestAvailable;
+            mRequests = requests;
+            mTypeRequests = typeRequests;
+            mMessages = messages;
+            mSync = sync;
+            mResponses = responses;
+
+            // Send them to the Movex.FTP.FTPClient
             mClient.SetSynchronization(requestAvailable, requests, typeRequests, messages, sync, responses);
         }
         /// <summary>
@@ -59,6 +73,7 @@ namespace Movex.View.Core
         {
             mClient = null;
             mClient = new Movex.FTP.FTPclient();
+            mClient.SetSynchronization(mRequestAvailable, mRequests, mTypeRequests, mMessages, mSync, mResponses);
         }
         public UploadChannel GetChannel(IPAddress address) {
             return(mClient.GetChannel(address.ToString()));

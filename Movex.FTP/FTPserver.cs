@@ -13,9 +13,13 @@ namespace Movex.FTP
     public class FTPserver
     {
         #region Private members
+
         // Member(s) useful for Network Functionality
         private Socket mServersocket;
 
+        // Member(s) useful for syncrhonization with Movex.View.Core
+        private WindowRequester mWindowRequester;
+        
         // Member(s) useful for History and Restore Functions
         private List<DownloadChannel> mDchans;
         private Mutex mDchansDataLock;
@@ -28,33 +32,48 @@ namespace Movex.FTP
         private string mDownloadDefaultFolder;
         private Mutex mVisible;
 
-        // Member(s) useful for syncrhonization with Movex.View.Core
-        private ManualResetEvent mRequestAvailable;
-        private ConcurrentQueue<string> mRequests;
-        private ConcurrentDictionary<string, int> mTypeRequests;
-        private ConcurrentDictionary<string, string> mMessages;
-        private ConcurrentDictionary<string, ManualResetEvent[]> mSync;
-        private ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
-        private WindowRequester mWindowRequester;
         #endregion
 
-        #region Constructor
-        public FTPserver(int port, bool PrivateMode, bool AutomaticReception, bool AutomaticSave, string DownloadDefaultFolder)
-        {
-            try
+        #region Lifecycle method(s)
+
+            #region Constructor
+            public FTPserver(int port, bool PrivateMode, bool AutomaticReception, bool AutomaticSave, string DownloadDefaultFolder)
             {
-                mTransfer = new ConcurrentDictionary<string, DTransfer>();
-                mDchans = new List<DownloadChannel>();
-                mVisible = new Mutex();
-                mDchansDataLock = new Mutex();
-                mPrivateMode = PrivateMode;
-                mAutomaticReception = AutomaticReception;
-                mAutomaticSave = AutomaticSave;
-                mDownloadDefaultFolder = DownloadDefaultFolder;
-                return;
+                try
+                {
+                    mTransfer = new ConcurrentDictionary<string, DTransfer>();
+                    mDchans = new List<DownloadChannel>();
+                    mVisible = new Mutex();
+                    mDchansDataLock = new Mutex();
+                    mPrivateMode = PrivateMode;
+                    mAutomaticReception = AutomaticReception;
+                    mAutomaticSave = AutomaticSave;
+                    mDownloadDefaultFolder = DownloadDefaultFolder;
+                    return;
+                }
+                catch (Exception e) { throw e; }
             }
-            catch (Exception e) { throw e; }
-        }
+            #endregion
+
+            #region Destructor
+            public void FTPStop()
+            {
+                mServersocket.Dispose();
+                mTransfer.Clear();
+                mDchans.Clear();
+                mVisible.Dispose();
+                mDchansDataLock.Dispose();
+                mWindowRequester.Dispose();
+
+                mServersocket = null;
+                mTransfer = null;
+                mDchans = null;
+                mVisible = null;
+                mDchansDataLock = null;
+                mWindowRequester = null;
+            }
+            #endregion
+
         #endregion
 
         private void CloseBufferW(BinaryWriter binarybuffer)
@@ -120,19 +139,34 @@ namespace Movex.FTP
                 }
                 else
                 {
-                    whereToSave = mDownloadDefaultFolder;
+                    whereToSave = NormalizePath(mDownloadDefaultFolder);
                 }
 
                 // THIRD STEP: Show the DownloadProgressBar
                 var ipAddress = IPAddress.Parse(client.RemoteEndPoint.ToString().Split(':')[0]);
                 var downloadTransferAvailability = new ManualResetEvent(false);
                 var windowAvailability = new ManualResetEvent(false);
-                var recvfrom = new Thread(new ThreadStart(() => FTPrecv(client, whereToSave, downloadTransferAvailability, windowAvailability)))
+                var recvfrom = new Thread(new ThreadStart(() => {
+
+                    try
+                    { 
+                        FTPrecv(client, whereToSave, downloadTransferAvailability, windowAvailability);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        throw e;
+                    }
+
+                }))
                 {
                     Priority = ThreadPriority.Highest,
                     Name = "ServerSessionThread"
                 };
                 recvfrom.Start();
+
+                Console.WriteLine("[FTPserver.cs] [FTPstart] Passing DownloadTransferAvailability as: " + windowAvailability.Handle.ToInt64().ToString());
+                Console.WriteLine("[FTPserver.cs] [FTPstart] Passing WindowAvailability as: " + downloadTransferAvailability.Handle.ToInt64().ToString());
                 mWindowRequester.AddDownloadProgressWindow(ipAddress, windowAvailability, downloadTransferAvailability);
             
             goto Accept;
@@ -961,13 +995,6 @@ namespace Movex.FTP
             ConcurrentDictionary<string, ManualResetEvent[]> sync,
             ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
-            mRequestAvailable = requestAvailable;
-            mRequests = requests;
-            mTypeRequests = typeRequests;
-            mMessages = messages;
-            mSync = sync;
-            mResponses = responses;
-
             mWindowRequester = new WindowRequester(requestAvailable, requests, typeRequests, messages, sync, responses);
         }
         #endregion

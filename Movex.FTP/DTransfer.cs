@@ -40,7 +40,11 @@ namespace Movex.FTP
         }
        
 
-        public void AttachToInterface(DownloadChannel dchan) { mDchan = dchan; }
+        public void AttachToInterface(DownloadChannel dchan)
+        {
+            mDchan = dchan;
+            Console.WriteLine("[DTransfer.cs] [AttachToInterface] Attached dchan to DTransfer interface.");
+        }
 
         public void SetTransfered(long transfered) { mTransfered = transfered; }
         public void SetToTransfer(long totransfer) { mToTransfer = totransfer; }
@@ -53,6 +57,7 @@ namespace Movex.FTP
                 mNTransfer += dchan.GetCompleteTransfer();
             }
             mDchan = null;
+            Console.WriteLine("[DTransfer.cs] [DetachFromInterface] Detached dchan to DTransfer interface.");
         }
 
         public float GetTransferThroughput()
@@ -80,11 +85,16 @@ namespace Movex.FTP
         }
         public string GetTransferFilename()
         {
-            if (mDchan != null)
-            {
-                return (mDchan.Get_filenames()[mDchan.Get_index_current_transfer()]);
+            try
+            { 
+                if (mDchan != null)
+                {
+                    return (mDchan.Get_filenames()[mDchan.Get_index_current_transfer()]);
+                }
             }
-            return (null);
+            catch (Exception e) { Console.WriteLine(e.Message); }
+
+            return null;
         }
         public long GetTransferFilesize()
         {

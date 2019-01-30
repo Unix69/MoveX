@@ -45,7 +45,7 @@ namespace Movex.View
             ManualResetEvent windowAvailability,
             ManualResetEvent uploadTransferAvailability)
         {
-            var Id = "AddUploadProgressWindow";
+            var Id = new Random().Next(1000).ToString();
             var ip = ipAddress.ToString();
             var syncPrimitives = new ManualResetEvent[2];
 
@@ -59,7 +59,7 @@ namespace Movex.View
         }
         public void RemoveUploadProgressWindow(string ipAddress)
         {
-            var Id = "RemoveUploadProgressWindowRequest";
+            var Id = new Random().Next(1000).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 108);
             mMessages.TryAdd(Id, ipAddress);
@@ -67,7 +67,7 @@ namespace Movex.View
         }
         public void RemoveDownloadProgressWindow(string ipAddress)
         {
-            var Id = "RemoveDownloadProgressWindowRequest";
+            var Id = new Random().Next(1000).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 109);
             mMessages.TryAdd(Id, ipAddress);
@@ -75,7 +75,7 @@ namespace Movex.View
         }
         public void AddMessageWindow(string message)
         {
-            var Id = "MessageWindowRequest";
+            var Id = new Random().Next(1000).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 105);
             mMessages.TryAdd(Id, message);

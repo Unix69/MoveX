@@ -12,7 +12,7 @@ namespace Movex.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class DownloadProgressWindow : System.Windows.Window
+    public partial class DownloadProgressWindow : Window
     {
         #region Private members
         private string[] mPaths;
@@ -34,11 +34,15 @@ namespace Movex.View
             InitializeComponent();
             DataContext = new WindowViewModel(this);
 
-            // Set the internal ProgressControl
+            // Set a new CloseWindow Reset Event
             mCloseWindow = new ManualResetEvent(false);
+
+            // Set the internal ProgressControl
             mProgress = (ProgressDesignModel)InternalProgressControl.DataContext;
             mProgress.SetCloseWindowEventHandler(mCloseWindow);
             mProgress.Type = "Download";
+
+            // Set an handler for the Interruption of the transfer
             mInterruptTransferWaiter = new Thread(() => OnTransferInterrupted());
             mInterruptTransferWaiter.Start();
 
@@ -57,8 +61,10 @@ namespace Movex.View
         #region Event Handler(s)
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-            // Wait for data from FTPclient to load them in the Window
+            Console.WriteLine("[DownloadProgressWindow.xaml.cs][OnLoad] Waiting for the DownloadTransferAvailability.");
             mDTransferAvailability.WaitOne();
+            Console.WriteLine("[DownloadProgressWindow.xaml.cs] [OnLoad] DownloadTransfer is now available.");
+
             mDownloadTransfer = IoC.FtpServer.GetTransfer(mAddress.ToString());
             AssignTransferInfoToViewModel(mDownloadTransfer);
         }
@@ -125,7 +131,10 @@ namespace Movex.View
         }
         private void Window_Close(object sender, EventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() => { Close(); }));
+            Dispatcher.BeginInvoke(new Action(() => {
+                Close();
+                Thread.CurrentThread.Abort();
+            }));
         }
         private void OnTransferInterrupted()
         {
@@ -147,32 +156,42 @@ namespace Movex.View
         #region Utility method(s)
         private void AssignTransferInfoToViewModel(DTransfer dTransfer)
         {
-            var ipAddress = dTransfer.GetFrom();
-            if (ipAddress.Contains(":"))
-            {
-                ipAddress = ipAddress.Split(':')[0];
-            }
-            if (ipAddress != null)
-            {
-                mProgress.IpAddress = ipAddress;
-                mProgress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
-            }
-            
-            var filename = dTransfer.GetTransferFilename();
-            if (filename != null)
-            {
-                mProgress.Filename = filename;
-            }
+            try {
+                Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Trying to assign the DownloadTransferInfo to the ViewModel.");
 
-            mProgress.Percentage = ((int)dTransfer.GetTransferPerc()).ToString();
-            var RemainingTime = HumanReadableTime.MillisecToHumanReadable(dTransfer.GetRemainingTime());
-            if (RemainingTime == null)
-            {
-                mProgress.RemainingTime = "Evaluating...";
+                var ipAddress = mAddress.ToString();
+                if (ipAddress != null)
+                {                    
+                    mProgress.IpAddress = ipAddress;
+                    Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned IpAddress: " + mProgress.IpAddress);
+
+                    mProgress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
+                    Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned User: " + mProgress.User);
+                }
+            
+                var filename = dTransfer.GetTransferFilename();
+                if (filename != null)
+                {
+                    Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Filename received from the DTransfer: " + filename);
+                    mProgress.Filename = filename;
+                    Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned Filename: " + mProgress.Filename);
+                }
+
+                mProgress.Percentage = ((int)dTransfer.GetTransferPerc()).ToString();
+                var RemainingTime = HumanReadableTime.MillisecToHumanReadable(dTransfer.GetRemainingTime());
+                if (RemainingTime == null)
+                {
+                    mProgress.RemainingTime = "Evaluating...";
+                }
+                else
+                {
+                    mProgress.RemainingTime = RemainingTime;
+                }
             }
-            else
+            catch (Exception e)
             {
-                mProgress.RemainingTime = RemainingTime;
+                Console.WriteLine("[DownloadProgresWindows.xaml.cs] [AssignTransferInfoViewModel] An exception is thrown. See crashLog.txt for more details.");
+                IoC.FtpServer.ManageException(e);
             }
         }
         #endregion

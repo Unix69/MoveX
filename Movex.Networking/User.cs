@@ -116,18 +116,22 @@ namespace Movex.Network
         /// </summary>
         /// <param name="ipAddress"></param>
         /// <returns></returns>
-        public string GetUsernameByIpAddress(string ipAddress)
+        public string GetUsernameByIpAddress(string IpAddress)
         {
             // Search the user in the Friend List
+            Console.WriteLine("[User.cs] [GetUsernameByIpAddress] Searching for a friend with IpAddress: " + IpAddress);
             foreach (var friend in mFriendList)
             {
-                if (friend.mIpAddress.Equals(ipAddress))
+                Console.WriteLine("[User.cs] [GetUsernameByIpAddress] Now evaluating friend: " + friend.mUsername);
+                if (friend.mIpAddress.Equals(IpAddress))
                 {
+                    Console.WriteLine("[User.cs] [GetUsernameByIpAddress] User found. Returning: " + friend.mUsername);
                     return friend.mUsername;
                 }
             }
 
             // If not found return null
+            Console.WriteLine("[User.cs] [GetUsernameByIpAddress] No User found. Returning: null");
             return null;
         }
 

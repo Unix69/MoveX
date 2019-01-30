@@ -19,12 +19,6 @@ namespace Movex.FTP
         private UTransfer[] mTransfer;
 
         // Member(s) useful for syncrhonization with Movex.View.Core
-        private ManualResetEvent mRequestAvailable;
-        private ConcurrentQueue<string> mRequests;
-        private ConcurrentDictionary<string, int> mTypeRequests;
-        private ConcurrentDictionary<string, string> mMessages;
-        private ConcurrentDictionary<string, ManualResetEvent[]> mSync;
-        private ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
         private WindowRequester mWindowRequester;
         #endregion
 
@@ -1214,21 +1208,7 @@ namespace Movex.FTP
         }
         public void SetSynchronization(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent[]> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
-            mRequestAvailable = requestAvailable;
-            mRequests = requests;
-            mTypeRequests = typeRequests;
-            mMessages = messages;
-            mSync = sync;
-            mResponses = responses;
-
             mWindowRequester = new WindowRequester(requestAvailable, requests, typeRequests, messages, sync, responses);
-        }
-        private void Reset()
-        {
-            var Id = "FtpClientId";
-            mRequests.Enqueue(Id);
-            mTypeRequests.TryAdd(Id, 106);
-            mRequestAvailable.Set();
         }
     }
 }
