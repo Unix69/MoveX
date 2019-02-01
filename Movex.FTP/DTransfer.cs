@@ -28,6 +28,7 @@ namespace Movex.FTP
 
         public DTransfer(long totntransfer, long transfered, long totransfer)
         {
+            Console.WriteLine("[Movex.FTP] [DTransfer.cs] [DTransfer] Creating a new DTransfer.");
             mTotNTransfer = totntransfer;
             mNTransfer = 0;
             mToTransfer = totransfer;
@@ -39,11 +40,15 @@ namespace Movex.FTP
             mStartTimeMillisec = (long)(DateTimeOffset.Now.Ticks / TimeSpan.TicksPerMillisecond);
         }
        
-
         public void AttachToInterface(DownloadChannel dchan)
         {
-            mDchan = dchan;
-            Console.WriteLine("[DTransfer.cs] [AttachToInterface] Attached dchan to DTransfer interface.");
+            Console.WriteLine("[Movex.FTP] [DTransfer.cs] [AttachToInterface] Trying to attach dchan to DTransfer.");
+            if (dchan != null)
+            {
+                mDchan = dchan;
+                Console.WriteLine("[Movex.FTP] [DTransfer.cs] [AttachToInterface] Attached dchan to DTransfer interface.");
+                Console.WriteLine("[Movex.FTP] [DTransfer.cs] [AttachToInterface] Dchan from: " + dchan.Get_from());
+            }
         }
 
         public void SetTransfered(long transfered) { mTransfered = transfered; }
@@ -57,7 +62,7 @@ namespace Movex.FTP
                 mNTransfer += dchan.GetCompleteTransfer();
             }
             mDchan = null;
-            Console.WriteLine("[DTransfer.cs] [DetachFromInterface] Detached dchan to DTransfer interface.");
+            Console.WriteLine("[Movex.FTP] [DTransfer.cs] [DetachFromInterface] Detached dchan to DTransfer interface.");
         }
 
         public float GetTransferThroughput()
@@ -86,14 +91,20 @@ namespace Movex.FTP
         public string GetTransferFilename()
         {
             try
-            { 
+            {
+                Console.WriteLine("[Movex.FTP] [DTransfer.cs] [GetTransferFilename] Trying to get TransferFilename.");
                 if (mDchan != null)
                 {
                     return (mDchan.Get_filenames()[mDchan.Get_index_current_transfer()]);
                 }
             }
-            catch (Exception e) { Console.WriteLine(e.Message); }
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.FTP] [DTransfer.cs] [GetTransferFilename] " + Message);
+            }
 
+            Console.WriteLine("[Movex.FTP] [DTransfer.cs] [GetTransferFilename] Dchan null.");
             return null;
         }
         public long GetTransferFilesize()
@@ -132,15 +143,26 @@ namespace Movex.FTP
         {
             try
             {
-                var perc = ((float)GetTransfered() / mToTransfer) * 100;
+                Console.WriteLine("[Movex.View] [DTransfer.cs] [GetTransferPerc] Trying to get the transfer percentage.");
+
+                var ratio = ((float)GetTransfered() / mToTransfer);
+                var perc =  ratio * 100;
+
                 return perc;
             }
-            catch (DivideByZeroException e)
+            catch (DivideByZeroException Exception)
             {
-                Console.WriteLine(e.Message);
-                return (0);
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [Dtransfer.cs] [GetTransferPerc]" + Message + ".");
+
+                return 0;
             }
-            catch (Exception e) { throw e; }
+            catch (Exception Exception) {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [Dtransfer.cs] [GetTransferPerc]" + Message + ".");
+
+                throw Exception;
+            }
         }
         public string GetFrom()
         {            

@@ -8,12 +8,11 @@ using System.Collections.Concurrent;
 
 namespace Movex.View.Core
 {
-    public class FTPclient
+    public class FTPclient : IDisposable
     {
-
-        #region Private Properties
-        Movex.FTP.FTPclient mClient;
-        // Useful for sync with Movex.FTP
+        #region Members
+        FTP.FTPclient mClient;
+        ClientExceptionManager mClientExceptionManager;
         ManualResetEvent mRequestAvailable;
         ConcurrentQueue<string> mRequests;
         ConcurrentDictionary<string, int> mTypeRequests;
@@ -23,33 +22,57 @@ namespace Movex.View.Core
         #endregion
 
         #region Constructor
-
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
         public FTPclient()
         {
             try
             {
-                mClient = new Movex.FTP.FTPclient();
-            } catch(Exception e)
-            {
-                Reset();
+                mClient = new FTP.FTPclient();
+                mClientExceptionManager = new ClientExceptionManager();
             }
-
-            
+            catch (Exception Exception)
+            {
+                mClientExceptionManager.Log(Exception);
+            }
         }
+        #endregion
 
+        #region Destructor(s)
+        public void Dispose()
+        {
+            mClientExceptionManager.Dispose();
+            mRequestAvailable.Dispose();
+            while (!mRequests.IsEmpty)
+            {
+                mRequests.TryDequeue(out var content);
+                content = null;
+            }
+            mTypeRequests.Clear();
+            mMessages.Clear();
+            mSync.Clear();
+            mResponses.Clear();
+        }
+        #endregion
+
+        #region Lifecycle method(s)
+        public void Reset()
+        {
+            mClient = new FTP.FTPclient();
+            mClient.SetSynchronization(mRequestAvailable, mRequests, mTypeRequests, mMessages, mSync, mResponses);
+        }
         #endregion
 
         #region Public Methods
-        public void SetSynchronization(
-            ManualResetEvent requestAvailable,
-            ConcurrentQueue<string> requests,
-            ConcurrentDictionary<string, int> typeRequests,
-            ConcurrentDictionary<string, string> messages,
-            ConcurrentDictionary<string, ManualResetEvent[]> sync,
-            ConcurrentDictionary<string, ConcurrentBag<string>> responses)
+        /// <summary>
+        /// Set Synchronization primitives
+        /// </summary>
+        /// <param name="requestAvailable"></param>
+        /// <param name="requests"></param>
+        /// <param name="typeRequests"></param>
+        /// <param name="messages"></param>
+        /// <param name="sync"></param>
+        /// <param name="responses"></param>
+        public void SetSynchronization(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests,
+            ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent[]> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
             // Copy them in the instance of the Movex.View.Core.FTPClient
             mRequestAvailable = requestAvailable;
@@ -62,28 +85,39 @@ namespace Movex.View.Core
             // Send them to the Movex.FTP.FTPClient
             mClient.SetSynchronization(requestAvailable, requests, typeRequests, messages, sync, responses);
         }
+
         /// <summary>
         /// Send a file using the FTP Client
         /// </summary>
         public void Send(string[] filepaths, IPAddress[] ipaddress, ManualResetEvent[] WindowsAvailabilities, ManualResetEvent[] TransfersAvailabilities)
         {
-            mClient.FTPsendAll(filepaths, ipaddress, WindowsAvailabilities, TransfersAvailabilities);
+            try
+            {
+                mClient.FTPsendAll(filepaths, ipaddress, WindowsAvailabilities, TransfersAvailabilities);
+            }
+            catch (Exception Exception)
+            {
+                mClientExceptionManager.Log(Exception);
+            }
         }
-        public void Reset()
-        {
-            mClient = null;
-            mClient = new Movex.FTP.FTPclient();
-            mClient.SetSynchronization(mRequestAvailable, mRequests, mTypeRequests, mMessages, mSync, mResponses);
-        }
-        public UploadChannel GetChannel(IPAddress address) {
-            return(mClient.GetChannel(address.ToString()));
-        }
+
+        /// <summary>
+        /// Access the UploadTransfer associated to the IpAddress
+        /// </summary>
+        /// <param name="mAddress"></param>
+        /// <returns></returns>
         public UTransfer GetTransfer(IPAddress mAddress)
         {
             return (mClient.GetTransfer(mAddress.ToString()));
         }
+
+        /// <summary>
+        /// Interrupt the upload
+        /// </summary>
+        /// <param name="address"></param>
         public void InterruptUpload(IPAddress address)
         {
+            Console.WriteLine("[FTPclient.cs] [InterruptUpload] Interruputing Upload.");
             mClient.InterruptUpload(address);
         }
         #endregion

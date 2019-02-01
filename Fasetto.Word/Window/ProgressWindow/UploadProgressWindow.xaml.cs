@@ -57,10 +57,20 @@ namespace Movex.View
         #region Event Handler(s)
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-            // Wait for data from FTPclient to load them in the Window
-            mUTransferAvailability.WaitOne();
-            mUploadTransfer = IoC.FtpClient.GetTransfer(mAddress);
-            AssignTransferInfoToViewModel(mUploadTransfer);
+            try
+            {
+                Console.WriteLine("[UploadProgressWindow.xaml.cs] [OnLoad] Waiting for the UploadTransferAvailability.");
+                mUTransferAvailability.WaitOne();
+                Console.WriteLine("[UploadProgressWindow.xaml.cs] [OnLoad] UploadTransfer is now available.");
+
+                mUploadTransfer = IoC.FtpClient.GetTransfer(mAddress);
+                AssignTransferInfoToViewModel(mUploadTransfer);
+            }
+             catch(Exception excepition)
+            {
+                Console.WriteLine(excepition.Message);
+            }
+            
         }
         private void Window_ContentRendered(object sender, EventArgs e)
         {

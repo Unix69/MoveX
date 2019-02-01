@@ -15,16 +15,14 @@ namespace Movex.View
     public partial class DownloadProgressWindow : Window
     {
         #region Private members
-        private string[] mPaths;
-        private int mIndexCurrentTransfer;
-        private IPAddress mAddress;
-        private Thread mInterruptTransferWaiter;
+        private ProgressDesignModel mProgress;
         private DTransfer mDownloadTransfer;
+        private Thread mInterruptTransferWaiter;
+        private IPAddress mAddress;
         private ManualResetEvent mDTransferAvailability;
         private ManualResetEvent mCloseWindow;
         private event EventHandler TransferCompleted;
         private event EventHandler TransferInterrupted;
-        private ProgressDesignModel mProgress;
         #endregion
 
         #region Constructor
@@ -61,9 +59,9 @@ namespace Movex.View
         #region Event Handler(s)
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("[DownloadProgressWindow.xaml.cs][OnLoad] Waiting for the DownloadTransferAvailability.");
+            Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [OnLoad] Waiting for the DownloadTransferAvailability.");
             mDTransferAvailability.WaitOne();
-            Console.WriteLine("[DownloadProgressWindow.xaml.cs] [OnLoad] DownloadTransfer is now available.");
+            Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [OnLoad] DownloadTransfer is now available.");
 
             mDownloadTransfer = IoC.FtpServer.GetTransfer(mAddress.ToString());
             AssignTransferInfoToViewModel(mDownloadTransfer);
@@ -90,7 +88,7 @@ namespace Movex.View
                 if (int.TryParse(progress, out var x))
                 {
                     if (progress.Equals(lastProgress)) { interruptionRisk++; } else { interruptionRisk = 0; }
-                    if (interruptionRisk >= 35) {  /* mCloseWindow.Set(); */ }
+                    if (interruptionRisk >= 100) { mCloseWindow.Set(); }
 
                     (sender as BackgroundWorker).ReportProgress(x);
                     lastProgress = progress;
@@ -100,40 +98,58 @@ namespace Movex.View
 
             // IF 100% COMPLETED: 1. show the perc
             if (!(progress == null) && progress.Equals("100"))
+            {
+                Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Worker_DoWork] 100% COMPLETED.");
                 if (int.TryParse(progress, out var x))
+                {
                     (sender as BackgroundWorker).ReportProgress(x);
+                }
+            }
 
             // IF 100% COMPLETED: 2. wait a second
             Thread.Sleep(1000);
 
             // IF 100% COMPLETED: 3. close the window
             TransferCompleted.Invoke(this, EventArgs.Empty);
-
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            var filename = mDownloadTransfer.GetTransferFilename();
-            if (filename != null)
+            try
             {
-                mProgress.Filename = filename;
-            }
+                Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] Trying to udapte the DownloadProgressViewModel.");
 
-            mProgress.Percentage = ((int)mDownloadTransfer.GetTransferPerc()).ToString();
-            var RemainingTime = HumanReadableTime.MillisecToHumanReadable(mDownloadTransfer.GetRemainingTime());
-            if (RemainingTime == null)
-            {
-                mProgress.RemainingTime = "Evaluating...";
+                var filename = mDownloadTransfer.GetTransferFilename();
+                if (filename != null)
+                {
+                    Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] Filename received from the DTransfer: " + filename);
+                    mProgress.Filename = filename;
+                    
+                }
+
+                mProgress.Percentage = ((int)mDownloadTransfer.GetTransferPerc()).ToString();
+                var RemainingTime = HumanReadableTime.MillisecToHumanReadable(mDownloadTransfer.GetRemainingTime());
+                if (RemainingTime == null)
+                {
+                    mProgress.RemainingTime = "Evaluating...";
+                }
+                else
+                {
+                    mProgress.RemainingTime = RemainingTime;
+                }
+
             }
-            else
+            catch(Exception Exception)
             {
-                mProgress.RemainingTime = RemainingTime;
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] " + Message);
             }
         }
         private void Window_Close(object sender, EventArgs e)
         {
+            Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Window_Close] Closing the window.");
             Dispatcher.BeginInvoke(new Action(() => {
                 Close();
-                Thread.CurrentThread.Abort();
+                // Thread.CurrentThread.Abort();
             }));
         }
         private void OnTransferInterrupted()
@@ -157,24 +173,23 @@ namespace Movex.View
         private void AssignTransferInfoToViewModel(DTransfer dTransfer)
         {
             try {
-                Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Trying to assign the DownloadTransferInfo to the ViewModel.");
+                Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Trying to assign the DownloadTransferInfo to the ViewModel.");
 
                 var ipAddress = mAddress.ToString();
                 if (ipAddress != null)
                 {                    
                     mProgress.IpAddress = ipAddress;
-                    Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned IpAddress: " + mProgress.IpAddress);
+                    Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned IpAddress: " + mProgress.IpAddress);
 
                     mProgress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
-                    Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned User: " + mProgress.User);
+                    Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned User: " + mProgress.User);
                 }
             
                 var filename = dTransfer.GetTransferFilename();
                 if (filename != null)
                 {
-                    Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Filename received from the DTransfer: " + filename);
                     mProgress.Filename = filename;
-                    Console.WriteLine("[DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned Filename: " + mProgress.Filename);
+                    Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned Filename: " + mProgress.Filename);
                 }
 
                 mProgress.Percentage = ((int)dTransfer.GetTransferPerc()).ToString();
@@ -188,17 +203,14 @@ namespace Movex.View
                     mProgress.RemainingTime = RemainingTime;
                 }
             }
-            catch (Exception e)
+            catch (Exception Exception)
             {
-                Console.WriteLine("[DownloadProgresWindows.xaml.cs] [AssignTransferInfoViewModel] An exception is thrown. See crashLog.txt for more details.");
-                IoC.FtpServer.ManageException(e);
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [DownloadProgresWindows.xaml.cs] [AssignTransferInfoViewModel] " + Message + ".");
+
+                throw Exception;
             }
         }
         #endregion
-
-        #region Getter(s) and Setter(s)
-        public IPAddress GetIpAddress() { return mAddress; }
-        #endregion
-
     }
 }

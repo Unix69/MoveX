@@ -9,14 +9,14 @@ using Movex.FTP;
 
 namespace Movex.View.Core
 {
-    public class FTPserver
+    public class FTPserver : IDisposable
     {
         private const string CrashLogFilename = "crashLog.txt";
 
         #region private Properties
-        private Movex.FTP.FTPserver mServer;
+        private FTP.FTPserver mServer;
         private Thread mServerThread;
-        // Useful for sync with Movex.FTP
+        private ServerExceptionManager mServerExceptionManager;
         ManualResetEvent mRequestAvailable;
         ConcurrentQueue<string> mRequests;
         ConcurrentDictionary<string, int> mTypeRequests;
@@ -25,17 +25,39 @@ namespace Movex.View.Core
         ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
         #endregion
 
-        #region Constructor
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
+        #region Constructor(s)
         public FTPserver()
         {
-            Init();
+            try
+            {
+                Init();
+            }
+            catch(Exception Exception)
+            {
+                mServerExceptionManager.Log(Exception);
+            }
+            
         }
         #endregion
 
-        #region Core Method(s)
+        #region Destructor(s)
+        public void Dispose()
+        {
+            mServerExceptionManager.Dispose();
+            mRequestAvailable.Dispose();
+            while(!mRequests.IsEmpty)
+            {
+                mRequests.TryDequeue(out var content);
+                content = null;
+            }
+            mTypeRequests.Clear();
+            mMessages.Clear();
+            mSync.Clear();
+            mResponses.Clear();
+        }
+        #endregion
+
+        #region LifeCycle Method(s)
         private void Init()
         {
             var PrivateMode = Convert.ToBoolean(IoC.User.PrivateMode);
@@ -44,15 +66,16 @@ namespace Movex.View.Core
             var DonwloadDefaultFolder = IoC.User.DownloadDefaultFolder;
 
             mServer = new FTP.FTPserver(2000, PrivateMode, AutomaticReception, AutomaticSave, DonwloadDefaultFolder);
+            mServerExceptionManager = new ServerExceptionManager();
             mServerThread = new Thread(new ThreadStart(() => {
 
                 try
                 {
                     mServer.FTPstart();
                 }
-                catch (Exception e)
+                catch (Exception Exception)
                 {
-                    ManageException(e);
+                    mServerExceptionManager.Log(Exception);
                 }
 
             }));
@@ -110,20 +133,7 @@ namespace Movex.View.Core
         }
         public void ManageException(Exception e)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), CrashLogFilename);
-            var currentTime = DateTime.Now.ToString("h:mm:ss tt");
-
-            try
-            {
-                File.AppendAllText(path, "[" + currentTime + "] " + "Message: " +  e.Message + ".\r\n");
-                File.AppendAllText(path, "[" + currentTime + "] " + "Source: " + e.Source + ".\r\n");
-                File.AppendAllText(path, e.StackTrace + ".\r\n\r\n");
-                Reset();
-            }
-            catch (Exception ie)
-            {
-                Console.WriteLine(ie.Message);
-            }
+            
         }
         #endregion
     }

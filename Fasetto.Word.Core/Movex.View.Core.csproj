@@ -58,6 +58,9 @@
   <ItemGroup>
     <Compile Include="Database\Database.cs" />
     <Compile Include="DataModels\ApplicationPage.cs" />
+    <Compile Include="Exception\ClientExceptionManager.cs" />
+    <Compile Include="Exception\Base\ExceptionManager.cs" />
+    <Compile Include="Exception\ServerExceptionManager.cs" />
     <Compile Include="Helpers\ExpressionHelpers.cs" />
     <Compile Include="Helpers\VisualTreeHelper.cs" />
     <Compile Include="IoC\IoC.cs" />

@@ -130,11 +130,14 @@ namespace Movex.View
                         Sync.TryGetValue(Id, out var syncVariables);
                         Messages.TryGetValue(Id, out var ipAddress);
 
+                        Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [UploadTransferRequest] New WindowRequest for User with IpAddress: " + ipAddress);
+
                         var UploadProgressWindowThread = new Thread(() =>
                         {
                             var w = new UploadProgressWindow(IPAddress.Parse(ipAddress), syncVariables[0]);
                             w.Show();
                             syncVariables[1].Set();
+                            Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [UploadTransferRequest] Set the UploadProgressWindow as available. The transfer can take action.");
                             System.Windows.Threading.Dispatcher.Run();
                         });
                         UploadProgressWindowThread.SetApartmentState(ApartmentState.STA);
@@ -154,16 +157,14 @@ namespace Movex.View
                         Sync.TryGetValue(Id, out var syncPrimitives);
                         Messages.TryGetValue(Id, out var ip);
 
-                        Console.WriteLine("[WindowDispatcher.cs] [DownloadTransferRequest] User's IpAddress: " + ip);
-                        Console.WriteLine("[WindowDispatcher.cs] [DownloadTransferRequest] Received WindowAvailability Handle: " + syncPrimitives[1].Handle.ToInt64().ToString());
-                        Console.WriteLine("[WindowDispatcher.cs] [DownloadTransferRequest] Receveid DownlaodTransferAvailability Handle: " + syncPrimitives[0].Handle.ToInt64().ToString());
+                        Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [DownloadTransferRequest] New WindowRequest from User with IpAddress: " + ip);
 
                         var DownloadProgressWindowThread = new Thread(() =>
                         {
                             var w = new DownloadProgressWindow(IPAddress.Parse(ip), syncPrimitives[0]);
                             w.Show();
                             syncPrimitives[1].Set();
-                            Console.WriteLine("[WindowDispatcher.cs] [DownloadTransferRequest] Set the DonwloadProgressWindow as available. The transfer can take action.");
+                            Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [DownloadTransferRequest] Set the DonwloadProgressWindow as available. The transfer can take action.");
                             System.Windows.Threading.Dispatcher.Run();
                         });
                         DownloadProgressWindowThread.SetApartmentState(ApartmentState.STA);
