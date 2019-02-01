@@ -121,9 +121,8 @@ namespace Movex.View
                 var filename = mDownloadTransfer.GetTransferFilename();
                 if (filename != null)
                 {
-                    Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] Filename received from the DTransfer: " + filename);
                     mProgress.Filename = filename;
-                    
+                    Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] Assigned Filename: " + mProgress.Filename);
                 }
 
                 mProgress.Percentage = ((int)mDownloadTransfer.GetTransferPerc()).ToString();

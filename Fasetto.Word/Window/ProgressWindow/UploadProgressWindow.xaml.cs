@@ -14,8 +14,6 @@ namespace Movex.View
     public partial class UploadProgressWindow : Window
     {
         #region Private members
-        private string[] mPaths;
-        private int mIndexCurrentTransfer;
         private IPAddress mAddress;
         private Thread mInterruptTransferWaiter;
         private UTransfer mUploadTransfer;
@@ -44,7 +42,6 @@ namespace Movex.View
             // Assigning member(s)
             mAddress = address;
             mUTransferAvailability = uTransferAvailability;
-            mIndexCurrentTransfer = 0;
 
             // Manage event(s)
             Loaded += OnLoad;
@@ -59,16 +56,17 @@ namespace Movex.View
         {
             try
             {
-                Console.WriteLine("[UploadProgressWindow.xaml.cs] [OnLoad] Waiting for the UploadTransferAvailability.");
+                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [OnLoad] Waiting for the UploadTransferAvailability.");
                 mUTransferAvailability.WaitOne();
-                Console.WriteLine("[UploadProgressWindow.xaml.cs] [OnLoad] UploadTransfer is now available.");
+                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [OnLoad] UploadTransfer is now available.");
 
                 mUploadTransfer = IoC.FtpClient.GetTransfer(mAddress);
                 AssignTransferInfoToViewModel(mUploadTransfer);
             }
-             catch(Exception excepition)
+             catch(Exception Exception)
             {
-                Console.WriteLine(excepition.Message);
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [UploadProgressWindow.xaml.cs] [OnLoad] " + Message + ".");
             }
             
         }
@@ -94,7 +92,7 @@ namespace Movex.View
                 if (int.TryParse(progress, out var x))
                 {
                     if (progress.Equals(lastProgress)) { interruptionRisk++; } else { interruptionRisk = 0; }
-                    if (interruptionRisk >= 35) { /* mCloseWindow.Set(); */ }
+                    if (interruptionRisk >= 100) { mCloseWindow.Set(); }
 
                     (sender as BackgroundWorker).ReportProgress(x);
                     lastProgress = progress;
@@ -104,8 +102,15 @@ namespace Movex.View
 
             // IF 100% COMPLETED: 1. show the perc
             if (!(progress == null) && progress.Equals("100"))
+            {
+                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Worker_DoWork] 100% COMPLETED.");
                 if (int.TryParse(progress, out var x))
+                {
                     (sender as BackgroundWorker).ReportProgress(x);
+                }
+                    
+            }
+                
 
             // IF 100% COMPLETED: 2. wait a second
             Thread.Sleep(1000);
@@ -116,25 +121,36 @@ namespace Movex.View
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-
-            var filename = mUploadTransfer.GetTransferFilename();
-            if (filename != null)
+            try
             {
-                mProgress.Filename = filename;
+                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Worker_ProgressChanged] Trying to udapte the UploadProgressViewModel.");
+
+                var filename = mUploadTransfer.GetTransferFilename();
+                if (filename != null)
+                {
+                    mProgress.Filename = filename;
+                    Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Worker_ProgressChanged] Assigned Filename: " + mProgress.Filename);
+                }
+
+                mProgress.Percentage = ((int)mUploadTransfer.GetTransferPerc()).ToString();
+
+                var RemainingTime = HumanReadableTime.MillisecToHumanReadable(mUploadTransfer.GetRemainingTime());
+                if (RemainingTime != null)
+                {
+                    mProgress.RemainingTime = RemainingTime;
+                }
             }
-
-            mProgress.Percentage = ((int)mUploadTransfer.GetTransferPerc()).ToString();
-
-            var RemainingTime = HumanReadableTime.MillisecToHumanReadable(mUploadTransfer.GetRemainingTime());
-            if (RemainingTime != null)
+            catch (Exception Exception)
             {
-                mProgress.RemainingTime = RemainingTime;
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] " + Message);
             }
         }
         private void Window_Close(object sender, EventArgs e)
         {
+            Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closing the window.");
             Dispatcher.BeginInvoke(new Action(() => { Close(); }));
-            IoC.FtpClient.Reset();
+            // IoC.FtpClient.Reset();
         }
         private void OnTransferInterrupted()
         {
@@ -156,35 +172,48 @@ namespace Movex.View
         #region Utility method(s)
         private void AssignTransferInfoToViewModel(UTransfer uTransfer)
         {
-            var ipAddress = uTransfer.GetTo();
-            if (ipAddress != null)
+            try
             {
-                mProgress.IpAddress = ipAddress;
-                mProgress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
-            }
+                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Trying to assign the DownloadTransferInfo to the ViewModel.");
 
-            var filename = uTransfer.GetTransferFilename();
-            if (filename != null)
-            {
-                mProgress.Filename = filename;
-            }
+                var ipAddress = mAddress.ToString();
+                if (ipAddress != null)
+                {
+                    mProgress.IpAddress = ipAddress;
+                    Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned IpAddress: " + mProgress.IpAddress);
 
-            mProgress.Percentage = ((int)uTransfer.GetTransferPerc()).ToString();
+                    mProgress.User = IoC.User.GetUsernameByIpAddress(ipAddress);
+                    Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned User: " + mProgress.User);
+                }
 
-            var RemainingTime = HumanReadableTime.MillisecToHumanReadable(uTransfer.GetRemainingTime());
-            if (RemainingTime == null)
-            {
-                mProgress.RemainingTime = "Evaluating...";
+                var filename = uTransfer.GetTransferFilename();
+                if (filename != null)
+                {
+                    mProgress.Filename = filename;
+                    Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] Assigned Filename: " + mProgress.Filename);
+                }
+
+                mProgress.Percentage = ((int)uTransfer.GetTransferPerc()).ToString();
+
+                var RemainingTime = HumanReadableTime.MillisecToHumanReadable(uTransfer.GetRemainingTime());
+                if (RemainingTime == null)
+                {
+                    mProgress.RemainingTime = "Evaluating...";
+                }
+                else
+                {
+                    mProgress.RemainingTime = RemainingTime;
+                }
             }
-            else
+            catch (Exception Exception)
             {
-                mProgress.RemainingTime = RemainingTime;
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [UploadProgressWindow.xaml.cs] [AssignTransferInfoViewModel] " + Message + ".");
+
+                throw Exception;
             }
+            
         }
-        #endregion
-
-        #region Getter(s) and Setter(s)
-        public IPAddress GetIpAddress() { return mAddress; }
         #endregion
     }
 }

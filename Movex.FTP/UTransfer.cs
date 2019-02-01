@@ -61,11 +61,22 @@ namespace Movex.FTP
             }
         public string GetTransferFilename()
         {
-            if (mUchan != null)
+            try
             {
-                return (mUchan.Get_filenames()[mUchan.Get_index_current_transfer()]);
+                Console.WriteLine("[Movex.FTP] [UTransfer.cs] [GetTransferFilename] Trying to get TransferFilename");
+                if (mUchan != null)
+                {
+                    return (mUchan.Get_filenames()[mUchan.Get_index_current_transfer()]);
+                }
             }
-            return (null);
+            catch(Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.FTP] [UTransfer.cs] [GetTransferFilename] " + Message);
+            }
+
+            Console.WriteLine("[Movex.FTP] [UTransfer.cs] [GetTransferFilename] Dchan null.");
+            return null;
         }
         public long GetTransferFilesize()
         {
@@ -97,18 +108,31 @@ namespace Movex.FTP
         {
             return (mTotNTransfer);
         }
-        public float GetTransferPerc() {
+        public float GetTransferPerc()
+        {
             try
             {
-                var perc = ((float)GetTransfered() / mToTransfer) * 100;
+
+                Console.WriteLine("[Movex.View] [UTransfer.cs] [GetTransferPerc] Trying to get the transfer percentage.");
+
+                var ratio = ((float)GetTransfered() / mToTransfer);
+                var perc = ratio * 100;
+
                 return perc;
             }
-            catch (DivideByZeroException e) {
-                Console.WriteLine(e.Message);
-                return (0);
+            catch (DivideByZeroException Exception) {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [Dtransfer.cs] [GetTransferPerc]" + Message + ".");
+
+                return 0;
             }
-            catch (Exception e) { throw e; }
-            
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [Dtransfer.cs] [GetTransferPerc]" + Message + ".");
+
+                throw Exception;
+            }
         }
        
        
