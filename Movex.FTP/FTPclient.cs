@@ -1212,14 +1212,13 @@ namespace Movex.FTP
                 fileFullPaths = new List<string>();
 
                 if (directories != null) foreach (var root in directories) GetFileListInRoot(root, filepaths, fileFullPaths);
-                if (files != null) filepaths.AddRange(files);
+                if (files != null) fileFullPaths.AddRange(files);
 
                 foreach (var fileFullPath in fileFullPaths) tot += new FileInfo(fileFullPath).Length;
 
                 for (var i = 0; i < numclients; i++)
                 {
-                    // TODO: Change filepaths.ToArray().Length in filepaths.Count
-                    ntransfer[i] = new UTransfer(filepaths.ToArray().Length, 0, tot);
+                    ntransfer[i] = new UTransfer(fileFullPaths.Count, 0, tot);
                 }
 
                 return (ntransfer);
