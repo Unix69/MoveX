@@ -41,7 +41,7 @@ namespace Movex.FTP
 
         #region Destructor
         public void Dispose()
-        {
+        { /*
             mRequestAvailable.Dispose();
             while (!mRequests.IsEmpty) {
                 mRequests.TryDequeue(out var content);
@@ -51,6 +51,7 @@ namespace Movex.FTP
             mMessages.Clear();
             mSync.Clear();
             mResponses.Clear();
+            */
         }
         #endregion
 

@@ -149,8 +149,12 @@ namespace Movex.View
         private void Window_Close(object sender, EventArgs e)
         {
             Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closing the window.");
-            Dispatcher.BeginInvoke(new Action(() => { Close(); }));
-            // IoC.FtpClient.Reset();
+            Dispatcher.BeginInvoke(new Action(() => {
+
+                Close();
+                Thread.CurrentThread.Interrupt();
+
+            }));
         }
         private void OnTransferInterrupted()
         {

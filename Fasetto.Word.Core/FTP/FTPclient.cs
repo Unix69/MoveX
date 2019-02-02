@@ -56,6 +56,7 @@ namespace Movex.View.Core
         #region Lifecycle method(s)
         public void Reset()
         {
+            mClient.Shutdown();
             mClient = new FTP.FTPclient();
             mClient.SetSynchronization(mRequestAvailable, mRequests, mTypeRequests, mMessages, mSync, mResponses);
         }

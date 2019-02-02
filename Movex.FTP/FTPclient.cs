@@ -544,11 +544,10 @@ namespace Movex.FTP
         {
             if (!File.GetAttributes(filepath).HasFlag(FileAttributes.Directory))
             {
-                var decomp = filepath.Split(@"\".ToCharArray());
-                var file = decomp[decomp.Length - 1];
-                var length = filepath.Length - file.Length;
-                filepath = filepath.Substring(0, length);
-
+                    var decomp = filepath.Split(@"\".ToCharArray());
+                    var file = decomp[decomp.Length - 1];
+                    var length = filepath.Length - file.Length;
+                    filepath = filepath.Substring(0, length);
             }
             return (filepath);
         }
@@ -614,7 +613,7 @@ namespace Movex.FTP
             return;
         }
 
-        private void GetFileListInRoot(string root, List<string> filepaths)
+        private void GetFileListInRoot(string root, List<string> filepaths, List<string> fileFullPaths)
         {
             string[] paths = null;
 
@@ -633,11 +632,12 @@ namespace Movex.FTP
 
                 if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
                 {
-                    GetFileListInRoot(path, filepaths);
+                    GetFileListInRoot(path, filepaths, fileFullPaths);
                 }
 
                 else
                 {
+                    fileFullPaths.Add(path);
                     filepaths.Add(ExtractPathFromFilePath(path));
                 }
             }
@@ -930,23 +930,22 @@ namespace Movex.FTP
         private void FTPTrees(string[] paths, IPAddress ipaddress, ref Socket clientsocket, UTransfer transfer, ManualResetEvent uTransferAvailability, ManualResetEvent windowAvailability)
         {
             try {
-            var multifile = false;
-            if (paths.Length > 1) { multifile = true; }
+                var multifile = false;
+                if (paths.Length > 1) { multifile = true; }
 
-            if (!multifile)
-            {
-                FTPsingleClientTree_serial(clientsocket, ipaddress, paths[0], transfer, uTransferAvailability, windowAvailability);
-            }
-            else
-            {
-                FTPsingleClientMultiTree_serial(clientsocket, ipaddress, paths, transfer, uTransferAvailability, windowAvailability);
-            }
-            return;
+                if (!multifile)
+                {
+                    FTPsingleClientTree_serial(clientsocket, ipaddress, paths[0], transfer, uTransferAvailability, windowAvailability);
+                }
+                else
+                {
+                    FTPsingleClientMultiTree_serial(clientsocket, ipaddress, paths, transfer, uTransferAvailability, windowAvailability);
+                }
+                return;
             }
             catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
             catch (Exception e) { Console.WriteLine(e.Message); throw e; }
-
-}
+        }
 
         private int GetToS(string[] dirpaths, string[] filepaths)
         {
@@ -1041,6 +1040,7 @@ namespace Movex.FTP
         {
             try
             {
+                Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [FTPsendAlltoClient] Trying to send data to client.");
 
                 if (!SendTag(ref clientsocket, tos))
                 {
@@ -1066,9 +1066,9 @@ namespace Movex.FTP
                     return;
                 }
 
+                // Transfer started
                 transfer.StartTransfer();
-
-                Console.WriteLine("Send: Start Transfer with client " + clientsocket.RemoteEndPoint.ToString());
+                Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [FTPsendAlltoClient] Send: Start Transfer with client " + clientsocket.RemoteEndPoint.ToString() + ".");
 
                 if (directories != null)
                 {
@@ -1087,22 +1087,30 @@ namespace Movex.FTP
                     return;
                 }
 
-                Console.WriteLine("Send: Connection with client " + clientsocket.RemoteEndPoint.ToString() + " ended succesfully");
+                // Transfer completed
+                Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [FTPsendAlltoClient] Send: Connection with client " + clientsocket.RemoteEndPoint.ToString() + " ended succesfully.");
                 WaitClient(ref clientsocket);
             }
-            catch (SocketException e) {
-
-                var message = "Il trasferimento è stato interrotto.";
+            catch (SocketException Exception)
+            {
+                var Message = Exception.Message;
                 var ipAddress = ipaddress.ToString();
+                Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [FTPsendAlltoClient] " + Message + ".");
 
-                Console.WriteLine(e.Message + " / " + message);
+                var CriticalMessage = "Il trasferimento è stato interrotto.";
                 mWindowRequester.RemoveUploadProgressWindow(ipAddress);
-                mWindowRequester.AddMessageWindow(message);
+                mWindowRequester.AddMessageWindow(CriticalMessage);
             }
-            catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
-            catch (ThreadInterruptedException e) { Console.WriteLine(e.Message); throw e; }
-            catch (ThreadAbortException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                var ipAddress = ipaddress.ToString();
+                Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [FTPsendAlltoClient] " + Message + ".");
+
+                var CriticalMessage = "Ci dispiace! Il trasferimento non è andato a buon fine.";
+                mWindowRequester.RemoveUploadProgressWindow(ipAddress);
+                mWindowRequester.AddMessageWindow(CriticalMessage);
+            }
         }
 
         public void CollectData(int numclients, string[] paths, ref string[] directories, ref string[] files, ref int tos)
@@ -1116,7 +1124,12 @@ namespace Movex.FTP
             }
             catch (ThreadInterruptedException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadAbortException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception Exception) {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [FTPclient.cs] [CollectData] " + Message + ".");
+
+                throw Exception;
+            }
             return;
         }
 
@@ -1178,37 +1191,71 @@ namespace Movex.FTP
 
         private UTransfer[] GetTransferInterfaces(int numclients, string[] directories, string[] files)
         {
-            var ntransfer = new UTransfer[numclients];
+            // Declaring variable(s)
+            UTransfer[] ntransfer;
+            List<string> filepaths, fileFullPaths;
             long tot = 0;
-            var filepaths = new List<string>();
-
-            if (directories != null)
+            
+            try
             {
-                foreach (var root in directories)
+                Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [GetTrasferInterfaces] Trying to get UploadInterfaces.");
+
+                // VALIDATION: Check input correctness
+                if (numclients <= 0)
                 {
-                    GetFileListInRoot(root, filepaths);
+                    var Message = "Invalid argument passed.";
+                    throw new Exception(Message);
                 }
-            }
 
-            if (files != null)
-            {
-                filepaths.AddRange(files);
-            }
+                ntransfer = new UTransfer[numclients];
+                filepaths = new List<string>();
+                fileFullPaths = new List<string>();
 
-            foreach (var filepath in filepaths)
-            {
-                tot += new System.IO.FileInfo(filepath).Length;
-            }
+                if (directories != null) foreach (var root in directories) GetFileListInRoot(root, filepaths, fileFullPaths);
+                if (files != null) filepaths.AddRange(files);
 
-            for (var i = 0; i < numclients; i++)
-            {
-                ntransfer[i] = new UTransfer(filepaths.ToArray().Length, 0, tot);
+                foreach (var fileFullPath in fileFullPaths) tot += new FileInfo(fileFullPath).Length;
+
+                for (var i = 0; i < numclients; i++)
+                {
+                    // TODO: Change filepaths.ToArray().Length in filepaths.Count
+                    ntransfer[i] = new UTransfer(filepaths.ToArray().Length, 0, tot);
+                }
+
+                return (ntransfer);
             }
-            return (ntransfer);
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [GetTrasferInterfaces] " + Message + ".");
+
+                throw Exception;
+            }
         }
         public void SetSynchronization(ManualResetEvent requestAvailable, ConcurrentQueue<string> requests, ConcurrentDictionary<string, int> typeRequests, ConcurrentDictionary<string, string> messages, ConcurrentDictionary<string, ManualResetEvent[]> sync, ConcurrentDictionary<string, ConcurrentBag<string>> responses)
         {
             mWindowRequester = new WindowRequester(requestAvailable, requests, typeRequests, messages, sync, responses);
+        }
+        public void Shutdown()
+        {
+            Console.WriteLine("[Movex.FTP] [FTPclient.cs] [Shutdown] Shutting down the client.");
+
+            mUchans.Clear();
+            mWindowRequester.Dispose();
+            mUchansDataLock.Dispose();
+            for (var t = 0; t < mTransfer.Length; t++)
+            {
+                if (mTransfer[t] == null) { continue; }
+                else
+                {
+                    mTransfer[t] = null;
+                }
+            }
+
+            mUchans = null;
+            mWindowRequester = null;
+            mUchansDataLock = null;
+            mTransfer = null;
         }
     }
 }
