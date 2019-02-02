@@ -323,21 +323,26 @@ namespace Movex.FTP
                 Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPrecv] Releasing Thread: " + CurrentThreadName + ".");
                 return;
             }
-            catch (OutOfMemoryException e) { Console.WriteLine(e.Message); throw e; }
-            catch (SocketException e)
+            catch (SocketException Exception)
             {
-
-                var message = "Il trasferimento è stato interrotto.";
+                var Message = Exception.Message;
                 var ipAddress = clientsocket.RemoteEndPoint.ToString().Split(':')[0];
+                Console.WriteLine("[MOVEX.FTP] [FTPserver.cs] [FTPrecv] " + Message + ".");
 
-                Console.WriteLine(e.Message + " / " + message);
+                var CriticalMessage = "Il trasferimento è stato interrotto.";
                 mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
-                mWindowRequester.AddMessageWindow(message);
+                mWindowRequester.AddMessageWindow(CriticalMessage);
             }
-            catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
-            catch (ThreadInterruptedException e) { Console.WriteLine(e.Message); throw e; }
-            catch (ThreadAbortException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                var ipAddress = clientsocket.RemoteEndPoint.ToString().Split(':')[0];
+                Console.WriteLine("[MOVEX.FTP] [FTPserver.cs] [FTPrecv] " + Message + ".");
+
+                var CriticalMessage = "Ci dispiace! Il trasferimento non è andato a buon fine.";
+                mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
+                mWindowRequester.AddMessageWindow(CriticalMessage);
+            }
         }
         #endregion
 
