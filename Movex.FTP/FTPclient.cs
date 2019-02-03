@@ -17,21 +17,52 @@ namespace Movex.FTP
         private List<UploadChannel> mUchans;
         private Mutex mUchansDataLock;
         private UTransfer[] mTransfer;
-
         // Member(s) useful for syncrhonization with Movex.View.Core
         private WindowRequester mWindowRequester;
+        // Member(s) useful to monitor the status of the application
+        private List<Thread> mThreadsContainer;
         #endregion
 
         public FTPclient()
         {
-
             mUchans = new List<UploadChannel>();
             mUchansDataLock = new Mutex();
+            mThreadsContainer = new List<Thread>();
         }
+
+        #region Getter(s) and Setter(s)
+        public void AddThread(Thread t) { mThreadsContainer.Add(t); }
+        public void RemoveThread(string Name)
+        {
+            Thread stone = null;
+            try
+            {
+                Console.WriteLine("[Movex.FTP] [FTPclient.cs] [RemoveThread] Trying to remove thread: " + Name + ".");
+
+                foreach (var t in mThreadsContainer)
+                {
+                    if (t.Name.Equals(Name))
+                    {
+                        t.Interrupt();
+                        stone = t;
+                        break;
+                    }
+                }
+                if (stone != null) { mThreadsContainer.Remove(stone); }
+
+                var ThreadsCount = mThreadsContainer.Count;
+                Console.WriteLine("[Movex.FTP] [FTPclient.cs] [RemoveThread] Current active threads now: " + ThreadsCount + ".");
+            }
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [RemoveThread] " + Message);
+            }
+        }
+        #endregion
 
         private void FTPsingleFile_serial(IPAddress ipaddress)
         {
-
             try
             {
                 var result = FTPsingleFile_s(ipaddress);
@@ -163,6 +194,7 @@ namespace Movex.FTP
         {
             try
             {
+                Console.WriteLine("[Movex.FTP] [FTPclient.cs] [WaitClient] Trying to wait the server until close the connection.");
                 WaitUntilClose(clientsocket);
             }
             catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
@@ -273,16 +305,23 @@ namespace Movex.FTP
         {
             try
             {
-                while (clientsocket.Connected) ;
+                var count = 0;
+
+                CheckSocket:   
+                if (clientsocket.Connected)
+                {
+                    Thread.Sleep(1000);
+                    count += 1;
+                    if (count < 5) goto CheckSocket;
+                }
+
                 clientsocket.Shutdown(SocketShutdown.Both);
                 clientsocket.Close();
+                Console.WriteLine("[Movex.FTP] [FTPclient.cs] [WaitUntilClose] The connection is now closed.");
             }
             catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
             catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
             catch (Exception e) { Console.WriteLine(e.Message); throw e; }
-
-            return;
-
         }
 
         private UploadChannel GetUploadChannel(ref Socket clientsocket, string[] paths, string[] filenames, IPAddress ipaddress)
@@ -1135,10 +1174,10 @@ namespace Movex.FTP
 
         public bool FTPsendAll(string[] paths, IPAddress[] ipaddresses, ManualResetEvent[] WindowsAvailabilities, ManualResetEvent[] TransfersAvailabilities)
         {
-           
-
             try
             {
+                Console.WriteLine("[Movex.FTP] [FTPclient.cs] [FTPsendAll] Trying to send all the data.");
+
                 var numelements = paths.Length;
                 var files = new string[numelements];
                 var directories = new string[numelements];
@@ -1147,20 +1186,18 @@ namespace Movex.FTP
                 var nsendto = new Thread[numclients];
                 var tos = 0;
 
-
-
+                // Collecting data 
                 var collect = new Thread(new ThreadStart(() => CollectData(numclients, paths, ref directories, ref files, ref tos)))
                 {
                     Priority = ThreadPriority.Highest,
                     Name = "CollectDataThread"
                 };
+                AddThread(collect);
                 collect.Start();
-
                 clientsockets = GetSocketsForClients(ipaddresses);
-
                 collect.Join();
 
-
+                // Sending data
                 for (var i = 0; i < numclients; i++)
                 {
                     {
@@ -1170,6 +1207,7 @@ namespace Movex.FTP
                             Priority = ThreadPriority.Highest,
                             Name = "ClientThread" + index
                         };
+                        AddThread(nsendto[index]);
                         nsendto[index].Start();
                     }
                 }
@@ -1179,8 +1217,9 @@ namespace Movex.FTP
                     nsendto[i].Join();
                 }
 
+                PrintThreadsState();
+                Console.WriteLine("[Movex.FTP] [FTPclient.cs] [FTPsendAll] Send finished.");
                 return (true);
-
             }
             catch (OutOfMemoryException e) { Console.WriteLine(e.Message); throw e; }
             catch (IndexOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
@@ -1256,5 +1295,17 @@ namespace Movex.FTP
             mUchansDataLock = null;
             mTransfer = null;
         }
+
+        #region Utility method(s)
+        private void PrintThreadsState()
+        {
+            Console.WriteLine("[Movex.FTP] [FTPclient.cs] [PrintThreadState] Printing threads state.");
+            foreach (var t in mThreadsContainer)
+            {
+                Console.WriteLine("Thread: " + t.Name + ",Id: " + t.ManagedThreadId + ", State: " + t.ThreadState);
+            }
+        }
+        #endregion
+
     }
 }

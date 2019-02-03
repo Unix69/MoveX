@@ -3,12 +3,10 @@ using System.Windows;
 using System.ComponentModel;
 using System.Threading;
 using System;
+using System.Collections.Generic;
 
 namespace Movex.View
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public enum Mode { Traditional, Contextual };
@@ -19,12 +17,18 @@ namespace Movex.View
         private int mIndex;
         private Mode mModeOn = Mode.Traditional;
         private WindowRequester mWindowRequester;
+        private List<Thread> mThreadsContainer;
 
         #region Members for project-inner-access
         private BrowsePage mBrowsePage;
         private UserListControl mUserListControl;
         #endregion
 
+        #region Lifecycle method(s)
+        /// <summary>
+        /// At Application Startup
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             // Store the arguments passed (if any)
@@ -43,6 +47,7 @@ namespace Movex.View
             // Initialize variables
             mBrowsePage = null;
             mUserListControl = null;
+            mThreadsContainer = new List<Thread>();
 
             // Launch the WindowDispatcher (it runs in background)
             mWindowDispatcher = new WindowDispatcher();
@@ -90,29 +95,6 @@ namespace Movex.View
             // Launch the MainWindow
             ShowMainWindow();
         }
-
-        private void CreateContextMenu()
-        {
-            mNotifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
-            mNotifyIcon.ContextMenuStrip.Items.Add("MoveX").Click += (s, e) => ShowMainWindow();
-            mNotifyIcon.ContextMenuStrip.Items.Add("Esci").Click += (s, e) => ExitApplication();
-        }
-
-        private void ExitApplication()
-        {
-            mIsExit = true;
-            MainWindow.Close();
-            
-            mWindowDispatcher.Stop();
-            mNotifyIcon.Visible = false;
-            mNotifyIcon.Dispose();
-            mNotifyIcon = null;
-
-            IoC.Dispose();
-
-            Environment.Exit(Environment.ExitCode);
-        }
-
         /// <summary>
         /// Handle application events to show-up the Main Window Application
         /// </summary>
@@ -136,7 +118,27 @@ namespace Movex.View
                 IoC.Application.GoToPage(ApplicationPage.Browse);
             }
         }
+        /// <summary>
+        /// At application shutting down
+        /// </summary>
+        private void ExitApplication()
+        {
+            mIsExit = true;
+            MainWindow.Close();
 
+            mWindowDispatcher.Stop();
+            mWindowRequester.Dispose();
+            mNotifyIcon.Visible = false;
+            mNotifyIcon.Dispose();
+            mNotifyIcon = null;
+
+            ReleaseThreads();
+            IoC.Dispose();
+            Environment.Exit(Environment.ExitCode);
+        }
+        #endregion
+
+        #region Event Handler(s)
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             if (!mIsExit)
@@ -145,6 +147,17 @@ namespace Movex.View
                 MainWindow.Hide(); // A hidden window can be shown again, a closed one not
             }
         }
+        #endregion
+
+        #region Utility method(s)
+        private void CreateContextMenu()
+        {
+            mNotifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+            mNotifyIcon.ContextMenuStrip.Items.Add("MoveX").Click += (s, e) => ShowMainWindow();
+            mNotifyIcon.ContextMenuStrip.Items.Add("Esci").Click += (s, e) => ExitApplication();
+        }
+        public void ReleaseThreads() { foreach (var t in mThreadsContainer) t.Abort(); }
+        #endregion
 
         #region Getter(s) and Setter(s)
         public void SetUserListControl(UserListControl control) { mUserListControl = control; }
@@ -165,6 +178,34 @@ namespace Movex.View
         public Mode GetModeOn() { return mModeOn; }
         public void SetModeOn(Mode modeOn) { mModeOn = modeOn; }
         public WindowRequester GetWindowRequester() { return mWindowRequester; }
+        public void AddThread(Thread t) { mThreadsContainer.Add(t); }
+        public void RemoveThread(string Name)
+        {
+            Thread stone = null;
+            try
+            {
+                Console.WriteLine("[Movex.View] [App.xaml.cs] [RemoveThread] Trying to remove thread: " + Name + ".");
+
+                foreach (var t in mThreadsContainer)
+                {
+                    if (t.Name.Equals(Name))
+                    {
+                        t.Join();
+                        stone = t;
+                        break;
+                    }
+                }
+                if (stone != null) { mThreadsContainer.Remove(stone); }
+
+                var ThreadsCount = mThreadsContainer.Count;
+                Console.WriteLine("[Movex.View] [App.xaml.cs] [RemoveThread] Current active threads now: " + ThreadsCount + ".");
+            }
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [App.xaml.cs] [RemoveThread] " + Message);
+            }
+        }
         #endregion
     }
 }

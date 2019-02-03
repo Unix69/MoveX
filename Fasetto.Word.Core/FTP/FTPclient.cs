@@ -98,6 +98,7 @@ namespace Movex.View.Core
             }
             catch (Exception Exception)
             {
+                Console.WriteLine("[MOVEX.VIEW.CORE] [FTPclient.cs] [Send] Error occurred. See log for more datails.");
                 mClientExceptionManager.Log(Exception);
             }
         }
@@ -118,7 +119,7 @@ namespace Movex.View.Core
         /// <param name="address"></param>
         public void InterruptUpload(IPAddress address)
         {
-            Console.WriteLine("[FTPclient.cs] [InterruptUpload] Interruputing Upload.");
+            Console.WriteLine("[Movex.View.Core] [FTPclient.cs] [InterruptUpload] Interruputing Upload.");
             mClient.InterruptUpload(address);
         }
         #endregion

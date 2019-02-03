@@ -155,7 +155,7 @@ namespace Movex.View
         }
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            var builder = new StringBuilder();
+            // Get the FilePaths and FolderPaths selected by the user
             var filepaths = mFilepaths.ToArray();
 
             // Get the ip addresses selected by the user
@@ -181,11 +181,16 @@ namespace Movex.View
                 }
 
                 var threadDelegate = new ThreadStart(() => IoC.FtpClient.Send(filepaths, addresses, WindowsAvailabilities, TransferAvailabilities));
-                var sendThread = new Thread(threadDelegate);
+                var sendThread = new Thread(threadDelegate)
+                {
+                    Name = "SendThread"
+                };
+                ((App)Application.Current).AddThread(sendThread);
                 sendThread.Start();
 
                 // Hide the MainWindow and clear the selection
                 IoC.Application.GoToPage(ApplicationPage.Landing);
+                Thread.Sleep(100);
                 ((App)(Application.Current)).MainWindow.Hide();
                 ClearTransferItemsList();
 

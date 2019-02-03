@@ -39,6 +39,21 @@ namespace Movex.View
         }
         #endregion
 
+        #region Destructor
+        public void Dispose()
+        { 
+            mRequestAvailable.Dispose();
+            while (!mRequests.IsEmpty) {
+                mRequests.TryDequeue(out var content);
+                content = null;
+            }
+            mTypeRequests.Clear();
+            mMessages.Clear();
+            mSync.Clear();
+            mResponses.Clear();
+        }
+        #endregion
+
         #region Core Method(s)
         public void AddUploadProgressWindow(
             IPAddress ipAddress,

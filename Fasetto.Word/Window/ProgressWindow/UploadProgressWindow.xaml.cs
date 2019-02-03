@@ -111,7 +111,6 @@ namespace Movex.View
                     
             }
                 
-
             // IF 100% COMPLETED: 2. wait a second
             Thread.Sleep(1000);
 
@@ -151,7 +150,11 @@ namespace Movex.View
             Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closing the window.");
             Dispatcher.BeginInvoke(new Action(() => {
 
+                // Close the UploadProgressWindow
                 Close();
+
+                // Release thread resources
+                ((App)Application.Current).RemoveThread("SendThread");
                 Thread.CurrentThread.Interrupt();
 
             }));
