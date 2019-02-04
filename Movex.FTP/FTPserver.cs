@@ -206,10 +206,12 @@ namespace Movex.FTP
                 {
                     FTPrecv(client, whereToSave, downloadTransferAvailability, windowAvailability);
                 }
-                catch (Exception e)
+                catch (Exception Exception)
                 {
-                    Console.WriteLine(e.Message);
-                    throw e;
+                    var Message = Exception.Message;
+                    var IpAddress = ipAddress.ToString();
+                    Console.WriteLine("[MOVEX.FTP] [FTPserver.cs] [FTPstart] " + Message + ".");
+                    mWindowRequester.RemoveDownloadProgressWindow(ipAddress.ToString());
                 }
 
             }))
@@ -218,9 +220,6 @@ namespace Movex.FTP
                 Name = "ServerSessionThread"
             };
             recvfrom.Start();
-
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPstart] Passing DownloadTransferAvailability as: " + windowAvailability.Handle.ToInt64().ToString());
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPstart] Passing WindowAvailability as: " + downloadTransferAvailability.Handle.ToInt64().ToString());
             mWindowRequester.AddDownloadProgressWindow(ipAddress, windowAvailability, downloadTransferAvailability);
 
             goto Accept;
@@ -338,10 +337,7 @@ namespace Movex.FTP
                 var Message = Exception.Message;
                 var ipAddress = clientsocket.RemoteEndPoint.ToString().Split(':')[0];
                 Console.WriteLine("[MOVEX.FTP] [FTPserver.cs] [FTPrecv] " + Message + ".");
-
-                var CriticalMessage = "Ci dispiace! Il trasferimento non è andato a buon fine.";
                 mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
-                mWindowRequester.AddMessageWindow(CriticalMessage);
             }
         }
         #endregion
@@ -717,11 +713,11 @@ namespace Movex.FTP
             var received = 0;
             var length = (bufferIn == null ? 0 : bufferIn.Length);
 
-            CheckSocketConnection(ref client);
             while (received < length)
             {
                 try
                 {
+                    CheckSocketConnection(ref client);
                     received += client.Receive(bufferIn, received, length - received, 0);
                 }
                 catch (ArgumentNullException e) { Console.WriteLine(e.Message); throw e; }

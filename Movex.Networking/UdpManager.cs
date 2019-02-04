@@ -31,7 +31,7 @@ namespace Movex.Network
         public IPAddress mIP;
         public IPAddress mSUBNET_MASK;
         public IPAddress mBROADCAST;
-        private const string NetworkLogPath = @".\networkLog.txt";
+        private const string NetworkLogPath = @".\Log\Network.log";
         private Mutex mNetworkLogPathMutex;
 
         #region Private members
@@ -158,9 +158,13 @@ namespace Movex.Network
                         }
                         mNetworkLogPathMutex.ReleaseMutex();
 
-                        //mMut.WaitOne();
-                        mRestrictedUsers.Add(messageReceived.GetRestrictedUser());
-                        //mMut.ReleaseMutex();
+                        var candidate = messageReceived.GetRestrictedUser();
+                        var i = mRestrictedUsers.FindIndex(x => x.mIpAddress == candidate.mIpAddress);
+                        if (i != -1)
+                        {
+                            mRestrictedUsers.RemoveAt(i);
+                        }
+                        mRestrictedUsers.Add(candidate);
 
                         if (mPrivateMode) return;
 
@@ -183,23 +187,50 @@ namespace Movex.Network
                         mNetworkLogPathMutex.ReleaseMutex();
 
                         // Reply with no message, and only add the user
-                        //mMut.WaitOne();
-                        mRestrictedUsers.Add(messageReceived.GetRestrictedUser());
-                        //mMut.ReleaseMutex();
+                        var candidate = messageReceived.GetRestrictedUser();
+                        var i = mRestrictedUsers.FindIndex(x => x.mIpAddress == candidate.mIpAddress);
+                        if (i != -1)
+                        {
+                            mRestrictedUsers.RemoveAt(i);
+                        }
+                        mRestrictedUsers.Add(candidate);
                     }
                     else if (messageReceived.GetMessageType().Equals(Message.MSG_LEAVE))
                     {
-                        // Record the operation to the Network Log
+                        mNetworkLogPathMutex.WaitOne();
                         using (var streamWriter = File.AppendText(NetworkLogPath))
                         {
-                            var currentTime = DateTime.Now.ToString("h: mm:ss tt");
+                            var currentTime = DateTime.Now.ToString("h:mm:ss tt");
                             streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_LEAVE + ".");
+
+                            // Remove the user from the list
+                            var index = mRestrictedUsers.FindIndex(user => user.mIpAddress.Equals(ipSender.ToString()));
+                            streamWriter.WriteLine("[" + currentTime + "] Removing user at Index: " + index.ToString());
+                            mRestrictedUsers.RemoveAt(index);
+
                             streamWriter.Close();
                         }
+                        mNetworkLogPathMutex.ReleaseMutex();
+                    }
+                    else if (messageReceived.GetMessageType().Equals(Message.MSG_UPDATE))
+                    {
+                        // Record the operation to the Network Log
+                        mNetworkLogPathMutex.WaitOne();
+                        using (var streamWriter = File.AppendText(NetworkLogPath))
+                        {
+                            var currentTime = DateTime.Now.ToString("h:mm:ss tt");
+                            streamWriter.WriteLine("[" + currentTime + "]" + " " + "Receveid from: " + ipSender.ToString() + " " + "the message: " + Message.MSG_UPDATE + ".");
+                            streamWriter.Close();
+                        }
+                        mNetworkLogPathMutex.ReleaseMutex();
+
+                        // Wait for profile picture
+                        WaitForProfilePictures();
 
                         // Remove the user from the list
                         var index = mRestrictedUsers.FindIndex(user => user.mIpAddress.Equals(ipSender.ToString()));
                         mRestrictedUsers.RemoveAt(index);
+                        mRestrictedUsers.Add(messageReceived.GetRestrictedUser());
                     }
                 }
 
@@ -343,6 +374,34 @@ namespace Movex.Network
         {
             var message = new Message(Message.MSG_LEAVE);
             SendMessage(Jsonify(message), mBROADCAST);
+        }
+
+        /// <summary>
+        /// Send an update message to the specified user
+        /// </summary>
+        /// <param name="ReceiverIp"></param>
+        public void SendUpdateMessage()
+        {
+            var message = new Message(Message.MSG_UPDATE, mRestrictedUser);
+            var messageJ = Jsonify(message);
+
+            SendMessage(messageJ, mBROADCAST);
+
+            mNetworkLogPathMutex.WaitOne();
+            using (var streamWriter = File.AppendText(NetworkLogPath))
+            {
+                var currentTime = DateTime.Now.ToString("h: mm:ss tt");
+                streamWriter.WriteLine("[" + currentTime + "]" + " Sent Update Message to Broadcast.");
+                streamWriter.Close();
+            }
+            mNetworkLogPathMutex.ReleaseMutex();
+
+            foreach (var user in mRestrictedUsers)
+            {
+                var IP = IPAddress.Parse(user.mIpAddress);
+                SendProfilePicture(IP, mRestrictedUser.mProfilePictureFilename);
+            }
+
         }
 
         /// <summary>

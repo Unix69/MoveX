@@ -147,8 +147,27 @@ namespace Movex.View
         {
             Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Window_Close] Closing the window.");
             Dispatcher.BeginInvoke(new Action(() => {
-                Close();
-                // Thread.CurrentThread.Abort();
+
+                try
+                {
+                    // Close the DownloadProgressWindow
+                    Close();
+                }
+                catch (ThreadAbortException Exception)
+                {
+                    var Message = Exception.Message;
+                    Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Window_Close] " + Message + ".");
+                }
+                catch (Exception Exception)
+                {
+                    var Message = Exception.Message;
+                    Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Window_Close] " + Message + ".");
+                }
+                finally
+                {
+                    // Release thread resources
+                    Thread.CurrentThread.Interrupt();
+                }
             }));
         }
         private void OnTransferInterrupted()

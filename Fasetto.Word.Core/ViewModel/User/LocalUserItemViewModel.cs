@@ -137,6 +137,7 @@ namespace Movex.View.Core
         {
             Name = name;
             Database.UpdateLocalDB(nameof(Name), name);
+            mUser.SetUsername(name);
         }
 
         /// <summary>
@@ -146,6 +147,7 @@ namespace Movex.View.Core
         {
             Message = message;
             Database.UpdateLocalDB(nameof(Message), message);
+            mUser.SetMessage(message);
         }
 
         /// <summary>

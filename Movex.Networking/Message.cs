@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Movex.Network
+﻿namespace Movex.Network
 {
     class Message
     {
@@ -13,6 +6,7 @@ namespace Movex.Network
         public static string MSG_PRESENTATION = "I_AM";
         public static string MSG_ACKNOWLEDGE  = "ACK";
         public static string MSG_DISCOVERY    = "HELLO";
+        public static string MSG_UPDATE       = "UPDATE";
         public static string MSG_LEAVE        = "BYE";
         public static string MSG_ERROR        = "ERR";
         #endregion

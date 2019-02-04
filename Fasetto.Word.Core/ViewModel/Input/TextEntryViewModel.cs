@@ -92,11 +92,11 @@ namespace Movex.View.Core
             OriginalText = EditedText;
             if (Label == "Nome")
             {
-                Database.UpdateLocalDB("Name", OriginalText);
+                IoC.User.SetName(OriginalText);
             }
             else if (Label == "Messaggio")
             {
-                Database.UpdateLocalDB("Message", OriginalText);
+                IoC.User.SetMessage(OriginalText);
             }
             Editing = false;
         }

@@ -3,6 +3,7 @@ using Movex.Network;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
+using System;
 
 namespace Movex.View.Core
 {
@@ -38,61 +39,85 @@ namespace Movex.View.Core
 
                 // Get the technical user
                 var u = IoC.User.GetTechnicalUser();
-                List<UserItemViewModel> ItemsStore = null;
+                var ItemsSelected = new List<string>();
 
                 updateModel:
 
                 // Collect the List of User from Network Discovering
                 u.GetForFriend();
                 var ItemsList = u.GetFriendList();
+
                 IoC.User.FriendsAvailable = ItemsList.Capacity == 0 ? false : true ;
-                if (Items != null) { ItemsStore = Items; }
-                Items = new List<UserItemViewModel>();
-                
-                if (ItemsStore != null)
-                foreach(var item in ItemsStore)
+                if (ItemsList.Count == 0)
                 {
-                     Items.Add(item);
-                }
+                    if (Items != null) Items.Clear();
+                    if (ItemsSelected != null) ItemsSelected.Clear();
+                    IoC.User.FriendsAvailable = false;
+                    IoC.TransferItemList.UsersAvailable = false;
+                    IoC.TransferItemList.TransferAvailable = false;
 
-                // Inser the ModelData to the Items object
-                for (var i = 0; i < ItemsList.Count; i++)
-                {
+                    // Force a DataBinding Refresh creating a new Items Object
+                    Items = new List<UserItemViewModel>();
                     
-                    // Get the right ProfilePicture (if not OK, put the default one)
-                    var ProfilePicturePath = "";
-                    if (!File.Exists(Path.Combine(defaultDirPath, ItemsList[i].mProfilePictureFilename))) 
+                    goto Sleep;
+                }
+                else
+                {
+                    IoC.User.FriendsAvailable = true;
+
+                    // If there are selected users store its IpAddress
+                    if (Items != null)
                     {
-                        ProfilePicturePath = ItemsList[i].mProfilePictureFilename = defaultProfilePicture;
-                    }
-                    else
-                    {
-                        ProfilePicturePath = Path.Combine(defaultDirPath, ItemsList[i].mProfilePictureFilename);
+                        foreach (var item in Items)
+                        {
+                            if (item.IsSelected)
+                            {
+                                ItemsSelected.Add(item.IpAddress);
+                            }
+                        }
+
                     }
 
-                    // Convert from RestrictedUser to UserItemViewModel
-                    var candidate = new UserItemViewModel
-                    {
-                        Name = ItemsList[i].mUsername,
-                        IpAddress = ItemsList[i].mIpAddress,
-                        Initials = ItemsList[i].mUsername[0].ToString(),
-                        Message = ItemsList[i].mMessage,
-                        ProfilePicture = ProfilePicturePath,
-                        NewMessageAvailable = true,
-                        IsSelected = false
-                        
-                    };
+                    Items = new List<UserItemViewModel>();
 
-                    // If it is not present in the list add
-                    if (!Items.Exists(x => x.IpAddress == candidate.IpAddress)) {
-                        Items.Add(candidate);
-                        //SetItems(Items);
+                    for (var i = 0; i < ItemsList.Count; i++)
+                    {
+
+                        // Get the right ProfilePicture (if not OK, put the default one)
+                        var ProfilePicturePath = "";
+                        if (!File.Exists(Path.Combine(defaultDirPath, ItemsList[i].mProfilePictureFilename)))
+                        {
+                            ProfilePicturePath = ItemsList[i].mProfilePictureFilename = defaultProfilePicture;
+                        }
+                        else
+                        {
+                            ProfilePicturePath = Path.Combine(defaultDirPath, ItemsList[i].mProfilePictureFilename);
+                        }
+
+                        // Convert from RestrictedUser to UserItemViewModel
+                        var item = new UserItemViewModel
+                        {
+                            Name = ItemsList[i].mUsername,
+                            IpAddress = ItemsList[i].mIpAddress,
+                            Initials = ItemsList[i].mUsername[0].ToString(),
+                            Message = ItemsList[i].mMessage,
+                            ProfilePicture = ProfilePicturePath,
+                            NewMessageAvailable = true,
+                            IsSelected = false
+
+                        };
+
+                        if (ItemsSelected.Contains(item.IpAddress)) item.IsSelected = true;
+                        ItemsSelected.Clear();
+
+                        Items.Add(item);
                     }
                 }
-                
 
-                // Wait and then try to update again
-                Thread.Sleep(2500);
+                Sleep:
+
+                var time = new Random().Next(2500, 7500);
+                Thread.Sleep(time);
                 goto updateModel;
                 
             });
@@ -103,10 +128,5 @@ namespace Movex.View.Core
         }
 
         #endregion
-
-        private void SetItems(List<UserItemViewModel> items)
-        {
-            Items = items;
-        }
     }
 }

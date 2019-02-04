@@ -52,6 +52,7 @@ namespace Movex.Network
             mUsername = name;
             // Update the informations change
             mConnManager.SetRestrictedUser(RestrictMe());
+            mConnManager.SendUpdateMessage();
         }
 
         /// <summary>
@@ -71,6 +72,7 @@ namespace Movex.Network
             mProfilePicturePath = profilePicturePath;
             // Update the informations change
             mConnManager.SetRestrictedUser(RestrictMe());
+            mConnManager.SendUpdateMessage();
         }
 
         /// <summary>
@@ -82,6 +84,7 @@ namespace Movex.Network
             mMessage = message;
             // Update the informations change
             mConnManager.SetRestrictedUser(RestrictMe());
+            mConnManager.SendUpdateMessage();
         }
 
         /// <summary>
@@ -196,6 +199,11 @@ namespace Movex.Network
         public void SayByeToFriends()
         {
             mConnManager.SendByeMessage();
+        }
+
+        public void UpdateFriendsAboutMe()
+        {
+            mConnManager.SendUpdateMessage();
         }
 
         #endregion

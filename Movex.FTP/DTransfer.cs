@@ -143,7 +143,7 @@ namespace Movex.FTP
         {
             try
             {
-                Console.WriteLine("[Movex.View] [DTransfer.cs] [GetTransferPerc] Trying to get the transfer percentage.");
+                Console.WriteLine("[Movex.FTP] [DTransfer.cs] [GetTransferPerc] Trying to get the transfer percentage.");
 
                 var ratio = ((float)GetTransfered() / mToTransfer);
                 var perc =  ratio * 100;
@@ -153,13 +153,13 @@ namespace Movex.FTP
             catch (DivideByZeroException Exception)
             {
                 var Message = Exception.Message;
-                Console.WriteLine("[MOVEX.VIEW] [Dtransfer.cs] [GetTransferPerc]" + Message + ".");
+                Console.WriteLine("[MOVEX.FTP] [Dtransfer.cs] [GetTransferPerc]" + Message + ".");
 
                 return 0;
             }
             catch (Exception Exception) {
                 var Message = Exception.Message;
-                Console.WriteLine("[MOVEX.VIEW] [Dtransfer.cs] [GetTransferPerc]" + Message + ".");
+                Console.WriteLine("[MOVEX.FTP] [Dtransfer.cs] [GetTransferPerc]" + Message + ".");
 
                 throw Exception;
             }

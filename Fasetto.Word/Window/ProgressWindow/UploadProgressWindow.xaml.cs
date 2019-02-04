@@ -22,6 +22,7 @@ namespace Movex.View
         private event EventHandler TransferCompleted;
         private event EventHandler TransferInterrupted;
         private ProgressDesignModel mProgress;
+        private bool mIsInterrupted;
         #endregion
 
         #region Constructor(s)
@@ -42,6 +43,7 @@ namespace Movex.View
             // Assigning member(s)
             mAddress = address;
             mUTransferAvailability = uTransferAvailability;
+            mIsInterrupted = false;
 
             // Manage event(s)
             Loaded += OnLoad;
@@ -87,7 +89,7 @@ namespace Movex.View
             var lastProgress = "0";
             var interruptionRisk = 0;
 
-            while (!((progress = ((int)mUploadTransfer.GetTransferPerc()).ToString()).Equals("100")))
+            while (!mIsInterrupted && !((progress = ((int)mUploadTransfer.GetTransferPerc()).ToString()).Equals("100")))
             {
                 if (int.TryParse(progress, out var x))
                 {
@@ -162,17 +164,9 @@ namespace Movex.View
         private void OnTransferInterrupted()
         {
             mCloseWindow.WaitOne();
+            mIsInterrupted = true;
             TransferInterrupted.Invoke(this, EventArgs.Empty);
-
-            // Launch a message window
-            var MessageWindowThread = new Thread(() =>
-            {
-                var w = new MessageWindow("Il trasferimento è stato interrotto.");
-                w.Show();
-                System.Windows.Threading.Dispatcher.Run();
-            });
-            MessageWindowThread.SetApartmentState(ApartmentState.STA);
-            MessageWindowThread.Start();
+            ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
         }
         #endregion
 
