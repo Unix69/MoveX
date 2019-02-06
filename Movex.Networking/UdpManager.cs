@@ -51,6 +51,11 @@ namespace Movex.Network
         /// </summary>
         public UdpManager(RestrictedUser ru, bool privateMode)
         {
+
+            // Create folder Log (if not exists)
+            var FolderPath = Path.GetDirectoryName(NetworkLogPath);
+            Directory.CreateDirectory(FolderPath);
+
             //Create the Network Log
             var sw = File.Create(NetworkLogPath);
             sw.Close();

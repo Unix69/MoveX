@@ -28,8 +28,6 @@ namespace Movex.View.Core
         /// </summary>
         public UserDesignModel()
         {
-           
-
             IoC.Application.UserDesignModelUpdater = new Thread( () => {
 
                 var currWorkingDirectory = Directory.GetCurrentDirectory();
@@ -54,7 +52,7 @@ namespace Movex.View.Core
                     if (ItemsSelected != null) ItemsSelected.Clear();
                     IoC.User.FriendsAvailable = false;
                     IoC.TransferItemList.UsersAvailable = false;
-                    IoC.TransferItemList.TransferAvailable = false;
+                    // IoC.TransferItemList.TransferAvailable = false;
 
                     // Force a DataBinding Refresh creating a new Items Object
                     Items = new List<UserItemViewModel>();
@@ -78,7 +76,7 @@ namespace Movex.View.Core
 
                     }
 
-                    Items = new List<UserItemViewModel>();
+                    var TmpItems = new List<UserItemViewModel>();
 
                     for (var i = 0; i < ItemsList.Count; i++)
                     {
@@ -110,6 +108,12 @@ namespace Movex.View.Core
                         if (ItemsSelected.Contains(item.IpAddress)) item.IsSelected = true;
                         ItemsSelected.Clear();
 
+                        TmpItems.Add(item);
+                    }
+
+                    Items = new List<UserItemViewModel>();
+                    foreach(var item in TmpItems)
+                    {
                         Items.Add(item);
                     }
                 }

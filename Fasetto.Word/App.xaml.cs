@@ -4,11 +4,27 @@ using System.ComponentModel;
 using System.Threading;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
+using System.Text;
+using System.Diagnostics;
 
 namespace Movex.View
 {
     public partial class App : Application
     {
+        public static IntPtr WindowHandle { get; private set; }
+
+        [DllImport("user32", CharSet = CharSet.Unicode)]
+        static extern IntPtr FindWindow(string cls, string win);
+        [DllImport("user32")]
+        static extern IntPtr SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32")]
+        static extern bool IsIconic(IntPtr hWnd);
+        [DllImport("user32")]
+        static extern bool OpenIcon(IntPtr hWnd);
+
         public enum Mode { Traditional, Contextual };
         private System.Windows.Forms.NotifyIcon mNotifyIcon;
         private bool mIsExit;
@@ -18,6 +34,7 @@ namespace Movex.View
         private Mode mModeOn = Mode.Traditional;
         private WindowRequester mWindowRequester;
         private List<Thread> mThreadsContainer;
+        private static Mutex NamedMutex;
 
         #region Members for project-inner-access
         private BrowsePage mBrowsePage;
@@ -31,75 +48,96 @@ namespace Movex.View
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            // Store the arguments passed (if any)
-            if (e.Args.Length > 0) {
-                mModeOn = Mode.Contextual;
+            // Understand whether first instance or not
+            const string appName = "MoveX";
+            NamedMutex = new Mutex(true, appName, out var createdNew);
+            var proc = Process.GetCurrentProcess();
+            var processName = proc.ProcessName.Replace(".vshost", "");
+            var runningProcess = Process.GetProcesses()
+                .FirstOrDefault(x => (x.ProcessName == processName || x.ProcessName == proc.ProcessName || x.ProcessName == proc.ProcessName + ".vshost") && x.Id != proc.Id);
 
-                mArgs = new string[e.Args.Length];
-                foreach (var arg in e.Args)
-                {
-                    mArgs[mIndex++] = arg;
-                }
+            if (e.Args.Length > 0)
+            {
+                SetArguments(e.Args);
             }
 
             base.OnStartup(e);
 
-            // Initialize variables
-            mBrowsePage = null;
-            mUserListControl = null;
-            mThreadsContainer = new List<Thread>();
+            if (!createdNew)
+            {
+                ActivateOtherWindow();
+                if(mArgs != null && mArgs.Length > 0)
+                {
+                    UnsafeNative.SendMessage(runningProcess.MainWindowHandle, string.Join("|", mArgs));
+                }
+                Application.Current.Shutdown();
+            }
+            else if (createdNew)
+            {
+                // Store the arguments passed (if any)
+                if (e.Args.Length > 0)
+                {
+                    mModeOn = Mode.Contextual;
+                }
 
-            // Launch the WindowDispatcher (it runs in background)
-            mWindowDispatcher = new WindowDispatcher();
-            mWindowDispatcher.Init();
-            mWindowDispatcher.Start();
+                // Initialize variables
+                mBrowsePage = null;
+                mUserListControl = null;
+                mThreadsContainer = new List<Thread>();
 
-            // Setup IoC
-            IoC.Setup();
-            IoC.FtpServer.SetSynchronization(
-                WindowDispatcher.RequestAvailable,
-                WindowDispatcher.Requests,
-                WindowDispatcher.TypeRequests,
-                WindowDispatcher.Messages,
-                WindowDispatcher.Sync,
-                WindowDispatcher.Responses
-                );
-            IoC.FtpClient.SetSynchronization(
-                WindowDispatcher.RequestAvailable,
-                WindowDispatcher.Requests,
-                WindowDispatcher.TypeRequests,
-                WindowDispatcher.Messages,
-                WindowDispatcher.Sync,
-                WindowDispatcher.Responses
-                );
-            mWindowRequester = new WindowRequester(
-                WindowDispatcher.RequestAvailable,
-                WindowDispatcher.Requests,
-                WindowDispatcher.TypeRequests,
-                WindowDispatcher.Messages,
-                WindowDispatcher.Sync,
-                WindowDispatcher.Responses
-                );
-           
-            // Setup MainWindow
-            MainWindow = new MainWindow();
-            MainWindow.Closing += MainWindow_Closing;
+                // Launch the WindowDispatcher (it runs in background)
+                mWindowDispatcher = new WindowDispatcher();
+                mWindowDispatcher.Init();
+                mWindowDispatcher.Start();
 
-            // Setup the System Tray
-            mNotifyIcon = new System.Windows.Forms.NotifyIcon();
-            mNotifyIcon.DoubleClick += (s, args) => ShowMainWindow();
-            mNotifyIcon.Icon = Movex.View.Properties.Resources.MyIcon;
-            mNotifyIcon.Visible = true;
-            CreateContextMenu();
+                // Setup IoC
+                IoC.Setup();
+                IoC.FtpServer.SetSynchronization(
+                    WindowDispatcher.RequestAvailable,
+                    WindowDispatcher.Requests,
+                    WindowDispatcher.TypeRequests,
+                    WindowDispatcher.Messages,
+                    WindowDispatcher.Sync,
+                    WindowDispatcher.Responses
+                    );
+                IoC.FtpClient.SetSynchronization(
+                    WindowDispatcher.RequestAvailable,
+                    WindowDispatcher.Requests,
+                    WindowDispatcher.TypeRequests,
+                    WindowDispatcher.Messages,
+                    WindowDispatcher.Sync,
+                    WindowDispatcher.Responses
+                    );
+                mWindowRequester = new WindowRequester(
+                    WindowDispatcher.RequestAvailable,
+                    WindowDispatcher.Requests,
+                    WindowDispatcher.TypeRequests,
+                    WindowDispatcher.Messages,
+                    WindowDispatcher.Sync,
+                    WindowDispatcher.Responses
+                    );
 
-            // Launch the MainWindow
-            ShowMainWindow();
+                // Setup MainWindow
+                MainWindow = new MainWindow();
+                MainWindow.Closing += MainWindow_Closing;
+
+                // Setup the System Tray
+                mNotifyIcon = new System.Windows.Forms.NotifyIcon();
+                mNotifyIcon.DoubleClick += (s, args) => ShowMainWindow();
+                mNotifyIcon.Icon = Movex.View.Properties.Resources.MyIcon;
+                mNotifyIcon.Visible = true;
+                CreateContextMenu();
+
+                // Launch the MainWindow
+                ShowMainWindow();
+            }
         }
         /// <summary>
         /// Handle application events to show-up the Main Window Application
         /// </summary>
         public void ShowMainWindow()
         {
+            
             if (MainWindow.IsVisible)
             {
                 if (MainWindow.WindowState == WindowState.Minimized)
@@ -206,6 +244,25 @@ namespace Movex.View
                 Console.WriteLine("[MOVEX.VIEW] [App.xaml.cs] [RemoveThread] " + Message);
             }
         }
+        public void SetArguments(string[] Arguments)
+        {
+            mArgs = new string[Arguments.Length];
+            foreach (var arg in Arguments)
+            {
+                mArgs[mIndex++] = arg;
+            }
+        }
         #endregion
+
+        private void ActivateOtherWindow()
+        {
+            var other = FindWindow(null, "moveX - Local Sharing Point");
+            if (other != IntPtr.Zero)
+            {
+                SetForegroundWindow(other);
+                if (IsIconic(other))
+                    OpenIcon(other);
+            }
+        }
     }
 }
