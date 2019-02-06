@@ -92,7 +92,6 @@ namespace Movex.FTP
         {
             try
             {
-                Console.WriteLine("[Movex.FTP] [DTransfer.cs] [GetTransferFilename] Trying to get TransferFilename.");
                 if (mDchan != null)
                 {
                     return (mDchan.Get_filenames()[mDchan.Get_index_current_transfer()]);
@@ -143,8 +142,6 @@ namespace Movex.FTP
         {
             try
             {
-                Console.WriteLine("[Movex.FTP] [DTransfer.cs] [GetTransferPerc] Trying to get the transfer percentage.");
-
                 var ratio = ((float)GetTransfered() / mToTransfer);
                 var perc =  ratio * 100;
 

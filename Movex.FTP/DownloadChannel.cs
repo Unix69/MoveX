@@ -195,7 +195,7 @@ namespace Movex.FTP
         {
             try
             {
-
+                Console.WriteLine("[Movex.FTP] [DownloadChannel.cs] [InterruptDownload] Trying to interrupt download.");
                 try
                 {
                     if (mSocket != null)
@@ -221,6 +221,7 @@ namespace Movex.FTP
             catch (SecurityException e) { Console.WriteLine(e.Message); throw e; }
             catch (ThreadStateException e) { Console.WriteLine(e.Message); throw e; }
 
+            Console.WriteLine("[Movex.FTP] [DownloadChannel.cs] [InterruptDownload] Socket and thread interrupted.");
         }
 
         public bool IsInterrupted()

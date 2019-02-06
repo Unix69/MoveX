@@ -24,6 +24,7 @@ namespace Movex.FTP
         private List<DownloadChannel> mDchans;
         private Mutex mDchansDataLock;
         private ConcurrentDictionary<string, DTransfer> mTransfer;
+        private Thread mRecvThread;
 
         // Member(s) useful for Application Settings
         private bool mPrivateMode;
@@ -31,6 +32,9 @@ namespace Movex.FTP
         private bool mAutomaticReception;
         private string mDownloadDefaultFolder;
         private Mutex mVisible;
+
+        // Member(s) useful for Logging
+        private FTPserverLogger mLogger;
 
         #endregion
 
@@ -43,6 +47,7 @@ namespace Movex.FTP
                 mDchans = new List<DownloadChannel>();
                 mVisible = new Mutex();
                 mDchansDataLock = new Mutex();
+                mLogger = new FTPserverLogger();
                 mPrivateMode = PrivateMode;
                 mAutomaticReception = AutomaticReception;
                 mAutomaticSave = AutomaticSave;
@@ -155,9 +160,9 @@ namespace Movex.FTP
 
             Accept:
 
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPstart] Accepting new requests.");
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPstart] Accepting new requests.");
             var client = mServersocket.Accept();
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPstart] New request to serve.");
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPstart] New request to serve.");
 
             if (mPrivateMode == true)
             {
@@ -210,8 +215,9 @@ namespace Movex.FTP
                 {
                     var Message = Exception.Message;
                     var IpAddress = ipAddress.ToString();
-                    Console.WriteLine("[MOVEX.FTP] [FTPserver.cs] [FTPstart] " + Message + ".");
-                    mWindowRequester.RemoveDownloadProgressWindow(ipAddress.ToString());
+
+                    mLogger.Log("[MOVEX.FTP] [FTPserver.cs] [FTPstart] " + Message + ".");
+                    //mWindowRequester.RemoveDownloadProgressWindow(ipAddress.ToString());
                 }
 
             }))
@@ -219,6 +225,7 @@ namespace Movex.FTP
                 Priority = ThreadPriority.Highest,
                 Name = "ServerSessionThread"
             };
+            mRecvThread = recvfrom;
             recvfrom.Start();
             mWindowRequester.AddDownloadProgressWindow(ipAddress, windowAvailability, downloadTransferAvailability);
 
@@ -238,7 +245,7 @@ namespace Movex.FTP
 
             try
             {
-                Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPrecv] Trying to receive data.");
+                mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPrecv] Trying to receive data.");
 
                 tos = RecvTag(ref clientsocket);
                 if (!CheckToS(tos)) { throw new IOException("Bad ToS"); }
@@ -249,7 +256,7 @@ namespace Movex.FTP
                 nfiles = RecvTotNFiles(ref clientsocket);
                 if (!CheckTotalNFiles(nfiles)) { throw new IOException("Bad Total Number of Files"); }
 
-                Console.WriteLine("Recpt: Receive from Client dim=" + GetConvertedNumber(tot) + " nfiles=" + nfiles);
+                mLogger.Log("Recpt: Receive from Client dim=" + GetConvertedNumber(tot) + " nfiles=" + nfiles);
 
                 if (tot > DiskCapability(path))
                 {
@@ -308,36 +315,36 @@ namespace Movex.FTP
                 if (!SendAck(clientsocket, FTPsupporter.ProtocolAttributes.Ack)) { throw new IOException("Cannot send ack"); }
 
                 // Remove DTrasfer from the DTransfer list and release it
-                Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPrecv] Releasing DTransfer.");
+                mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPrecv] Releasing DTransfer.");
                 mTransfer.TryRemove(ipAddress, out var oldTransfer);
                 oldTransfer = null;
 
                 // Release the socket
-                Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPrecv] Releasing Socket.");
+                mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPrecv] Releasing Socket.");
                 clientsocket.Shutdown(SocketShutdown.Both);
                 clientsocket.Dispose();
                 clientsocket.Close();
 
                 var CurrentThreadName = Thread.CurrentThread.Name;
-                Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPrecv] Releasing Thread: " + CurrentThreadName + ".");
+                mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPrecv] Releasing Thread: " + CurrentThreadName + ".");
                 return;
             }
             catch (SocketException Exception)
             {
                 var Message = Exception.Message;
                 var ipAddress = clientsocket.RemoteEndPoint.ToString().Split(':')[0];
-                Console.WriteLine("[MOVEX.FTP] [FTPserver.cs] [FTPrecv] " + Message + ".");
+                mLogger.Log("[MOVEX.FTP] [FTPserver.cs] [FTPrecv] " + Message + ".");
 
                 var CriticalMessage = "Il trasferimento è stato interrotto.";
-                mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
+                //mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
                 mWindowRequester.AddMessageWindow(CriticalMessage);
             }
             catch (Exception Exception)
             {
                 var Message = Exception.Message;
                 var ipAddress = clientsocket.RemoteEndPoint.ToString().Split(':')[0];
-                Console.WriteLine("[MOVEX.FTP] [FTPserver.cs] [FTPrecv] " + Message + ".");
-                mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
+                mLogger.Log("[MOVEX.FTP] [FTPserver.cs] [FTPrecv] " + Message + ".");
+                //mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
             }
         }
         #endregion
@@ -345,7 +352,7 @@ namespace Movex.FTP
         #region Mid-level method(s)
         private bool FTPmultiFile_s(ref Socket clientsocket, int tag, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPmultiFile_s] Serving the request.");
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPmultiFile_s] Serving the request.");
             var numfile = 0;
             string filename = null;
             try
@@ -376,13 +383,13 @@ namespace Movex.FTP
                 if (!RefreshCannels(dchan)) { throw new IOException("Channels Unrefreshable"); }
                 return (true);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
         }
         private bool FTPsingleFile(ref Socket clientsocket, int tag, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPsingleFile] Serving the request.");
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPsingleFile] Serving the request.");
             var ip = clientsocket.RemoteEndPoint.ToString().Split(':')[0];
             var dchan = new DownloadChannel(ip, tag, path);
             string filename = null;
@@ -408,14 +415,14 @@ namespace Movex.FTP
                 if (!RefreshCannels(dchan)) { throw new IOException("Channels Unrefreshable"); }
                 return (true);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
 
         }
         private bool FTPtree(ref Socket clientsocket, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPtree] Serving the request.");
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPtree] Serving the request.");
             var numele = 0;
             var dirpaths = new List<string>();
             var filepaths = new List<string>();
@@ -452,8 +459,8 @@ namespace Movex.FTP
                 FTPfilesByTree(ref clientsocket, filepaths.ToArray(), path, tag, transfer, downloadTransferAvailability, windowAvailability);
                 return (true);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
 
 
@@ -461,7 +468,7 @@ namespace Movex.FTP
         }
         private bool FTPmultiTree(ref Socket clientsocket, string path, DTransfer transfer, ManualResetEvent downloadTransferAvailability, ManualResetEvent windowAvailability)
         {
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPmultiTree] Serving the request.");
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPmultiTree] Serving the request.");
             try
             {
                 var tag = 0;
@@ -475,8 +482,8 @@ namespace Movex.FTP
                 }
                 return (true);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
 
         }
@@ -496,8 +503,8 @@ namespace Movex.FTP
                 var totalbytes = BitConverter.ToInt64(bufferIn, 0);
                 return (totalbytes);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
         }
         private int RecvTag(ref Socket clientsocket)
@@ -513,8 +520,8 @@ namespace Movex.FTP
                 var tag = BitConverter.ToInt32(bufferIn, 0);
                 return (tag);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
         }
         private long RecvTotNFiles(ref Socket clientsocket)
         {
@@ -526,8 +533,8 @@ namespace Movex.FTP
                 var nfiles = BitConverter.ToInt64(bufferIn, 0);
                 return (nfiles);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
         }
         private string RecvFilename(ref Socket clientsocket, DownloadChannel dchan, int n)
@@ -547,15 +554,15 @@ namespace Movex.FTP
                 filename = AdjustFilename(filename, dchan.Get_path());
                 return (filename);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
         }
         private void RecvFiledata(ref Socket clientsocket, DownloadChannel dchan, int n, string filename)
         {
 
 
             long toreceive = 0;
-            int nrecv = 0;
+            var nrecv = 0;
             var bufferIn = new byte[FTPsupporter.Sizes.Filesizesize];
             var received = (long)Receive(ref clientsocket, ref bufferIn, null, 0);
             if (received != FTPsupporter.Sizes.Filesizesize) { return; }
@@ -567,7 +574,7 @@ namespace Movex.FTP
 
             var path = dchan.Get_filepaths()[n];
             var binarybuffer = new BinaryWriter(File.Open(path + filename, FileMode.Append));
-            Console.WriteLine("Recpt: write file=" + filename + " size=" + GetConvertedNumber(filesize));
+            mLogger.Log("Recpt: write file=" + filename + " size=" + GetConvertedNumber(filesize));
 
             var throughputs = dchan.Get_throughputs();
             var remainingtimes = dchan.Get_remaining_times();
@@ -583,15 +590,15 @@ namespace Movex.FTP
                     var filedata_buff = new byte[(toreceive > FTPsupporter.Sizes.Filedatasize ? FTPsupporter.Sizes.Filedatasize : toreceive)];
                     nrecv = Receive(ref clientsocket, ref filedata_buff, dchan, n);
                     binarybuffer.Write(filedata_buff, 0, nrecv);
-                    /*
-                    Console.WriteLine("Recpt: received " + GetConvertedNumber(received) + " toreceive " + GetConvertedNumber(toreceive)
+                    
+                    mLogger.Log("Recpt: received " + GetConvertedNumber(received) + " toreceive " + GetConvertedNumber(toreceive)
                         + " nrecv " + GetConvertedNumber(nrecv) +
                         " remaining time =" + remainingtimes[n] + "s  throughput =" + GetConvertedNumber((long)throughputs[n]) + "/s");
-                    */
+                    
                     received += (long)nrecv;
                 }
-                catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-                catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+                catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+                catch (Exception e) { mLogger.Log(e.Message); throw e; }
             }
 
             CloseBufferW(binarybuffer);
@@ -610,8 +617,8 @@ namespace Movex.FTP
                 var numfile = BitConverter.ToInt32(bufferIn, 0);
                 return (numfile);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
         }
         private string RecvElement(ref Socket clientsocket)
         {
@@ -632,8 +639,8 @@ namespace Movex.FTP
                 }
                 return (Encoding.ASCII.GetString(bufferIn, 0, elementlen));
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
         }
         private int RecvDepth(ref Socket clientsocket)
         {
@@ -647,8 +654,8 @@ namespace Movex.FTP
                 }
                 return (BitConverter.ToInt32(bufferIn, 0));
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
         }
         private int RecvNumele(ref Socket clientsocket)
         {
@@ -663,8 +670,8 @@ namespace Movex.FTP
                 var numele = BitConverter.ToInt32(bufferIn, 0);
                 return (numele);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
         }
         private bool SendAck(Socket clientsocket, int ack)
         {
@@ -680,8 +687,8 @@ namespace Movex.FTP
                 }
                 return (true);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
         }
         #endregion
@@ -700,11 +707,11 @@ namespace Movex.FTP
                 }
                 return (sended);
             }
-            catch (ArgumentNullException e) { Console.WriteLine(e.Message); throw e; }
-            catch (ArgumentException e) { Console.WriteLine(e.Message); throw e; }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (ArgumentNullException e) { mLogger.Log(e.Message); throw e; }
+            catch (ArgumentException e) { mLogger.Log(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (ObjectDisposedException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
         }
         private int Receive(ref Socket client, ref byte[] bufferIn, DownloadChannel dchan, int downloadindex)
@@ -720,12 +727,27 @@ namespace Movex.FTP
                     CheckSocketConnection(ref client);
                     received += client.Receive(bufferIn, received, length - received, 0);
                 }
-                catch (ArgumentNullException e) { Console.WriteLine(e.Message); throw e; }
-                catch (ArgumentOutOfRangeException e) { Console.WriteLine(e.Message); throw e; }
-                catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-                catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
-                catch (SecurityException e) { Console.WriteLine(e.Message); throw e; }
-                catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+                catch (ArgumentNullException e) { mLogger.Log(e.Message); throw e; }
+                catch (ArgumentOutOfRangeException e) { mLogger.Log(e.Message); throw e; }
+                catch (SocketException e) {
+                    mLogger.Log(e.Message);
+
+                    if (dchan == null)
+                    {
+                        Console.WriteLine("[Movex.FTP] [FTPserver.cs] [Receive] Socket Exception, and dchan null.");
+                    } else if (dchan.IsInterrupted())
+                    {
+                        Console.WriteLine("[Movex.FTP] [FTPserver.cs] [Receive] Socket Exception, and dchan interrupted.");
+                        return (received);
+                    } else
+                    {
+                        Console.WriteLine("[Movex.FTP] [FTPserver.cs] [Receive] Socket Exception, and dchan has been closed from the other side.");
+                        dchan.InterruptDownload();
+                    }
+                }
+                catch (ObjectDisposedException e) { mLogger.Log(e.Message); throw e; }
+                catch (SecurityException e) { mLogger.Log(e.Message); throw e; }
+                catch (Exception e) { mLogger.Log(e.Message); throw e; }
             }
 
             if (received == 0 && dchan == null) { throw new IOException("Cannot receive any bytes"); }
@@ -786,13 +808,13 @@ namespace Movex.FTP
                 if (!RefreshCannels(dchan)) { throw new IOException("Channels Unrefeshable"); }
                 return (true);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
 
         }
         private bool RefreshCannels(DownloadChannel olddchan)
         {
-            Console.WriteLine("\n\nDownload channel end details :\n\n");
+            mLogger.Log("Download Channel end details:\n\n");
             if (olddchan == null) { return (false); }
             var filenames = olddchan.Get_filenames();
             var filesizes = olddchan.Get_filesizes();
@@ -800,28 +822,45 @@ namespace Movex.FTP
             var throughputs = olddchan.Get_throughputs();
             for (var i = 0; i < olddchan.Get_num_trasf(); i++)
             {
-                Console.WriteLine(i + " - filename " + filenames[i] + "  filesize " + GetConvertedNumber(filesizes[i]) + "\n sended " + GetConvertedNumber(received[i]) + " throughput " + GetConvertedNumber((long)throughputs[i]) + "/s\n\n");
+                mLogger.Log(i + " - filename " + filenames[i] + "  filesize " + GetConvertedNumber(filesizes[i]) + "\n sended " + GetConvertedNumber(received[i]) + " throughput " + GetConvertedNumber((long)throughputs[i]) + "/s\n");
             }
             mDchansDataLock.WaitOne();
             var result = mDchans.Remove(olddchan);
-            Console.WriteLine("[Movex.FTP] [FTPserver.cs] [RefreshCannel] DChan list has now: " + mDchans.Count + "channels.");
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [RefreshCannel] DChan list has now: " + mDchans.Count + " channels.");
             mDchansDataLock.ReleaseMutex();
             return (result);
         }
-        public bool InterruptDownload(IPAddress ipaddress)
+        public bool InterruptDownload(IPAddress IP)
         {
+            var IpAddress = IP.ToString();
+
             try
             {
-                var dchan = GetChannel(ipaddress.ToString());
-                if (dchan == null)
+                mLogger.Log("[Movex.FTP] [FTPserver.cs] [InterruptDownload] Trying to interrupt and remove Dchan.");
+                var dchan = GetChannel(IpAddress);
+                if (dchan != null)
                 {
-                    return (false);
+                    dchan.InterruptDownload();
+                    RefreshCannels(dchan);
                 }
-                dchan.InterruptDownload();
+                
+                mLogger.Log("[Movex.FTP] [FTPserver.cs] [InterruptDownload] Trying to remove DTransfer.");
+                if (mTransfer != null && !mTransfer.IsEmpty)
+                {
+                    mTransfer.TryRemove(IpAddress, out var oldTransfer);
+                    oldTransfer = null;
+                }
+                
+                if (mRecvThread != null)
+                {
+                    mRecvThread.Interrupt();
+                }
+
+                mLogger.Log("[Movex.FTP] [FTPserver.cs] [InterruptDownload] DChanDownload and RecvThread interrupted and released, DTransfer released.");
                 return (true);
             }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (Exception e) { Console.WriteLine(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (Exception e) { mLogger.Log(e.Message); throw e; }
         }
         #endregion
 
@@ -840,7 +879,7 @@ namespace Movex.FTP
         }
         private bool CheckTotalNFiles(long nfiles)
         {
-            return (nfiles > 0 && nfiles <= System.Int64.MaxValue);
+            return (nfiles > 0 && nfiles <= int.MaxValue);
         }
         private bool CheckTag(int tag)
         {
@@ -898,9 +937,9 @@ namespace Movex.FTP
                     throw new SocketException();
                 }
             }
-            catch (NotSupportedException e) { Console.WriteLine(e.Message); throw e; }
-            catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
-            catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
+            catch (NotSupportedException e) { mLogger.Log(e.Message); throw e; }
+            catch (SocketException e) { mLogger.Log(e.Message); throw e; }
+            catch (ObjectDisposedException e) { mLogger.Log(e.Message); throw e; }
         }
         private bool IsDir(string path)
         {
@@ -939,8 +978,8 @@ namespace Movex.FTP
         public string GetConvertedNumber(long bytes)
         {
             double b = bytes;
-            string sufix = GetBytesSufix(ref b);
-            float r = (float)b;
+            var sufix = GetBytesSufix(ref b);
+            var r = (float)b;
             return (r.ToString() + " " + sufix + "b");
         }
         private void CloseBufferW(BinaryWriter binarybuffer)

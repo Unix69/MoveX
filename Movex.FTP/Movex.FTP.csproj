@@ -51,14 +51,18 @@
     <Compile Include="FTPclient.cs" />
     <Compile Include="FTPserver.cs" />
     <Compile Include="FTPsupporter.cs" />
+    <Compile Include="Log\Base\Logger.cs" />
+    <Compile Include="Log\FTPserverLogger.cs" />
+    <Compile Include="Log\FTPclientLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UTransfer.cs" />
     <Compile Include="UploadChannel.cs" />
-    <Compile Include="WindowRequester.cs" />
+    <Compile Include="WindowManager\WindowRequester.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

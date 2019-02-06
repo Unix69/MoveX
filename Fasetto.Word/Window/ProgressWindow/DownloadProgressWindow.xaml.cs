@@ -23,6 +23,7 @@ namespace Movex.View
         private ManualResetEvent mCloseWindow;
         private event EventHandler TransferCompleted;
         private event EventHandler TransferInterrupted;
+        private bool mIsInterrupted;
         #endregion
 
         #region Constructor
@@ -59,9 +60,7 @@ namespace Movex.View
         #region Event Handler(s)
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [OnLoad] Waiting for the DownloadTransferAvailability.");
             mDTransferAvailability.WaitOne();
-            Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [OnLoad] DownloadTransfer is now available.");
 
             mDownloadTransfer = IoC.FtpServer.GetTransfer(mAddress.ToString());
             AssignTransferInfoToViewModel(mDownloadTransfer);
@@ -83,7 +82,7 @@ namespace Movex.View
             var lastProgress = "0";
             var interruptionRisk = 0;
 
-            while (!((progress = ((int)mDownloadTransfer.GetTransferPerc()).ToString()).Equals("100")))
+            while (!mIsInterrupted && !((progress = ((int)mDownloadTransfer.GetTransferPerc()).ToString()).Equals("100")))
             {
                 if (int.TryParse(progress, out var x))
                 {
@@ -104,25 +103,22 @@ namespace Movex.View
                 {
                     (sender as BackgroundWorker).ReportProgress(x);
                 }
+
+                // IF 100% COMPLETED: 2. wait a second
+                Thread.Sleep(1000);
+
+                // IF 100% COMPLETED: 3. close the window
+                TransferCompleted.Invoke(this, EventArgs.Empty);
             }
-
-            // IF 100% COMPLETED: 2. wait a second
-            Thread.Sleep(1000);
-
-            // IF 100% COMPLETED: 3. close the window
-            TransferCompleted.Invoke(this, EventArgs.Empty);
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             try
             {
-                Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] Trying to udapte the DownloadProgressViewModel.");
-
                 var filename = mDownloadTransfer.GetTransferFilename();
                 if (filename != null)
                 {
                     mProgress.Filename = filename;
-                    Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] Assigned Filename: " + mProgress.Filename);
                 }
 
                 mProgress.Percentage = ((int)mDownloadTransfer.GetTransferPerc()).ToString();
@@ -150,8 +146,9 @@ namespace Movex.View
 
                 try
                 {
-                    // Close the DownloadProgressWindow
                     Close();
+                    Thread.CurrentThread.Interrupt();
+                    Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Window_Close] Closed the DownloadProgressWindow and released DownloadProgressWindow Thread.");
                 }
                 catch (ThreadAbortException Exception)
                 {
@@ -163,27 +160,15 @@ namespace Movex.View
                     var Message = Exception.Message;
                     Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Window_Close] " + Message + ".");
                 }
-                finally
-                {
-                    // Release thread resources
-                    Thread.CurrentThread.Interrupt();
-                }
             }));
         }
         private void OnTransferInterrupted()
         {
             mCloseWindow.WaitOne();
+            mIsInterrupted = true;
             TransferInterrupted.Invoke(this, EventArgs.Empty);
-
-            // Launch a message window
-            var MessageWindowThread = new Thread(() =>
-            {
-                var w = new MessageWindow("Il trasferimento è stato interrotto.");
-                w.Show();
-                System.Windows.Threading.Dispatcher.Run();
-            });
-            MessageWindowThread.SetApartmentState(ApartmentState.STA);
-            MessageWindowThread.Start();
+            IoC.FtpServer.InterruptDownload(mAddress);
+            ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
         }
         #endregion
 

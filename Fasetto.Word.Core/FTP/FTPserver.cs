@@ -131,10 +131,6 @@ namespace Movex.View.Core
         {
             mServer.InterruptDownload(ipAdress);
         }
-        public void ManageException(Exception e)
-        {
-            
-        }
         #endregion
     }
 }

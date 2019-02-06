@@ -13,7 +13,7 @@
         Icon="../../Images/Logo/logo-small.png"
         MinWidth="{Binding WindowMinimumWidth}"
         MinHeight="{Binding WindowMinimumHeight}"
-        Height="200"
+        Height="230"
 		Width="500" >
 
 		<!-- NOTES:

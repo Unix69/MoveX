@@ -152,13 +152,21 @@ namespace Movex.View
             Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closing the window.");
             Dispatcher.BeginInvoke(new Action(() => {
 
-                // Close the UploadProgressWindow
-                Close();
-
-                // Release thread resources
-                ((App)Application.Current).RemoveThread("SendThread");
-                Thread.CurrentThread.Interrupt();
-
+                try
+                {
+                    Close();
+                    ((App)Application.Current).RemoveThread("SendThread");
+                }
+                catch (Exception Exception)
+                {
+                    var Message = Exception.Message;
+                    Console.WriteLine("[MOVEX.View] [UploadProgressWindow.xaml.cs] [Window_Close]" + Message + ".");
+                }
+                finally
+                {
+                    Thread.CurrentThread.Interrupt();
+                }
+                
             }));
         }
         private void OnTransferInterrupted()

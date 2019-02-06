@@ -1,8 +1,7 @@
 ﻿using System.Threading;
-using System.Windows;
-using System.Windows.Forms;
 using System.Net;
 using System.Windows.Input;
+using System;
 
 namespace Movex.View.Core
 {
@@ -82,10 +81,11 @@ namespace Movex.View.Core
             if (text != null) { Text = text; }
         }
         /// <summary>
-        /// Stop the process
+        /// Stop the progress
         /// </summary>
         public void Stop()
         {
+            Console.WriteLine("[Movex.View.Core] [ProgressViewModel.cs] [Stop] Interrupting progress.");
             if (Type == "Upload")
             {
                 IoC.FtpClient.InterruptUpload(IPAddress.Parse(IpAddress));
@@ -95,9 +95,7 @@ namespace Movex.View.Core
             {
                 IoC.FtpServer.InterruptDownload(IPAddress.Parse(IpAddress));
                 CloseWindowEvent.Set();
-            }
-
-            
+            }   
         }
         /// <summary>
         /// Set the handler for the CloseWindowEvent

@@ -9,12 +9,6 @@ namespace Movex.View
     /// </summary>
     public partial class WhereWindow : Window
     { 
-        public WhereWindow()
-        {
-            InitializeComponent();
-            DataContext = new WindowViewModel(this);
-        }
-
         public WhereWindow(ManualResetEvent WhereResponseAvailability, string whereMessage, ConcurrentBag<string> whereResponse)
         {
             InitializeComponent();
