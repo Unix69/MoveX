@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Net;
-using System.IO;
 using System.Threading;
 using System.Collections.Concurrent;
 using Movex.FTP;
-
-
 
 namespace Movex.View.Core
 {
     public class FTPserver : IDisposable
     {
-        private const string CrashLogFilename = "crashLog.txt";
-
-        #region private Properties
+        #region Members
         private FTP.FTPserver mServer;
-        private Thread mServerThread;
         private ServerExceptionManager mServerExceptionManager;
+        private Thread mServerThread;
         ManualResetEvent mRequestAvailable;
         ConcurrentQueue<string> mRequests;
         ConcurrentDictionary<string, int> mTypeRequests;
@@ -25,7 +20,7 @@ namespace Movex.View.Core
         ConcurrentDictionary<string, ConcurrentBag<string>> mResponses;
         #endregion
 
-        #region Constructor(s)
+        #region Constructor
         public FTPserver()
         {
             try

@@ -10,19 +10,19 @@ using System.Collections.Generic;
 namespace Movex.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for the DownloadProgressWindow
     /// </summary>
     public partial class DownloadProgressWindow : Window
     {
         #region Private members
         private ProgressDesignModel mProgress;
         private DTransfer mDownloadTransfer;
-        private Thread mInterruptTransferWaiter;
-        private IPAddress mAddress;
         private ManualResetEvent mDTransferAvailability;
         private ManualResetEvent mCloseWindow;
         private event EventHandler TransferCompleted;
         private event EventHandler TransferInterrupted;
+        private IPAddress mAddress;
+        private Thread mInterruptTransferWaiter;
         private bool mIsInterrupted;
         #endregion
 
@@ -41,13 +41,14 @@ namespace Movex.View
             mProgress.SetCloseWindowEventHandler(mCloseWindow);
             mProgress.Type = "Download";
 
-            // Set an handler for the Interruption of the transfer
+            // Set a handler for the interruption of the transfer
             mInterruptTransferWaiter = new Thread(() => OnTransferInterrupted());
             mInterruptTransferWaiter.Start();
 
             // Assigning member(s)
             mAddress = address;
             mDTransferAvailability = dTransferAvailability;
+            mIsInterrupted = false;
 
             // Manage event(s)
             Loaded += OnLoad;
@@ -60,10 +61,17 @@ namespace Movex.View
         #region Event Handler(s)
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-            mDTransferAvailability.WaitOne();
-
-            mDownloadTransfer = IoC.FtpServer.GetTransfer(mAddress.ToString());
-            AssignTransferInfoToViewModel(mDownloadTransfer);
+            try
+            {
+                mDTransferAvailability.WaitOne();
+                mDownloadTransfer = IoC.FtpServer.GetTransfer(mAddress.ToString());
+                AssignTransferInfoToViewModel(mDownloadTransfer);
+            }
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [OnLoad] " + Message + ".");
+            }
         }
         private void Window_ContentRendered(object sender, EventArgs e)
         {
@@ -95,10 +103,11 @@ namespace Movex.View
                 Thread.Sleep(100);
             }
 
-            // IF 100% COMPLETED: 1. show the perc
             if (!(progress == null) && progress.Equals("100"))
             {
                 Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Worker_DoWork] 100% COMPLETED.");
+
+                // IF 100% COMPLETED: 1. show the perc
                 if (int.TryParse(progress, out var x))
                 {
                     (sender as BackgroundWorker).ReportProgress(x);
@@ -136,12 +145,12 @@ namespace Movex.View
             catch(Exception Exception)
             {
                 var Message = Exception.Message;
-                Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] " + Message);
+                Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] " + Message + ".");
             }
         }
         private void Window_Close(object sender, EventArgs e)
         {
-            Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Window_Close] Closing the window.");
+            Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Window_Close] Closing the DownloadProgressWindow.");
             Dispatcher.BeginInvoke(new Action(() => {
 
                 try
@@ -149,11 +158,7 @@ namespace Movex.View
                     Close();
                     Thread.CurrentThread.Interrupt();
                     Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Window_Close] Closed the DownloadProgressWindow and released DownloadProgressWindow Thread.");
-                }
-                catch (ThreadAbortException Exception)
-                {
-                    var Message = Exception.Message;
-                    Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Window_Close] " + Message + ".");
+                    if (mIsInterrupted) ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
                 }
                 catch (Exception Exception)
                 {
@@ -168,7 +173,6 @@ namespace Movex.View
             mIsInterrupted = true;
             TransferInterrupted.Invoke(this, EventArgs.Empty);
             IoC.FtpServer.InterruptDownload(mAddress);
-            ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
         }
         #endregion
 

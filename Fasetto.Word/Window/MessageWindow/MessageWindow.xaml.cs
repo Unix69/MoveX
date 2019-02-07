@@ -12,12 +12,6 @@ namespace Movex.View
     /// </summary>
     public partial class MessageWindow : Window
     {
-        public MessageWindow()
-        {
-            InitializeComponent();
-            DataContext = new WindowViewModel(this);
-        }
-
         public MessageWindow(string message)
         {
             InitializeComponent();
@@ -26,9 +20,8 @@ namespace Movex.View
             // Passing a synchronization primitive to the MessageControl
             var control = MessageWindow_MessageControl;
             control.SetMessage(message);
+
+            Console.WriteLine("[Movex.View] [MessageWindow.xaml.cs] [MessageWindow] New MessageWindow crated.");
         }
-
-
-
     }
 }

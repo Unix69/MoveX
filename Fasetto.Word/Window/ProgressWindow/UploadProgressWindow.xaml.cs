@@ -9,35 +9,39 @@ using Movex.FTP;
 namespace Movex.View
 {
     /// <summary>
-    /// Interaction logic for ProgressWindow.xaml
+    /// Interaction logic for the UploadProgressWindow
     /// </summary>
     public partial class UploadProgressWindow : Window
     {
         #region Private members
-        private IPAddress mAddress;
-        private Thread mInterruptTransferWaiter;
+        private ProgressDesignModel mProgress;
         private UTransfer mUploadTransfer;
         private ManualResetEvent mUTransferAvailability;
         private ManualResetEvent mCloseWindow;
         private event EventHandler TransferCompleted;
         private event EventHandler TransferInterrupted;
-        private ProgressDesignModel mProgress;
+        private IPAddress mAddress;
+        private Thread mInterruptTransferWaiter;
         private bool mIsInterrupted;
         #endregion
 
-        #region Constructor(s)
+        #region Constructor
         public UploadProgressWindow(IPAddress address, ManualResetEvent uTransferAvailability)
         {
             // Initialize Window
             InitializeComponent();
             DataContext = new WindowViewModel(this);
 
-            // Set the internal ProgressControl
+            // Set the CloseWindow Reset Event
             mCloseWindow = new ManualResetEvent(false);
+
+            // Set the internal ProgressControl
             mProgress = (ProgressDesignModel)InternalProgressControl.DataContext;
             mProgress.SetCloseWindowEventHandler(mCloseWindow);
             mProgress.Type = "Upload";
-            mInterruptTransferWaiter = new Thread(() => OnTransferInterrupted());
+
+            // Set a handler for the interruption of the transfer
+            mInterruptTransferWaiter = new Thread(() => WaitForTransferInterrupted());
             mInterruptTransferWaiter.Start();
 
             // Assigning member(s)
@@ -58,10 +62,7 @@ namespace Movex.View
         {
             try
             {
-                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [OnLoad] Waiting for the UploadTransferAvailability.");
                 mUTransferAvailability.WaitOne();
-                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [OnLoad] UploadTransfer is now available.");
-
                 mUploadTransfer = IoC.FtpClient.GetTransfer(mAddress);
                 AssignTransferInfoToViewModel(mUploadTransfer);
             }
@@ -102,35 +103,31 @@ namespace Movex.View
                 Thread.Sleep(100);
             }
 
-            // IF 100% COMPLETED: 1. show the perc
             if (!(progress == null) && progress.Equals("100"))
             {
                 Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Worker_DoWork] 100% COMPLETED.");
+
+                // IF 100% COMPLETED: 1. show the perc
                 if (int.TryParse(progress, out var x))
                 {
                     (sender as BackgroundWorker).ReportProgress(x);
                 }
-                    
+
+                // IF 100% COMPLETED: 2. wait a second
+                Thread.Sleep(1000);
+
+                // IF 100% COMPLETED: 3. close the window
+                TransferCompleted.Invoke(this, EventArgs.Empty);
             }
-                
-            // IF 100% COMPLETED: 2. wait a second
-            Thread.Sleep(1000);
-
-            // IF 100% COMPLETED: 3. close the window
-            TransferCompleted.Invoke(this, EventArgs.Empty);
-
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             try
             {
-                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Worker_ProgressChanged] Trying to udapte the UploadProgressViewModel.");
-
                 var filename = mUploadTransfer.GetTransferFilename();
                 if (filename != null)
                 {
                     mProgress.Filename = filename;
-                    Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Worker_ProgressChanged] Assigned Filename: " + mProgress.Filename);
                 }
 
                 mProgress.Percentage = ((int)mUploadTransfer.GetTransferPerc()).ToString();
@@ -144,37 +141,42 @@ namespace Movex.View
             catch (Exception Exception)
             {
                 var Message = Exception.Message;
-                Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] " + Message);
+                Console.WriteLine("[MOVEX.VIEW] [DownloadProgressWindow.xaml.cs] [Worker_ProgressChanged] " + Message + ".");
             }
         }
         private void Window_Close(object sender, EventArgs e)
         {
-            Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closing the window.");
+            Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closing the UploadProgressWindow.");
             Dispatcher.BeginInvoke(new Action(() => {
 
                 try
                 {
                     Close();
-                    ((App)Application.Current).RemoveThread("SendThread");
+                    Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closed the UploadProgressWindow and released UploadProgressWindow Thread.");
+                    if (mIsInterrupted)
+                    {
+                        ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
+                        IoC.FtpClient.Reset();
+                    }
+                    Thread.CurrentThread.Interrupt();
                 }
                 catch (Exception Exception)
                 {
                     var Message = Exception.Message;
                     Console.WriteLine("[MOVEX.View] [UploadProgressWindow.xaml.cs] [Window_Close]" + Message + ".");
                 }
-                finally
-                {
-                    Thread.CurrentThread.Interrupt();
-                }
-                
             }));
         }
-        private void OnTransferInterrupted()
+        public void WaitForTransferInterrupted()
         {
             mCloseWindow.WaitOne();
+            Interrupt();
+        }
+        public void Interrupt()
+        {
             mIsInterrupted = true;
             TransferInterrupted.Invoke(this, EventArgs.Empty);
-            ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
+            ((App)Application.Current).RemoveThread("SendThread");
         }
         #endregion
 

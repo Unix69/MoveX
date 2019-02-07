@@ -90,7 +90,7 @@ namespace Movex.View
         }
         public void AddMessageWindow(string message)
         {
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(1105).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 105);
             mMessages.TryAdd(Id, message);
@@ -98,7 +98,7 @@ namespace Movex.View
         }
         public void ResetClient()
         {
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(1106).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 106);
             mRequestAvailable.Set();

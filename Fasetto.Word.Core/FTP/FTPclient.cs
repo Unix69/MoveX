@@ -1,10 +1,8 @@
-﻿using System.Windows.Input;
+﻿using System;
 using System.Net;
-using Movex.FTP;
 using System.Threading;
-using System.Collections.Generic;
-using System;
 using System.Collections.Concurrent;
+using Movex.FTP;
 
 namespace Movex.View.Core
 {

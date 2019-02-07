@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Movex.View.Core;
 using System.Net;
+using System.Windows;
 
 namespace Movex.View
 {
@@ -24,7 +25,6 @@ namespace Movex.View
 
         #region Private member(s)
         private Thread mInternaThread;
-        private Thread mLooper;
         #endregion
 
         #region Static member(s)
@@ -45,11 +45,13 @@ namespace Movex.View
             Responses = new ConcurrentDictionary<string, ConcurrentBag<string>>();
             Sync = new ConcurrentDictionary<string, ManualResetEvent[]>();
         }
-        public void Start() {
+        public void Start()
+        {
             mInternaThread = new Thread(() => Loop());
             mInternaThread.Start();
         }
-        public void Stop() {
+        public void Stop()
+        {
             mInternaThread.Abort();
             mInternaThread = null;
         }
@@ -57,6 +59,7 @@ namespace Movex.View
         private void Loop()
         {
             var threads = new List<Thread>();
+            var windows = new ConcurrentDictionary<string, Window>();
 
             waitForRequest: RequestAvailable.WaitOne();
             RequestAvailable.Reset();
@@ -66,7 +69,7 @@ namespace Movex.View
             if (Id == null) goto waitForRequest;
 
             // GET the REQUEST-TYPE
-            TypeRequests.TryGetValue(Id, out var type);
+            TypeRequests.TryRemove(Id, out var type);
 
             switch (type)
             {
@@ -128,6 +131,7 @@ namespace Movex.View
                     var UploadProgressWindowThread = new Thread(() =>
                     {
                         var w = new UploadProgressWindow(IPAddress.Parse(ipAddress), syncVariables[0]);
+                        windows.TryAdd(ipAddress, w);
                         w.Show();
                         syncVariables[1].Set();
                         Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [UploadTransferRequest] Set the UploadProgressWindow as available. The transfer can take action.");
@@ -169,11 +173,13 @@ namespace Movex.View
                 case MessageRequest:
 
                     Messages.TryGetValue(Id, out var msg);
+                    Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [MessageRequest] New MessageWindow requested.");
 
                     var MessageWindowThread = new Thread(() =>
                     {
                         var w = new MessageWindow(msg);
                         w.Show();
+                        Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [MessageRequest] Showing the MessageWindow requested.");
                         System.Windows.Threading.Dispatcher.Run();
                     });
                     MessageWindowThread.SetApartmentState(ApartmentState.STA);
@@ -194,14 +200,22 @@ namespace Movex.View
 
                     Messages.TryGetValue(Id, out var ipAddressReceiver);
 
+                    windows.TryRemove(ipAddressReceiver, out var uploadProgressWindow);
+                    if (uploadProgressWindow != null)
+                    {
+                        ((UploadProgressWindow)uploadProgressWindow).Interrupt();
+                    }
+                    
+                    /*
                     foreach (var t in threads.ToList())
                     {
                         if (ipAddressReceiver.Equals(t.Name))
                         {
-                            t.Abort();
+                            t.Interrupt();
                             threads.Remove(t);
                         }
                     }
+                    */
                     break;
 
                 case RemoveDownloadTransferWindow:

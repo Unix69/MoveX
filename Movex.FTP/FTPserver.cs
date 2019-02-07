@@ -149,7 +149,7 @@ namespace Movex.FTP
         }
         #endregion
 
-        #region Highest-level method
+        #region Higher-level method
         public void FTPstart()
         {
             var ipEnd = new IPEndPoint(IPAddress.Any, FTPsupporter.ProtocolAttributes.Port);
@@ -693,7 +693,7 @@ namespace Movex.FTP
         }
         #endregion
 
-        #region Lowest-level method(s)
+        #region Lower-level method(s)
         private int Send(Socket clientsocket, ref byte[] bufferOut)
         {
             var length = 0;
@@ -824,10 +824,11 @@ namespace Movex.FTP
             {
                 mLogger.Log(i + " - filename " + filenames[i] + "  filesize " + GetConvertedNumber(filesizes[i]) + "\n sended " + GetConvertedNumber(received[i]) + " throughput " + GetConvertedNumber((long)throughputs[i]) + "/s\n");
             }
+
             mDchansDataLock.WaitOne();
             var result = mDchans.Remove(olddchan);
-            mLogger.Log("[Movex.FTP] [FTPserver.cs] [RefreshCannel] DChan list has now: " + mDchans.Count + " channels.");
             mDchansDataLock.ReleaseMutex();
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [RefreshCannel] DChan list has now: " + mDchans.Count + " channels.");
             return (result);
         }
         public bool InterruptDownload(IPAddress IP)
@@ -855,12 +856,12 @@ namespace Movex.FTP
                 {
                     mRecvThread.Interrupt();
                 }
-
-                mLogger.Log("[Movex.FTP] [FTPserver.cs] [InterruptDownload] DChanDownload and RecvThread interrupted and released, DTransfer released.");
-                return (true);
             }
             catch (SocketException e) { mLogger.Log(e.Message); throw e; }
             catch (Exception e) { mLogger.Log(e.Message); throw e; }
+
+            mLogger.Log("[Movex.FTP] [FTPserver.cs] [InterruptDownload] DChanDownload and RecvThread interrupted and released, DTransfer released.");
+            return (true);
         }
         #endregion
 
