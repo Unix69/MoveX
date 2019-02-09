@@ -210,12 +210,12 @@ namespace Movex.FTP
                 catch (ObjectDisposedException e) { Console.WriteLine(e.Message); return; }
                 catch (Exception e) { Console.WriteLine(e.Message); return; }
 
+                Console.WriteLine("[Movex.FTP] [DownloadChannel.cs] [InterruptDownload] Socket interrupted.");
 
                 if (mMain_download_thread != null)
                 {
                     mMain_download_thread.Interrupt();
                     mInterrupted = true;
-                    mMain_download_thread.Abort();
                 }
             }
             catch (SecurityException e) { Console.WriteLine(e.Message); throw e; }

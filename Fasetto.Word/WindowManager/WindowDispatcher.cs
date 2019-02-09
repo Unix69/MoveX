@@ -71,6 +71,8 @@ namespace Movex.View
             // GET the REQUEST-TYPE
             TypeRequests.TryRemove(Id, out var type);
 
+            Console.WriteLine("[Movex.FTP] [WindowDispatcher.xaml.cs] [Loop] Received a new type:" + type + " request with ID:" + Id + ".");
+
             switch (type)
             {
                 case YesNoRequest:
@@ -80,8 +82,8 @@ namespace Movex.View
                      * syncPrimitives[0] as YesNoResponseAvailability ManualResetEvent
                      */
 
-                    Sync.TryGetValue(Id, out var YesNoResponseAvailability);
-                    Messages.TryGetValue(Id, out var message);
+                    Sync.TryRemove(Id, out var YesNoResponseAvailability);
+                    Messages.TryRemove(Id, out var message);
                     Responses.TryGetValue(Id, out var response);
 
                     var YesNoWindowThread = new Thread(() =>
@@ -101,8 +103,8 @@ namespace Movex.View
                      * syncPrimitives[0] as WhereResponseAvailability ManualResetEvent
                      */
 
-                    Sync.TryGetValue(Id, out var WhereResponseAvailability);
-                    Messages.TryGetValue(Id, out var whereMessage);
+                    Sync.TryRemove(Id, out var WhereResponseAvailability);
+                    Messages.TryRemove(Id, out var whereMessage);
                     Responses.TryGetValue(Id, out var whereResponse);
 
                     var WhereWindowThread = new Thread(() =>
@@ -123,8 +125,8 @@ namespace Movex.View
                      * syncPrimitives[1] as windowAvailability ManualResetEvent
                      */
 
-                    Sync.TryGetValue(Id, out var syncVariables);
-                    Messages.TryGetValue(Id, out var ipAddress);
+                    Sync.TryRemove(Id, out var syncVariables);
+                    Messages.TryRemove(Id, out var ipAddress);
 
                     Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [UploadTransferRequest] New WindowRequest for User with IpAddress: " + ipAddress);
 
@@ -151,14 +153,15 @@ namespace Movex.View
                      * syncPrimitives[1] as windowAvailability ManualResetEvent
                      */
 
-                    Sync.TryGetValue(Id, out var syncPrimitives);
-                    Messages.TryGetValue(Id, out var ip);
+                    Sync.TryRemove(Id, out var syncPrimitives);
+                    Messages.TryRemove(Id, out var ip);
 
                     Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [DownloadTransferRequest] New WindowRequest from User with IpAddress: " + ip);
 
                     var DownloadProgressWindowThread = new Thread(() =>
                     {
                         var w = new DownloadProgressWindow(IPAddress.Parse(ip), syncPrimitives[0]);
+                        windows.TryAdd(ip, w);
                         w.Show();
                         syncPrimitives[1].Set();
                         Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [DownloadTransferRequest] Set the DonwloadProgressWindow as available. The transfer can take action.");
@@ -172,7 +175,7 @@ namespace Movex.View
 
                 case MessageRequest:
 
-                    Messages.TryGetValue(Id, out var msg);
+                    Messages.TryRemove(Id, out var msg);
                     Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [MessageRequest] New MessageWindow requested.");
 
                     var MessageWindowThread = new Thread(() =>
@@ -222,13 +225,10 @@ namespace Movex.View
 
                     Messages.TryGetValue(Id, out var ipAddressSender);
 
-                    foreach (var t in threads.ToList())
+                    windows.TryRemove(ipAddressSender, out var downloadProgressWindow);
+                    if (downloadProgressWindow != null)
                     {
-                        if (ipAddressSender.Equals(t.Name))
-                        {
-                            t.Abort();
-                            threads.Remove(t);
-                        }
+                        ((DownloadProgressWindow)downloadProgressWindow).Interrupt();
                     }
                     break;
 

@@ -336,8 +336,8 @@ namespace Movex.FTP
                 mLogger.Log("[MOVEX.FTP] [FTPserver.cs] [FTPrecv] " + Message + ".");
 
                 var CriticalMessage = "Il trasferimento è stato interrotto.";
-                //mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
-                mWindowRequester.AddMessageWindow(CriticalMessage);
+                mWindowRequester.RemoveDownloadProgressWindow(ipAddress);
+                // mWindowRequester.AddMessageWindow(CriticalMessage);
             }
             catch (Exception Exception)
             {
@@ -742,7 +742,8 @@ namespace Movex.FTP
                     } else
                     {
                         Console.WriteLine("[Movex.FTP] [FTPserver.cs] [Receive] Socket Exception, and dchan has been closed from the other side.");
-                        dchan.InterruptDownload();
+                        //dchan.InterruptDownload();
+                        throw e;
                     }
                 }
                 catch (ObjectDisposedException e) { mLogger.Log(e.Message); throw e; }

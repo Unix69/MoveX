@@ -156,9 +156,9 @@ namespace Movex.View
                 try
                 {
                     Close();
-                    Thread.CurrentThread.Interrupt();
                     Console.WriteLine("[Movex.View] [DownloadProgressWindow.xaml.cs] [Window_Close] Closed the DownloadProgressWindow and released DownloadProgressWindow Thread.");
                     if (mIsInterrupted) ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
+                    Thread.CurrentThread.Interrupt();
                 }
                 catch (Exception Exception)
                 {
@@ -170,6 +170,10 @@ namespace Movex.View
         private void OnTransferInterrupted()
         {
             mCloseWindow.WaitOne();
+            Interrupt();
+        }
+        public void Interrupt()
+        {
             mIsInterrupted = true;
             TransferInterrupted.Invoke(this, EventArgs.Empty);
             IoC.FtpServer.InterruptDownload(mAddress);

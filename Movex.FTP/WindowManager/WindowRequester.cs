@@ -58,7 +58,7 @@ namespace Movex.FTP
         #region Core Method(s)
         public string AddYesNoWindow(string message)
         {
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(100).ToString();
             var responseBag = new ConcurrentBag<string>();
             var responsesAvailable = new ManualResetEvent[1];
             responsesAvailable[0] = new ManualResetEvent(false);
@@ -77,7 +77,7 @@ namespace Movex.FTP
         }
         public string AddWhereWindow(string message)
         {
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(101,200).ToString();
             var whereResponseBag = new ConcurrentBag<string>();
             var whereResponseAvailable = new ManualResetEvent[1];
             whereResponseAvailable[0] = new ManualResetEvent(false);
@@ -96,7 +96,7 @@ namespace Movex.FTP
         }
         public void AddDownloadProgressWindow(IPAddress ipAddress, ManualResetEvent windowAvailability, ManualResetEvent downloadTransferAvailability)
         {
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(201,300).ToString();
             var ip = ipAddress.ToString();
             var syncPrimitives = new ManualResetEvent[2];
 
@@ -111,7 +111,7 @@ namespace Movex.FTP
         public void RemoveUploadProgressWindow(string ipAddress)
         {
             Console.WriteLine("[Movex.FTP] [WindowRequester.cs] [AddMessageWindow] UploadProgressWindow interruption requested.");
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(301,400).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 108);
             mMessages.TryAdd(Id, ipAddress);
@@ -120,7 +120,7 @@ namespace Movex.FTP
         public void RemoveDownloadProgressWindow(string ipAddress)
         {
             Console.WriteLine("[Movex.FTP] [WindowRequester.cs] [AddMessageWindow] DownloadProgressWindow interruption requested.");
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(401,500).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 109);
             mMessages.TryAdd(Id, ipAddress);
@@ -129,7 +129,7 @@ namespace Movex.FTP
         public void AddMessageWindow(string message)
         {
             Console.WriteLine("[Movex.FTP] [WindowRequester.cs] [AddMessageWindow] New MessageWindow requested.");
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(501,600).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 105);
             mMessages.TryAdd(Id, message);
@@ -137,14 +137,14 @@ namespace Movex.FTP
         }
         public void ResetServer()
         {
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(601,700).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 107);
             mRequestAvailable.Set();
         }
         public void ResetClient()
         {
-            var Id = new Random().Next(1000).ToString();
+            var Id = new Random().Next(701,800).ToString();
             mRequests.Enqueue(Id);
             mTypeRequests.TryAdd(Id, 106);
             mRequestAvailable.Set();
