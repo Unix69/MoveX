@@ -211,7 +211,8 @@ namespace Movex.Network
                             // Remove the user from the list
                             var index = mRestrictedUsers.FindIndex(user => user.mIpAddress.Equals(ipSender.ToString()));
                             streamWriter.WriteLine("[" + currentTime + "] Removing user at Index: " + index.ToString());
-                            mRestrictedUsers.RemoveAt(index);
+                            try { mRestrictedUsers.RemoveAt(index); }
+                            catch(IndexOutOfRangeException ie) { Console.WriteLine(ie.Message); }
 
                             streamWriter.Close();
                         }
