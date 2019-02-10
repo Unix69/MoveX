@@ -57,8 +57,7 @@ namespace Movex.View.Core
             // Save the status of the Toogle Button to the LocalDB
             if (Name == "Modalità privata")
             {
-                Database.UpdateLocalDB("PrivateMode", Active.ToString());
-                IoC.FtpServer.SetPrivateMode(Active);
+                IoC.User.SetPrivateMode(Active.ToString());
             }
             else if (Name == "Ricezione automatica")
             {

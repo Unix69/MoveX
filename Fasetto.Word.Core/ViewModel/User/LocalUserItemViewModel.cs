@@ -128,6 +128,8 @@ namespace Movex.View.Core
             Database.UpdateLocalDB(nameof(PrivateMode), value);
             IoC.FtpServer.SetPrivateMode(Convert.ToBoolean(value));
             mUser.SetPrivateMode(Convert.ToBoolean(value));
+            if (value.Equals("True")) mUser.SayByeToFriends();
+            else if (value.Equals("False")) mUser.SearchForFriends();
         }
 
         /// <summary>

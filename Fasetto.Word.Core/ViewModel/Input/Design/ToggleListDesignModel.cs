@@ -46,15 +46,6 @@ namespace Movex.View.Core
                    Explanation = "I trasferimenti vengono salvati in una cartella di default.",
                    Active = Convert.ToBoolean(IoC.User.AutomaticSave)
                 }
-                /*
-                new ToggleViewModel
-                {
-                   Name = "Ottieni massime prestazioni",
-                   Explanation = "Aumenti l'utilizzo della CPU e richiedi più energia.",
-                   Active = false
-                }
-                */
-
             };
         }
 
