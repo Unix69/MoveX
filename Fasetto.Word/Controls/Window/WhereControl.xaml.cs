@@ -18,6 +18,8 @@ namespace Movex.View
         #region Private Member(s)
         private ManualResetEvent mResponseAvailability;
         private WhereDesignModel mWhereDesignModel;
+        private bool mOnExit;
+        private ManualResetEvent mFolderSelected;
         #endregion
 
         public WhereControl()
@@ -38,6 +40,14 @@ namespace Movex.View
         public void SetResponse(ConcurrentBag<string> r)
         {
             mWhereDesignModel.SetResponse(r);
+        }
+        public void SetOnExit(bool OnExit)
+        {
+            mOnExit = OnExit;
+        }
+        public void SetFolderSelectedEvent(ManualResetEvent FolderSelected)
+        {
+            mFolderSelected = FolderSelected;
         }
         #endregion
 
@@ -73,10 +83,13 @@ namespace Movex.View
             }
 
             mWhereDesignModel.SetPath(builder.ToString());
+            mFolderSelected.Set();
         }
 
         private void ProseguiClick(object sender, RoutedEventArgs e)
         {
+            mOnExit = true;
+            mFolderSelected.Set();
             mWhereDesignModel.Save();
         }
     }
