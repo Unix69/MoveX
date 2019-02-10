@@ -59,7 +59,7 @@ namespace Movex.View.Core
                         fs.Write(info, 0, info.Length);
                         dictionary["IpAddress"] = ip.ToString();
                         
-                        var absolutePathProfilePicture = currWorkingDirectory + @"\Images\Icons\profile.png";
+                        var absolutePathProfilePicture = currWorkingDirectory + @"\Movex\Images\Icons\profile.png";
                         info = new UTF8Encoding(true).GetBytes("ProfilePicture=" + absolutePathProfilePicture + "\r\n");
                         fs.Write(info, 0, info.Length);
                         dictionary["ProfilePicture"] = absolutePathProfilePicture;

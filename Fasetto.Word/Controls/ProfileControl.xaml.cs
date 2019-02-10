@@ -7,6 +7,7 @@ using System.Linq;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Reflection;
 
 namespace Movex.View
 {
@@ -19,6 +20,21 @@ namespace Movex.View
         {
             InitializeComponent();
             DataContext = IoC.Profile;
+
+            try
+            {
+                var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Movex.View.Properties.Resources.profile.png");
+                var fileStream = new FileStream("new.jpg", FileMode.Create);
+                for (var i = 0; i < stream.Length; i++)
+                    fileStream.WriteByte((byte)stream.ReadByte());
+                fileStream.Close();
+            } catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("Movex.View, ProfileControl" + Message);
+            }
+
+            
         }
 
     private void Button1_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -13,7 +13,7 @@ namespace Movex.Network
 {
     class TcpManager
     {
-        private static bool DEBUG = true;
+        private static bool DEBUG = false;
 
         #region Private members
         private IPAddress mIp;
@@ -331,8 +331,7 @@ namespace Movex.Network
             }
             catch (Exception exc)
             {
-                   //TODO: remove "error sending the picture" and put the error message in a error message window
-                if (DEBUG) MessageBox.Show("Error sending the picture: " + exc.Message.ToString());
+                if (DEBUG) Console.WriteLine("Error sending the picture: " + exc.Message.ToString());
             }
         }
         #endregion
