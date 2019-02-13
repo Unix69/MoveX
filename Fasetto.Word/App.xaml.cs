@@ -160,29 +160,28 @@ namespace Movex.View
         /// </summary>
         private void ExitApplication()
         {
-            mIsExit = true;
-            MainWindow.Close();
+            var response = mWindowRequester.AddYesNoWindow("Vuoi sicuro di voler chiudere l'applicazione?");
+            if (response.Equals("Yes"))
+            {
+                MainWindow.Hide();
 
-            mWindowDispatcher.Stop();
-            mWindowRequester.Dispose();
-            mNotifyIcon.Visible = false;
-            mNotifyIcon.Dispose();
-            mNotifyIcon = null;
+                mWindowDispatcher.Stop();
+                mWindowRequester.Dispose();
+                mNotifyIcon.Visible = false;
+                mNotifyIcon.Dispose();
+                mNotifyIcon = null;
 
-            ReleaseThreads();
-            IoC.Dispose();
-            Environment.Exit(Environment.ExitCode);
+                ReleaseThreads();
+                IoC.Dispose();
+                Environment.Exit(Environment.ExitCode);
+            }
         }
         #endregion
 
         #region Event Handler(s)
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (!mIsExit)
-            {
-                e.Cancel = true;
-                MainWindow.Hide(); // A hidden window can be shown again, a closed one not
-            }
+            ExitApplication();
         }
         #endregion
 

@@ -55,6 +55,25 @@ namespace Movex.View
         #endregion
 
         #region Core Method(s)
+        public string AddYesNoWindow(string message)
+        {
+            var Id = new Random().Next(100).ToString();
+            var responseBag = new ConcurrentBag<string>();
+            var responsesAvailable = new ManualResetEvent[1];
+            responsesAvailable[0] = new ManualResetEvent(false);
+
+            mRequests.Enqueue(Id);
+            mTypeRequests.TryAdd(Id, 101);
+            mMessages.TryAdd(Id, message);
+            mSync.TryAdd(Id, responsesAvailable);
+            mResponses.TryAdd(Id, responseBag);
+            mRequestAvailable.Set();
+            responsesAvailable[0].WaitOne();
+            mResponses.TryGetValue(Id, out var responseContainer);
+            responseContainer.TryTake(out var response);
+
+            return response;
+        }
         public void AddUploadProgressWindow(
             IPAddress ipAddress,
             ManualResetEvent windowAvailability,
