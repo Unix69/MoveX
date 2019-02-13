@@ -445,7 +445,7 @@ namespace Movex.FTP
                     depths[i] = RecvDepth(ref clientsocket);
                 }
 
-                CreateDirectoryTree(dirpaths, depths, filepaths, elements, ".");
+                CreateDirectoryTree(dirpaths, depths, filepaths, elements, path);
 
                 tag = RecvTag(ref clientsocket);
                 if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
