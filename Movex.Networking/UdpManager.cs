@@ -150,6 +150,7 @@ namespace Movex.Network
                         // Reply with a message of presentation
                         var message = new Message(Message.MSG_PRESENTATION, mRestrictedUser);
                         SendMessage(Jsonify(message), ipSender);
+                        SendProfilePicture(ipSender, mRestrictedUser.mProfilePictureFilename);
                     }
                     else if (messageReceived.GetMessageType().Equals(Message.MSG_PRESENTATION))
                     {
@@ -293,7 +294,7 @@ namespace Movex.Network
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString());
+                Console.WriteLine(e.ToString());
             }
 
             // Record operation to Network Log
@@ -319,7 +320,6 @@ namespace Movex.Network
             // Verify the path existence
             if (!File.Exists(path))
             {
-                // TODO: Instead of the System MessageBox show the Custom ErrorView
                 if (DEBUG) Console.WriteLine("[ERROR] File path not valid when sending my profile picture: " + path);
                 return;
             };
@@ -456,7 +456,7 @@ namespace Movex.Network
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error #JSON-001: The message received is not a Json Object.");
+                Console.WriteLine("Error #JSON-001: The message received is not a Json Object.");
                 message = new Message(Message.MSG_ERROR);
             }
 

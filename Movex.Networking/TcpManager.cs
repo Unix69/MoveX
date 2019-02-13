@@ -55,9 +55,10 @@ namespace Movex.Network
                 ActivateClient();
 
             }
-            catch (Exception e)
+            catch (Exception Exception)
             {
-                MessageBox.Show("Error launching the TCP Connection Manager at Movex.Network Module: " + e.ToString());
+                var Message = Exception.Message;
+                Console.WriteLine("[Movex.Network] [TcpManager]" + Message);
             }
             
         }
@@ -112,7 +113,7 @@ namespace Movex.Network
             catch(Exception e)
             {
                 // Show ErrorView with error message.
-                MessageBox.Show(e.ToString());
+               Console.WriteLine(e.ToString());
             }
         }
 
@@ -129,7 +130,7 @@ namespace Movex.Network
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString());
+                Console.WriteLine(e.ToString());
             }
         }
 

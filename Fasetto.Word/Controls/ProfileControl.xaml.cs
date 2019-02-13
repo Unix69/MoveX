@@ -19,22 +19,7 @@ namespace Movex.View
         public ProfileControl()
         {
             InitializeComponent();
-            DataContext = IoC.Profile;
-
-            try
-            {
-                var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Movex.View.Properties.Resources.profile.png");
-                var fileStream = new FileStream("new.jpg", FileMode.Create);
-                for (var i = 0; i < stream.Length; i++)
-                    fileStream.WriteByte((byte)stream.ReadByte());
-                fileStream.Close();
-            } catch (Exception Exception)
-            {
-                var Message = Exception.Message;
-                Console.WriteLine("Movex.View, ProfileControl" + Message);
-            }
-
-            
+            DataContext = IoC.Profile; 
         }
 
     private void Button1_Click(object sender, System.Windows.RoutedEventArgs e)

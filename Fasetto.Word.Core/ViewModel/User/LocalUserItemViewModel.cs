@@ -64,6 +64,14 @@ namespace Movex.View.Core
                     AutomaticSave = dictionary["AutomaticSave"];
                     AutomaticReception = dictionary["AutomaticReception"];
                     PrivateMode = dictionary["PrivateMode"];
+
+                    if (!File.Exists(ProfilePicture))
+                    {
+                        var currWorkingDirectory = Directory.GetCurrentDirectory();
+                        var defaultProfilePicture = Path.Combine(currWorkingDirectory, @"\Images\Icons\profile.png");
+                        ProfilePicture = defaultProfilePicture;
+                    }
+
                 }
                 catch (KeyNotFoundException exception)
                 {
@@ -103,7 +111,9 @@ namespace Movex.View.Core
         {
             ProfilePicture = path;
             Database.UpdateLocalDB(nameof(ProfilePicture), path);
-            mUser.SetProfilePicturePath(path);
+            var ThreadDelegate = new ThreadStart( () => mUser.SetProfilePicturePath(path));
+            var Thread = new Thread(ThreadDelegate);
+            Thread.Start();
         }
 
         /// <summary>
