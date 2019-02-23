@@ -116,7 +116,7 @@
       <Project>{661f9279-afc6-4c1f-95f9-d0936b7a398e}</Project>
       <Name>Movex.FTP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Movex.Networking\Movex.Network.csproj">
+    <ProjectReference Include="..\Movex.Network\Movex.Network.csproj">
       <Project>{38afc9f0-0bee-469b-be19-adfaaf2dd799}</Project>
       <Name>Movex.Network</Name>
     </ProjectReference>
