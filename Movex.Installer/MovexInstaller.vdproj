@@ -16,325 +16,421 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_05466A78C7ED464F9A812B3CF9F931AF"
+        "MsmKey" = "8:_01B037EBAF384F87B8616E1084873AC8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_09B962A1C441426BBC5F4B5949407C37"
+        "MsmKey" = "8:_0536175176A54E48BA7E753C5FE1AADA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B396EC0218F4E83873A34B532355EE2"
+        "MsmKey" = "8:_063DDFDD9D6E455E81E7584C98D6D784"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0F6B5A9E149E4B10A0C49628886468A8"
+        "MsmKey" = "8:_0C7E81C1F44240588248CA21BFF34E18"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1218E56E45EBADB8F9E4126EC95C45F9"
-        "OwnerKey" = "8:_573C7072A002483DABD02E33EDD7666D"
+        "MsmKey" = "8:_17796D936C8BEF063FF619EAFE7406D9"
+        "OwnerKey" = "8:_AA04E574B2964BF2A3CAABCAB54499BD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1218E56E45EBADB8F9E4126EC95C45F9"
-        "OwnerKey" = "8:_8FCE6A91F4DAAAE94170C23BC1B7F288"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1218E56E45EBADB8F9E4126EC95C45F9"
-        "OwnerKey" = "8:_61616C5BF34643C9B03C37304430E0C5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1218E56E45EBADB8F9E4126EC95C45F9"
-        "OwnerKey" = "8:_5F169D8B44364AC7B3BA22419F9DDD0A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1294564C1CA2422286371AF5152B9FB7"
+        "MsmKey" = "8:_192DD037FAF84693A737B41A7ABD6645"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_142ABA4C60064892A86D4C4CC3FC8CAE"
+        "MsmKey" = "8:_216865712C42476DB6C9CDCAF8A335AD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_2020EBD0A7E5F9DD81ABB765D01D16B9"
-        "OwnerKey" = "8:_5F169D8B44364AC7B3BA22419F9DDD0A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2020EBD0A7E5F9DD81ABB765D01D16B9"
-        "OwnerKey" = "8:_61616C5BF34643C9B03C37304430E0C5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_216A57DEA77C4CB3A78320B05F926EF2"
+        "MsmKey" = "8:_24EE02B33DB440139F675EDEFE8E93AB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_2772EFB932134CDF98D16E198CEA88DC"
+        "MsmKey" = "8:_2587E704AA6B49F988DBA213E1A25AF9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_2BD08C420795434EB5B2F845013BE6EF"
+        "MsmKey" = "8:_284AB64CC1AC4289A73277218673CE1A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4547922C19904054B27AD5CE6C3AC043"
+        "MsmKey" = "8:_28B14791DDFA4AE48CA5884B9BEF47AB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4A0FFB6B8B16440BAD62515769172A14"
+        "MsmKey" = "8:_28CC6BBBD441F9669FE08DAFA692CDB4"
+        "OwnerKey" = "8:_AA04E574B2964BF2A3CAABCAB54499BD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2E8C98EB2DC246D49EB851B7F9019E9B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4CA52E8AAB764C29A1AACEFD89B20504"
+        "MsmKey" = "8:_30D52129A7B54B3ABE03317AEEA26FAD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4CBDE6D7A5418DAA2E91E785EBBD36B5"
-        "OwnerKey" = "8:_ED75C10A679FA1480B8F383833DBD4DA"
+        "MsmKey" = "8:_3158C7F307D2A5E3FB5EF1407D82DBF4"
+        "OwnerKey" = "8:_F2F150CDA50846B091E74959773EFE6B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4CBDE6D7A5418DAA2E91E785EBBD36B5"
-        "OwnerKey" = "8:_862137D40ED340079D2E175F2AD7CC92"
+        "MsmKey" = "8:_3158C7F307D2A5E3FB5EF1407D82DBF4"
+        "OwnerKey" = "8:_5DBE0B180B6FFE98D2EB36D08F046EAC"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_50736A1282454DAAAF22E391193E78BF"
+        "MsmKey" = "8:_33FE5691009642E18BC482CCAEFCC645"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_552E7D28C9BA44B589076EB5E57722C6"
+        "MsmKey" = "8:_436A382FDD0B4050A12343226709E082"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_573C7072A002483DABD02E33EDD7666D"
+        "MsmKey" = "8:_4589FABAD424497DAC2D6296E9B037CD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_58AC93ABA5E74D1D9E00FCC3B87B200B"
+        "MsmKey" = "8:_48F0BE4CD2794827BF37563357581BFA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_5F169D8B44364AC7B3BA22419F9DDD0A"
+        "MsmKey" = "8:_4B1D83C111C0EEA00FD98D38607C9F2B"
+        "OwnerKey" = "8:_B92DA66DF57E4FAC85465C93446F1C91"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4DD27C98BC6B4A1BB5B3A846734DE517"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_61616C5BF34643C9B03C37304430E0C5"
+        "MsmKey" = "8:_533BAA0A1F91466D9FEFC43B47D8736D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_6294CD590E224E71A0A4FC96BCC6B1D6"
+        "MsmKey" = "8:_5DBE0B180B6FFE98D2EB36D08F046EAC"
+        "OwnerKey" = "8:_B92DA66DF57E4FAC85465C93446F1C91"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_675984CD4699461DBEDA13AEA1424510"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_8144779F1A134346BC37439827D363EB"
+        "MsmKey" = "8:_6C10C3A98EA644CA80B63D2806424DAB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_82B21275F8EB4E9A808EF98BE63FA7BD"
+        "MsmKey" = "8:_6CBFA3BDF4BB42D48184A9B1C28B2A3F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_862137D40ED340079D2E175F2AD7CC92"
+        "MsmKey" = "8:_745A8E21B8184756915EE823868FF8F2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_862ABA41B8B64439B8F2C82EAF21FE94"
+        "MsmKey" = "8:_74E2458AF6114DF8B7BB611EB7D6A458"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_8E1271D207F7400E8254913F7623B8CD"
+        "MsmKey" = "8:_7B2CAEE447A84EB5A8B8864D7BFBC775"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_8FCE6A91F4DAAAE94170C23BC1B7F288"
-        "OwnerKey" = "8:_5F169D8B44364AC7B3BA22419F9DDD0A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8FCE6A91F4DAAAE94170C23BC1B7F288"
-        "OwnerKey" = "8:_61616C5BF34643C9B03C37304430E0C5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9E80762D6AB64AE1B225D3B71CC62866"
+        "MsmKey" = "8:_827E41D66D6849B8BE9A729211A989F4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_9ED650FAEF89428AD9C73F5F52A248C1"
-        "OwnerKey" = "8:_573C7072A002483DABD02E33EDD7666D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9ED650FAEF89428AD9C73F5F52A248C1"
-        "OwnerKey" = "8:_8FCE6A91F4DAAAE94170C23BC1B7F288"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AFF1471A4659E1EE21AD7E602CA17DBC"
-        "OwnerKey" = "8:_4547922C19904054B27AD5CE6C3AC043"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AFF1471A4659E1EE21AD7E602CA17DBC"
-        "OwnerKey" = "8:_2020EBD0A7E5F9DD81ABB765D01D16B9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B119FB0F5C654B29B621FF3296B5DF65"
+        "MsmKey" = "8:_83F442D5C1C146F0AB3F6FAAD7607C0E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_B6775BE796A44F16898D5D0BE949E840"
+        "MsmKey" = "8:_86913A94B5134A6BBC9BE1DB74C2789D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BD0DCF41018F4D6D80A8283438BD9423"
+        "MsmKey" = "8:_89825E7D6FD2B7936091008A2C4B7E7F"
+        "OwnerKey" = "8:_974A061C5F6C467FB326BCCBBA787293"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_89825E7D6FD2B7936091008A2C4B7E7F"
+        "OwnerKey" = "8:_2E8C98EB2DC246D49EB851B7F9019E9B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8C824B21519476F5FE841A71B6B38368"
+        "OwnerKey" = "8:_F2F150CDA50846B091E74959773EFE6B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8C824B21519476F5FE841A71B6B38368"
+        "OwnerKey" = "8:_5DBE0B180B6FFE98D2EB36D08F046EAC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_90DA405FF3B049018D16B74D78559E9D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C34018991DE740B8BEFF05FB39860CB5"
+        "MsmKey" = "8:_974A061C5F6C467FB326BCCBBA787293"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C3F2262823BD48CFA034FE25186B335D"
+        "MsmKey" = "8:_99DAF6CDE099D5CF4705F98A301364F3"
+        "OwnerKey" = "8:_827E41D66D6849B8BE9A729211A989F4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_99DAF6CDE099D5CF4705F98A301364F3"
+        "OwnerKey" = "8:_17796D936C8BEF063FF619EAFE7406D9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_AA04E574B2964BF2A3CAABCAB54499BD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C639C5B861504E41BD2CB220A1E80DA3"
+        "MsmKey" = "8:_AB30153385FF4EC5AE007BD88CF9BD72"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_CC4AC513E7724174B29507271681E109"
+        "MsmKey" = "8:_B92DA66DF57E4FAC85465C93446F1C91"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D2581033342ED3BFC2A8B59A79B39067"
-        "OwnerKey" = "8:_CC4AC513E7724174B29507271681E109"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D2581033342ED3BFC2A8B59A79B39067"
-        "OwnerKey" = "8:_EEF9EC8B212A4A85B95B060213C5C423"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ED75C10A679FA1480B8F383833DBD4DA"
-        "OwnerKey" = "8:_573C7072A002483DABD02E33EDD7666D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ED75C10A679FA1480B8F383833DBD4DA"
-        "OwnerKey" = "8:_8FCE6A91F4DAAAE94170C23BC1B7F288"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_EEF9EC8B212A4A85B95B060213C5C423"
+        "MsmKey" = "8:_B97169E2BEB2428E94F66C1C32996AFF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F01DC6C00DC14D559D65C1B91DB7AE32"
+        "MsmKey" = "8:_BCED47B38F5B4D0CAE346D07867413D7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F3BB4B164CC143A08B5F911AFACA3106"
+        "MsmKey" = "8:_C7B674F3017A4031A4BE0BFEDE82F179"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_FCF09191F146413A8A724CC1E956376E"
+        "MsmKey" = "8:_C915F165EC3830ADD721261D982319EA"
+        "OwnerKey" = "8:_827E41D66D6849B8BE9A729211A989F4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C915F165EC3830ADD721261D982319EA"
+        "OwnerKey" = "8:_17796D936C8BEF063FF619EAFE7406D9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C915F165EC3830ADD721261D982319EA"
+        "OwnerKey" = "8:_AA04E574B2964BF2A3CAABCAB54499BD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CCDA92E9713AE18CBD9B3209B370E92A"
+        "OwnerKey" = "8:_90DA405FF3B049018D16B74D78559E9D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CCDA92E9713AE18CBD9B3209B370E92A"
+        "OwnerKey" = "8:_99DAF6CDE099D5CF4705F98A301364F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CCDA92E9713AE18CBD9B3209B370E92A"
+        "OwnerKey" = "8:_436A382FDD0B4050A12343226709E082"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CCDA92E9713AE18CBD9B3209B370E92A"
+        "OwnerKey" = "8:_3158C7F307D2A5E3FB5EF1407D82DBF4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D7C06161489DB31386C3519F8114253B"
+        "OwnerKey" = "8:_DC6F91F351A443D483E4611370DDC146"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D7C06161489DB31386C3519F8114253B"
+        "OwnerKey" = "8:_28CC6BBBD441F9669FE08DAFA692CDB4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D87F04CBB4DB4BE9926F7747FFA6D478"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DC6F91F351A443D483E4611370DDC146"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DC8585E30B6249B292A116383DE33D7A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DDF354CAC2F641AB8CD4C23F4E4951C0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E664F3385E5BE97CEB8001A3941C7D47"
+        "OwnerKey" = "8:_6C10C3A98EA644CA80B63D2806424DAB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E664F3385E5BE97CEB8001A3941C7D47"
+        "OwnerKey" = "8:_4B1D83C111C0EEA00FD98D38607C9F2B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E7AFBD79287C42E99612E5AE63837488"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F2F150CDA50846B091E74959773EFE6B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F6DA72079CDB43A8B0832FA5DC370271"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FD62ED8A21DA46DE8085A95434BD16F8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDDB61E7A5C3B25E38791852278BD82A"
+        "OwnerKey" = "8:_F2F150CDA50846B091E74959773EFE6B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDDB61E7A5C3B25E38791852278BD82A"
+        "OwnerKey" = "8:_5DBE0B180B6FFE98D2EB36D08F046EAC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDDB61E7A5C3B25E38791852278BD82A"
+        "OwnerKey" = "8:_B92DA66DF57E4FAC85465C93446F1C91"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FE35F9D67D374629B5177E89B9342523"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -347,19 +443,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ED75C10A679FA1480B8F383833DBD4DA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1218E56E45EBADB8F9E4126EC95C45F9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_142ABA4C60064892A86D4C4CC3FC8CAE"
+        "OwnerKey" = "8:_D87F04CBB4DB4BE9926F7747FFA6D478"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -371,7 +455,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C3F2262823BD48CFA034FE25186B335D"
+        "OwnerKey" = "8:_2E8C98EB2DC246D49EB851B7F9019E9B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -383,97 +467,211 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5F169D8B44364AC7B3BA22419F9DDD0A"
+        "OwnerKey" = "8:_30D52129A7B54B3ABE03317AEEA26FAD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8FCE6A91F4DAAAE94170C23BC1B7F288"
+        "OwnerKey" = "8:_AA04E574B2964BF2A3CAABCAB54499BD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2020EBD0A7E5F9DD81ABB765D01D16B9"
+        "OwnerKey" = "8:_17796D936C8BEF063FF619EAFE7406D9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_573C7072A002483DABD02E33EDD7666D"
+        "OwnerKey" = "8:_28CC6BBBD441F9669FE08DAFA692CDB4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9ED650FAEF89428AD9C73F5F52A248C1"
+        "OwnerKey" = "8:_827E41D66D6849B8BE9A729211A989F4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_862137D40ED340079D2E175F2AD7CC92"
+        "OwnerKey" = "8:_99DAF6CDE099D5CF4705F98A301364F3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C34018991DE740B8BEFF05FB39860CB5"
+        "OwnerKey" = "8:_C915F165EC3830ADD721261D982319EA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4547922C19904054B27AD5CE6C3AC043"
+        "OwnerKey" = "8:_436A382FDD0B4050A12343226709E082"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_AFF1471A4659E1EE21AD7E602CA17DBC"
+        "OwnerKey" = "8:_24EE02B33DB440139F675EDEFE8E93AB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6294CD590E224E71A0A4FC96BCC6B1D6"
+        "OwnerKey" = "8:_974A061C5F6C467FB326BCCBBA787293"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C639C5B861504E41BD2CB220A1E80DA3"
+        "OwnerKey" = "8:_89825E7D6FD2B7936091008A2C4B7E7F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EEF9EC8B212A4A85B95B060213C5C423"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CC4AC513E7724174B29507271681E109"
+        "OwnerKey" = "8:_DC6F91F351A443D483E4611370DDC146"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D2581033342ED3BFC2A8B59A79B39067"
+        "OwnerKey" = "8:_D7C06161489DB31386C3519F8114253B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_61616C5BF34643C9B03C37304430E0C5"
+        "OwnerKey" = "8:_74E2458AF6114DF8B7BB611EB7D6A458"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4CBDE6D7A5418DAA2E91E785EBBD36B5"
+        "OwnerKey" = "8:_FE35F9D67D374629B5177E89B9342523"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8C824B21519476F5FE841A71B6B38368"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2587E704AA6B49F988DBA213E1A25AF9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4DD27C98BC6B4A1BB5B3A846734DE517"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B92DA66DF57E4FAC85465C93446F1C91"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5DBE0B180B6FFE98D2EB36D08F046EAC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4B1D83C111C0EEA00FD98D38607C9F2B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F2F150CDA50846B091E74959773EFE6B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3158C7F307D2A5E3FB5EF1407D82DBF4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FDDB61E7A5C3B25E38791852278BD82A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_90DA405FF3B049018D16B74D78559E9D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CCDA92E9713AE18CBD9B3209B370E92A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_192DD037FAF84693A737B41A7ABD6645"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6C10C3A98EA644CA80B63D2806424DAB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E664F3385E5BE97CEB8001A3941C7D47"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_AB30153385FF4EC5AE007BD88CF9BD72"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DC8585E30B6249B292A116383DE33D7A"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -548,31 +746,31 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_78DF5F9A942C424687A32780975AB385"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_2A31038288024FD3B7EA07A1DA8028F2"
             {
             "Name" = "8:ServerRegistrationManager.exe"
             "Condition" = "8:"
-            "Object" = "8:_EEF9EC8B212A4A85B95B060213C5C423"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:install \"[TARGETDIR]\\Movex.ContextMenu.dll\" -codebase"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_8B176639_F939_4481_80E2_6663A56DE219"
-            "InstallerClass" = "11:FALSE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_E70574FABB6B43C8B1E8F854D3282872"
-            {
-            "Name" = "8:ServerRegistrationManager.exe"
-            "Condition" = "8:"
-            "Object" = "8:_EEF9EC8B212A4A85B95B060213C5C423"
+            "Object" = "8:_2E8C98EB2DC246D49EB851B7F9019E9B"
             "FileType" = "3:2"
             "InstallAction" = "3:4"
             "Arguments" = "8:uninstall \"[TARGETDIR]\\Movex.ContextMenu.dll\""
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_0593952B_E9EE_4B90_9F5C_7A07F144AA4D"
+            "Identifier" = "8:_93C9D11F_E3F7_438F_8FCA_428E41DB3232"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_CF90D1E698114C1EA77B9C81F86D7A98"
+            {
+            "Name" = "8:ServerRegistrationManager.exe"
+            "Condition" = "8:"
+            "Object" = "8:_2E8C98EB2DC246D49EB851B7F9019E9B"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:install \"[TARGETDIR]\\Movex.ContextMenu.dll\" -codebase"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_BE9B2536_5C16_4BFA_BD8D_B99851175691"
             "InstallerClass" = "11:FALSE"
             "CustomActionData" = "8:"
             }
@@ -599,10 +797,10 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_05466A78C7ED464F9A812B3CF9F931AF"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_01B037EBAF384F87B8616E1084873AC8"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.View.pdb"
-            "TargetName" = "8:Movex.View.pdb"
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.Networking.pdb"
+            "TargetName" = "8:Movex.Networking.pdb"
             "Tag" = "8:"
             "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
             "Condition" = "8:"
@@ -619,49 +817,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09B962A1C441426BBC5F4B5949407C37"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0536175176A54E48BA7E753C5FE1AADA"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.View.Core.pdb"
-            "TargetName" = "8:Movex.View.Core.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0B396EC0218F4E83873A34B532355EE2"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.View.exe.config"
-            "TargetName" = "8:Movex.View.exe.config"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0F6B5A9E149E4B10A0C49628886468A8"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Microsoft.WindowsAPICodePack.Shell.xml"
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Microsoft.WindowsAPICodePack.Shell.xml"
             "TargetName" = "8:Microsoft.WindowsAPICodePack.Shell.xml"
             "Tag" = "8:"
             "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
@@ -679,162 +837,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1218E56E45EBADB8F9E4126EC95C45F9"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_063DDFDD9D6E455E81E7584C98D6D784"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Movex.FTP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_1218E56E45EBADB8F9E4126EC95C45F9"
-                    {
-                    "Name" = "8:Movex.FTP.EXE"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Movex.FTP.EXE"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1294564C1CA2422286371AF5152B9FB7"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.Networking.pdb"
-            "TargetName" = "8:Movex.Networking.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_142ABA4C60064892A86D4C4CC3FC8CAE"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Ninject, Version=3.3.2.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_142ABA4C60064892A86D4C4CC3FC8CAE"
-                    {
-                    "Name" = "8:Ninject.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Ninject.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2020EBD0A7E5F9DD81ABB765D01D16B9"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_2020EBD0A7E5F9DD81ABB765D01D16B9"
-                    {
-                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.WindowsAPICodePack.Shell.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_216A57DEA77C4CB3A78320B05F926EF2"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Microsoft.Windows.Shell.pdb"
-            "TargetName" = "8:Microsoft.Windows.Shell.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2772EFB932134CDF98D16E198CEA88DC"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.View.Core.pdb"
-            "TargetName" = "8:Movex.View.Core.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2BD08C420795434EB5B2F845013BE6EF"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.FTP.exe.config"
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.FTP.exe.config"
             "TargetName" = "8:Movex.FTP.exe.config"
             "Tag" = "8:"
             "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
@@ -852,91 +857,40 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4547922C19904054B27AD5CE6C3AC043"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0C7E81C1F44240588248CA21BFF34E18"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.FTP.pdb"
+            "TargetName" = "8:Movex.FTP.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_17796D936C8BEF063FF619EAFE7406D9"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Movex.View.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_4547922C19904054B27AD5CE6C3AC043"
+                    "_17796D936C8BEF063FF619EAFE7406D9"
                     {
-                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
+                    "Name" = "8:Movex.View.Core.DLL"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Microsoft.WindowsAPICodePack.Shell.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4A0FFB6B8B16440BAD62515769172A14"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Newtonsoft.Json.xml"
-            "TargetName" = "8:Newtonsoft.Json.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4CA52E8AAB764C29A1AACEFD89B20504"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Microsoft.WindowsAPICodePack.xml"
-            "TargetName" = "8:Microsoft.WindowsAPICodePack.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4CBDE6D7A5418DAA2E91E785EBBD36B5"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_4CBDE6D7A5418DAA2E91E785EBBD36B5"
-                    {
-                    "Name" = "8:Newtonsoft.Json.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Newtonsoft.Json.DLL"
+            "SourcePath" = "8:Movex.View.Core.DLL"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
@@ -954,60 +908,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_50736A1282454DAAAF22E391193E78BF"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.FTP.pdb"
-            "TargetName" = "8:Movex.FTP.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_552E7D28C9BA44B589076EB5E57722C6"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.View.exe.config"
-            "TargetName" = "8:Movex.View.exe.config"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_573C7072A002483DABD02E33EDD7666D"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_192DD037FAF84693A737B41A7ABD6645"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Movex.View.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Movex.FTP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_573C7072A002483DABD02E33EDD7666D"
+                    "_192DD037FAF84693A737B41A7ABD6645"
                     {
-                    "Name" = "8:Movex.View.Core.dll"
+                    "Name" = "8:Movex.FTP.exe"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.View.Core.dll"
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.FTP.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
@@ -1025,122 +939,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_58AC93ABA5E74D1D9E00FCC3B87B200B"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_216865712C42476DB6C9CDCAF8A335AD"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Images\\Icons\\profile.png"
-            "TargetName" = "8:profile.png"
-            "Tag" = "8:"
-            "Folder" = "8:_6CC353A7D5594462A037831D9E93F5BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5F169D8B44364AC7B3BA22419F9DDD0A"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Movex.View, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_5F169D8B44364AC7B3BA22419F9DDD0A"
-                    {
-                    "Name" = "8:Movex.View.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.View.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_61616C5BF34643C9B03C37304430E0C5"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Movex.View, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_61616C5BF34643C9B03C37304430E0C5"
-                    {
-                    "Name" = "8:Movex.View.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.View.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6294CD590E224E71A0A4FC96BCC6B1D6"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_6294CD590E224E71A0A4FC96BCC6B1D6"
-                    {
-                    "Name" = "8:Microsoft.WindowsAPICodePack.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Microsoft.WindowsAPICodePack.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8144779F1A134346BC37439827D363EB"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.ContextMenu.pdb"
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.ContextMenu.pdb"
             "TargetName" = "8:Movex.ContextMenu.pdb"
             "Tag" = "8:"
             "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
@@ -1158,377 +959,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_82B21275F8EB4E9A808EF98BE63FA7BD"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Microsoft.WindowsAPICodePack.Shell.xml"
-            "TargetName" = "8:Microsoft.WindowsAPICodePack.Shell.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_862137D40ED340079D2E175F2AD7CC92"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Movex.Networking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_862137D40ED340079D2E175F2AD7CC92"
-                    {
-                    "Name" = "8:Movex.Networking.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.Networking.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_862ABA41B8B64439B8F2C82EAF21FE94"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.FTP.exe.config"
-            "TargetName" = "8:Movex.FTP.exe.config"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8E1271D207F7400E8254913F7623B8CD"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.View.pdb"
-            "TargetName" = "8:Movex.View.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8FCE6A91F4DAAAE94170C23BC1B7F288"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Movex.View.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_8FCE6A91F4DAAAE94170C23BC1B7F288"
-                    {
-                    "Name" = "8:Movex.View.Core.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Movex.View.Core.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E80762D6AB64AE1B225D3B71CC62866"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.Networking.pdb"
-            "TargetName" = "8:Movex.Networking.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9ED650FAEF89428AD9C73F5F52A248C1"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Ninject, Version=3.3.2.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_9ED650FAEF89428AD9C73F5F52A248C1"
-                    {
-                    "Name" = "8:Ninject.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Ninject.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AFF1471A4659E1EE21AD7E602CA17DBC"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_AFF1471A4659E1EE21AD7E602CA17DBC"
-                    {
-                    "Name" = "8:Microsoft.WindowsAPICodePack.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.WindowsAPICodePack.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B119FB0F5C654B29B621FF3296B5DF65"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Microsoft.WindowsAPICodePack.xml"
-            "TargetName" = "8:Microsoft.WindowsAPICodePack.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B6775BE796A44F16898D5D0BE949E840"
-            {
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Newtonsoft.Json.xml"
-            "TargetName" = "8:Newtonsoft.Json.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BD0DCF41018F4D6D80A8283438BD9423"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Images\\Icons\\profile.png"
-            "TargetName" = "8:profile.png"
-            "Tag" = "8:"
-            "Folder" = "8:_98D045978D034E50BF3D7DAD00D09BC1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C34018991DE740B8BEFF05FB39860CB5"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_24EE02B33DB440139F675EDEFE8E93AB"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Movex.FTP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C34018991DE740B8BEFF05FB39860CB5"
+                    "_24EE02B33DB440139F675EDEFE8E93AB"
                     {
                     "Name" = "8:Movex.FTP.exe"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.FTP.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C3F2262823BD48CFA034FE25186B335D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_C3F2262823BD48CFA034FE25186B335D"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Newtonsoft.Json.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C639C5B861504E41BD2CB220A1E80DA3"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Windows.Shell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_C639C5B861504E41BD2CB220A1E80DA3"
-                    {
-                    "Name" = "8:Microsoft.Windows.Shell.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Microsoft.Windows.Shell.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CC4AC513E7724174B29507271681E109"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Movex.ContextMenu, Version=1.0.0.0, Culture=neutral, PublicKeyToken=94c6e0f16ad2c68f, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_CC4AC513E7724174B29507271681E109"
-                    {
-                    "Name" = "8:Movex.ContextMenu.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\Movex.ContextMenu.dll"
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.FTP.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
@@ -1546,20 +990,91 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D2581033342ED3BFC2A8B59A79B39067"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2587E704AA6B49F988DBA213E1A25AF9"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SharpShell, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f14dc899472fe6fb, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Ninject, Version=3.3.2.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_D2581033342ED3BFC2A8B59A79B39067"
+                    "_2587E704AA6B49F988DBA213E1A25AF9"
                     {
-                    "Name" = "8:SharpShell.DLL"
+                    "Name" = "8:Ninject.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:SharpShell.DLL"
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Ninject.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_284AB64CC1AC4289A73277218673CE1A"
+            {
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.View.Core.pdb"
+            "TargetName" = "8:Movex.View.Core.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_28B14791DDFA4AE48CA5884B9BEF47AB"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.View.exe.config"
+            "TargetName" = "8:Movex.View.exe.config"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_28CC6BBBD441F9669FE08DAFA692CDB4"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_28CC6BBBD441F9669FE08DAFA692CDB4"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.WindowsAPICodePack.Shell.DLL"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
@@ -1577,14 +1092,76 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_ED75C10A679FA1480B8F383833DBD4DA"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2E8C98EB2DC246D49EB851B7F9019E9B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ServerRegistrationManager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=68bd4561cc3495fc, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2E8C98EB2DC246D49EB851B7F9019E9B"
+                    {
+                    "Name" = "8:ServerRegistrationManager.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\ServerRegistrationManager.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_30D52129A7B54B3ABE03317AEEA26FAD"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_30D52129A7B54B3ABE03317AEEA26FAD"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3158C7F307D2A5E3FB5EF1407D82DBF4"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Movex.Networking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_ED75C10A679FA1480B8F383833DBD4DA"
+                    "_3158C7F307D2A5E3FB5EF1407D82DBF4"
                     {
                     "Name" = "8:Movex.Networking.EXE"
                     "Attributes" = "3:512"
@@ -1608,20 +1185,40 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EEF9EC8B212A4A85B95B060213C5C423"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_33FE5691009642E18BC482CCAEFCC645"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.View.pdb"
+            "TargetName" = "8:Movex.View.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_436A382FDD0B4050A12343226709E082"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ServerRegistrationManager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=68bd4561cc3495fc, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Movex.Networking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EEF9EC8B212A4A85B95B060213C5C423"
+                    "_436A382FDD0B4050A12343226709E082"
                     {
-                    "Name" = "8:ServerRegistrationManager.exe"
+                    "Name" = "8:Movex.Networking.exe"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:..\\..\\CountLines\\CountLines\\bin\\Debug\\ServerRegistrationManager.exe"
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.Networking.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
@@ -1639,10 +1236,92 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F01DC6C00DC14D559D65C1B91DB7AE32"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4589FABAD424497DAC2D6296E9B037CD"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Ninject.xml"
-            "TargetName" = "8:Ninject.xml"
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.FTP.pdb"
+            "TargetName" = "8:Movex.FTP.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_48F0BE4CD2794827BF37563357581BFA"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Images\\Icons\\profile.png"
+            "TargetName" = "8:profile.png"
+            "Tag" = "8:"
+            "Folder" = "8:_98D045978D034E50BF3D7DAD00D09BC1"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4B1D83C111C0EEA00FD98D38607C9F2B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4B1D83C111C0EEA00FD98D38607C9F2B"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.WindowsAPICodePack.Shell.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4DD27C98BC6B4A1BB5B3A846734DE517"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4DD27C98BC6B4A1BB5B3A846734DE517"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Newtonsoft.Json.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
             "Condition" = "8:"
@@ -1659,9 +1338,541 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F3BB4B164CC143A08B5F911AFACA3106"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_533BAA0A1F91466D9FEFC43B47D8736D"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\Images\\Logo\\small_icon.ico"
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.View.pdb"
+            "TargetName" = "8:Movex.View.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5DBE0B180B6FFE98D2EB36D08F046EAC"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.View.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5DBE0B180B6FFE98D2EB36D08F046EAC"
+                    {
+                    "Name" = "8:Movex.View.Core.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Movex.View.Core.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_675984CD4699461DBEDA13AEA1424510"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Microsoft.Windows.Shell.pdb"
+            "TargetName" = "8:Microsoft.Windows.Shell.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6C10C3A98EA644CA80B63D2806424DAB"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_6C10C3A98EA644CA80B63D2806424DAB"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Microsoft.WindowsAPICodePack.Shell.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6CBFA3BDF4BB42D48184A9B1C28B2A3F"
+            {
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.Networking.pdb"
+            "TargetName" = "8:Movex.Networking.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_745A8E21B8184756915EE823868FF8F2"
+            {
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.View.exe.config"
+            "TargetName" = "8:Movex.View.exe.config"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_74E2458AF6114DF8B7BB611EB7D6A458"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_74E2458AF6114DF8B7BB611EB7D6A458"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Microsoft.WindowsAPICodePack.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7B2CAEE447A84EB5A8B8864D7BFBC775"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Newtonsoft.Json.xml"
+            "TargetName" = "8:Newtonsoft.Json.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_827E41D66D6849B8BE9A729211A989F4"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.View.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_827E41D66D6849B8BE9A729211A989F4"
+                    {
+                    "Name" = "8:Movex.View.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.View.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_83F442D5C1C146F0AB3F6FAAD7607C0E"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.View.Core.pdb"
+            "TargetName" = "8:Movex.View.Core.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86913A94B5134A6BBC9BE1DB74C2789D"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Microsoft.WindowsAPICodePack.xml"
+            "TargetName" = "8:Microsoft.WindowsAPICodePack.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_89825E7D6FD2B7936091008A2C4B7E7F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SharpShell, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f14dc899472fe6fb, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_89825E7D6FD2B7936091008A2C4B7E7F"
+                    {
+                    "Name" = "8:SharpShell.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:SharpShell.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8C824B21519476F5FE841A71B6B38368"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Ninject, Version=3.3.2.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_8C824B21519476F5FE841A71B6B38368"
+                    {
+                    "Name" = "8:Ninject.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Ninject.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_90DA405FF3B049018D16B74D78559E9D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.Networking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_90DA405FF3B049018D16B74D78559E9D"
+                    {
+                    "Name" = "8:Movex.Networking.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.Networking.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_974A061C5F6C467FB326BCCBBA787293"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.ContextMenu, Version=1.0.0.0, Culture=neutral, PublicKeyToken=94c6e0f16ad2c68f, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_974A061C5F6C467FB326BCCBBA787293"
+                    {
+                    "Name" = "8:Movex.ContextMenu.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.ContextMenu.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_99DAF6CDE099D5CF4705F98A301364F3"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.Networking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_99DAF6CDE099D5CF4705F98A301364F3"
+                    {
+                    "Name" = "8:Movex.Networking.EXE"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Movex.Networking.EXE"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AA04E574B2964BF2A3CAABCAB54499BD"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.View, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_AA04E574B2964BF2A3CAABCAB54499BD"
+                    {
+                    "Name" = "8:Movex.View.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Movex.View.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AB30153385FF4EC5AE007BD88CF9BD72"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_AB30153385FF4EC5AE007BD88CF9BD72"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Microsoft.WindowsAPICodePack.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B92DA66DF57E4FAC85465C93446F1C91"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.View, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B92DA66DF57E4FAC85465C93446F1C91"
+                    {
+                    "Name" = "8:Movex.View.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.View.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B97169E2BEB2428E94F66C1C32996AFF"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.FTP.exe.config"
+            "TargetName" = "8:Movex.FTP.exe.config"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCED47B38F5B4D0CAE346D07867413D7"
+            {
+            "SourcePath" = "8:..\\Movex.View\\Images\\Logo\\small_icon.ico"
             "TargetName" = "8:small_icon.ico"
             "Tag" = "8:"
             "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
@@ -1679,10 +1890,400 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FCF09191F146413A8A724CC1E956376E"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C7B674F3017A4031A4BE0BFEDE82F179"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\Windows Project\\moveX_content\\fasetto-word-develop (1)\\fasetto-word-develop\\Source\\Movex.View\\bin\\Debug\\Movex.FTP.pdb"
-            "TargetName" = "8:Movex.FTP.pdb"
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Ninject.xml"
+            "TargetName" = "8:Ninject.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C915F165EC3830ADD721261D982319EA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.FTP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C915F165EC3830ADD721261D982319EA"
+                    {
+                    "Name" = "8:Movex.FTP.EXE"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Movex.FTP.EXE"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CCDA92E9713AE18CBD9B3209B370E92A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_CCDA92E9713AE18CBD9B3209B370E92A"
+                    {
+                    "Name" = "8:Newtonsoft.Json.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D7C06161489DB31386C3519F8114253B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D7C06161489DB31386C3519F8114253B"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.WindowsAPICodePack.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D87F04CBB4DB4BE9926F7747FFA6D478"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SharpShell, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f14dc899472fe6fb, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D87F04CBB4DB4BE9926F7747FFA6D478"
+                    {
+                    "Name" = "8:SharpShell.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\SharpShell.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DC6F91F351A443D483E4611370DDC146"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_DC6F91F351A443D483E4611370DDC146"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Microsoft.WindowsAPICodePack.Shell.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DC8585E30B6249B292A116383DE33D7A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Windows.Shell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_DC8585E30B6249B292A116383DE33D7A"
+                    {
+                    "Name" = "8:Microsoft.Windows.Shell.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Microsoft.Windows.Shell.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDF354CAC2F641AB8CD4C23F4E4951C0"
+            {
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Newtonsoft.Json.xml"
+            "TargetName" = "8:Newtonsoft.Json.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E664F3385E5BE97CEB8001A3941C7D47"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E664F3385E5BE97CEB8001A3941C7D47"
+                    {
+                    "Name" = "8:Microsoft.WindowsAPICodePack.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.WindowsAPICodePack.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E7AFBD79287C42E99612E5AE63837488"
+            {
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Microsoft.WindowsAPICodePack.xml"
+            "TargetName" = "8:Microsoft.WindowsAPICodePack.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F2F150CDA50846B091E74959773EFE6B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.View.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F2F150CDA50846B091E74959773EFE6B"
+                    {
+                    "Name" = "8:Movex.View.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Movex.View.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F6DA72079CDB43A8B0832FA5DC370271"
+            {
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\Images\\Icons\\profile.png"
+            "TargetName" = "8:profile.png"
+            "Tag" = "8:"
+            "Folder" = "8:_6CC353A7D5594462A037831D9E93F5BD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FD62ED8A21DA46DE8085A95434BD16F8"
+            {
+            "SourcePath" = "8:..\\Movex.Menu\\bin\\Debug\\Microsoft.WindowsAPICodePack.Shell.xml"
+            "TargetName" = "8:Microsoft.WindowsAPICodePack.Shell.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_2E401068070C4065946AFCD4A8196630"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FDDB61E7A5C3B25E38791852278BD82A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Movex.FTP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_FDDB61E7A5C3B25E38791852278BD82A"
+                    {
+                    "Name" = "8:Movex.FTP.EXE"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Movex.FTP.EXE"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FE35F9D67D374629B5177E89B9342523"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ServerRegistrationManager, Version=2.2.0.0, Culture=neutral, PublicKeyToken=68bd4561cc3495fc, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_FE35F9D67D374629B5177E89B9342523"
+                    {
+                    "Name" = "8:ServerRegistrationManager.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Movex.View\\bin\\Debug\\ServerRegistrationManager.exe"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_CDA126DE7F284B718CD936B879B1641F"
             "Condition" = "8:"
@@ -1744,6 +2345,17 @@
                                         {
                                         }
                                     }
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_505E539F2E004EA187CC97878039C057"
+                            {
+                            "Name" = "8:New Folder #1"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_DF15633784EF45A9ACFACFD17144F268"
+                                "Folders"
+                                {
                                 }
                             }
                         }
@@ -1943,32 +2555,32 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_8D022543ACDE4DDC967A16588F000BEA"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_36BE3AF8240349049E95F9E7AEBE4FE2"
             {
-            "Name" = "8:Shortcut to Movex.View.exe"
+            "Name" = "8:MoveX.exe"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_5F169D8B44364AC7B3BA22419F9DDD0A"
-            "Folder" = "8:_5E62409714194442BE87625683B86BEE"
-            "WorkingFolder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Icon" = "8:_F3BB4B164CC143A08B5F911AFACA3106"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A11BE824744244448075697C1CA3A210"
-            {
-            "Name" = "8:Shortcut to Movex.View.exe"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_5F169D8B44364AC7B3BA22419F9DDD0A"
+            "Target" = "8:_B92DA66DF57E4FAC85465C93446F1C91"
             "Folder" = "8:_4BCFEE3BD69B438993D9E43C63D2ABD7"
             "WorkingFolder" = "8:_CDA126DE7F284B718CD936B879B1641F"
-            "Icon" = "8:_F3BB4B164CC143A08B5F911AFACA3106"
+            "Icon" = "8:_BCED47B38F5B4D0CAE346D07867413D7"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B1126862052A45499C88878269CC3AC3"
+            {
+            "Name" = "8:MoveX.exe"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B92DA66DF57E4FAC85465C93446F1C91"
+            "Folder" = "8:_5E62409714194442BE87625683B86BEE"
+            "WorkingFolder" = "8:_CDA126DE7F284B718CD936B879B1641F"
+            "Icon" = "8:_BCED47B38F5B4D0CAE346D07867413D7"
             "Feature" = "8:"
             }
         }
