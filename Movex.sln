@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.View.Core", "Movex.Vi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.Network", "Movex.Network\Movex.Network.csproj", "{38AFC9F0-0BEE-469B-BE19-ADFAAF2DD799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.ContextMenu", "..\..\..\..\..\Visual Studio 2017\Projects\CountLines\CountLines\Movex.ContextMenu.csproj", "{4635E1DD-3AEF-41DD-B825-701803155D42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.Menu", "Movex.Menu\Movex.Menu.csproj", "{4635E1DD-3AEF-41DD-B825-701803155D42}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E69312C9-96E1-44CB-8CAA-237E09DFE433} = {E69312C9-96E1-44CB-8CAA-237E09DFE433}
 	EndProjectSection
