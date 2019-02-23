@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.Menu", "Movex.Menu\Mo
 		{E69312C9-96E1-44CB-8CAA-237E09DFE433} = {E69312C9-96E1-44CB-8CAA-237E09DFE433}
 	EndProjectSection
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Movex.Installer", "..\..\..\..\..\Visual Studio 2017\Projects\MovexInstaller\MovexInstaller\MovexInstaller.vdproj", "{2AA03884-3B53-4C87-B5FB-8AF508AB21F9}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Movex.Installer", "Movex.Installer\MovexInstaller.vdproj", "{2AA03884-3B53-4C87-B5FB-8AF508AB21F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.FTP", "Movex.FTP\Movex.FTP.csproj", "{661F9279-AFC6-4C1F-95F9-D0936B7A398E}"
 EndProject
