@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.View", "Fasetto.Word\
 		{661F9279-AFC6-4C1F-95F9-D0936B7A398E} = {661F9279-AFC6-4C1F-95F9-D0936B7A398E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.View.Core", "Fasetto.Word.Core\Movex.View.Core.csproj", "{CAC0A047-D879-4A29-8136-BE1E33F5F35C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.View.Core", "Movex.View.Core\Movex.View.Core.csproj", "{CAC0A047-D879-4A29-8136-BE1E33F5F35C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.Network", "Movex.Network\Movex.Network.csproj", "{38AFC9F0-0BEE-469B-BE19-ADFAAF2DD799}"
 EndProject

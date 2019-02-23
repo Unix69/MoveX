@@ -383,7 +383,7 @@
     <Resource Include="Images\Backgrounds\emoji-background.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fasetto.Word.Core\Movex.View.Core.csproj">
+    <ProjectReference Include="..\Movex.View.Core\Movex.View.Core.csproj">
       <Project>{cac0a047-d879-4a29-8136-be1e33f5f35c}</Project>
       <Name>Movex.View.Core</Name>
     </ProjectReference>
