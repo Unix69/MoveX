@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.View", "Fasetto.Word\Movex.View.csproj", "{E69312C9-96E1-44CB-8CAA-237E09DFE433}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movex.View", "Movex.View\Movex.View.csproj", "{E69312C9-96E1-44CB-8CAA-237E09DFE433}"
 	ProjectSection(ProjectDependencies) = postProject
 		{661F9279-AFC6-4C1F-95F9-D0936B7A398E} = {661F9279-AFC6-4C1F-95F9-D0936B7A398E}
 	EndProjectSection
