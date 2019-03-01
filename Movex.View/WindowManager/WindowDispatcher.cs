@@ -133,7 +133,11 @@ namespace Movex.View
                     var UploadProgressWindowThread = new Thread(() =>
                     {
                         var w = new UploadProgressWindow(IPAddress.Parse(ipAddress), syncVariables[0]);
-                        windows.TryAdd(ipAddress, w);
+                        if (windows.TryAdd(ipAddress, w))
+                        {
+                            windows.TryRemove(ipAddress, out Window oldWindow);
+                            windows.TryAdd(ipAddress, w);
+                        }
                         w.Show();
                         syncVariables[1].Set();
                         Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [UploadTransferRequest] Set the UploadProgressWindow as available. The transfer can take action.");
@@ -161,7 +165,11 @@ namespace Movex.View
                     var DownloadProgressWindowThread = new Thread(() =>
                     {
                         var w = new DownloadProgressWindow(IPAddress.Parse(ip), syncPrimitives[0]);
-                        windows.TryAdd(ip, w);
+                        if (windows.TryAdd(ip, w))
+                        {
+                            windows.TryRemove(ip, out Window oldWindow);
+                            windows.TryAdd(ip, w);
+                        }
                         w.Show();
                         syncPrimitives[1].Set();
                         Console.WriteLine("[Movex.View] [WindowDispatcher.cs] [DownloadTransferRequest] Set the DonwloadProgressWindow as available. The transfer can take action.");
@@ -206,7 +214,8 @@ namespace Movex.View
                     windows.TryRemove(ipAddressReceiver, out var uploadProgressWindow);
                     if (uploadProgressWindow != null)
                     {
-                        ((UploadProgressWindow)uploadProgressWindow).Interrupt();
+                        if (uploadProgressWindow is UploadProgressWindow)
+                            ((UploadProgressWindow)uploadProgressWindow).Interrupt();
                     }
                     
                     /*
@@ -228,7 +237,8 @@ namespace Movex.View
                     windows.TryRemove(ipAddressSender, out var downloadProgressWindow);
                     if (downloadProgressWindow != null)
                     {
-                        ((DownloadProgressWindow)downloadProgressWindow).Interrupt();
+                        if (downloadProgressWindow is DownloadProgressWindow)
+                            ((DownloadProgressWindow)downloadProgressWindow).Interrupt();
                     }
                     break;
 
