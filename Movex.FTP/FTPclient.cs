@@ -539,15 +539,9 @@ namespace Movex.FTP
                 var filesize = uchan.Get_filesizes()[n];
                 var path = uchan.Get_paths()[n];
 
-
-
-                var filenamelen_buff = new byte[FTPsupporter.Sizes.Filenamelensize];
-                var filename_buff = new byte[filename.Length];
-                var filesize_buff = new byte[FTPsupporter.Sizes.Filesizesize];
-
-                filenamelen_buff = BitConverter.GetBytes(filename.Length);
-                filename_buff = Encoding.ASCII.GetBytes(filename);
-                filesize_buff = BitConverter.GetBytes(filesize);
+                var filenamelen_buff = BitConverter.GetBytes(filename.Length);
+                var filename_buff = UTF8Encoding.UTF8.GetBytes(filename);
+                var filesize_buff = BitConverter.GetBytes(filesize);
 
                 bufferOut = new byte[filenamelen_buff.Length + filename_buff.Length + filesize_buff.Length];
                 filenamelen_buff.CopyTo(bufferOut, 0);
@@ -613,9 +607,9 @@ namespace Movex.FTP
         {
             try
             {
-                var elementlen_buff = BitConverter.GetBytes(element.Length);
-                var element_buff = Encoding.ASCII.GetBytes(element);
-                var bufferOut = new byte[FTPsupporter.Sizes.Elementlensize + element.Length];
+                var element_buff = UTF8Encoding.UTF8.GetBytes(element);
+                var elementlen_buff = BitConverter.GetBytes(element_buff.Length);
+                var bufferOut = new byte[FTPsupporter.Sizes.Elementlensize + element_buff.Length];
 
                 elementlen_buff.CopyTo(bufferOut, 0);
                 element_buff.CopyTo(bufferOut, FTPsupporter.Sizes.Elementlensize);

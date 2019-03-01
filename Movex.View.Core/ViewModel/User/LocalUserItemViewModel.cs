@@ -6,6 +6,10 @@ using System.Windows.Forms;
 using Movex.Network;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace Movex.View.Core
 {
@@ -24,6 +28,7 @@ namespace Movex.View.Core
 
         #region Private Members
         private User mUser;
+        private ManualResetEvent mUpdateEvent;
         #endregion
 
         #region Public Command
@@ -68,8 +73,7 @@ namespace Movex.View.Core
                     if (!File.Exists(ProfilePicture))
                     {
                         var currWorkingDirectory = Directory.GetCurrentDirectory();
-                        var defaultProfilePicture = Path.Combine(currWorkingDirectory, @"\Images\Icons\profile.png");
-                        ProfilePicture = defaultProfilePicture;
+                        ProfilePicture = SetDefaultProfilePicture(@"Images\Icons\profile.png");
                     }
 
                 }
@@ -91,31 +95,17 @@ namespace Movex.View.Core
                 }
             }
 
-            mUser = new User(Name, Message, ProfilePicture, Convert.ToBoolean(PrivateMode));
+            mUpdateEvent = new ManualResetEvent(false);
+            mUser = new User(Name, Message, ProfilePicture, Convert.ToBoolean(PrivateMode), mUpdateEvent);
 
             // Initialize the research for friends by network
             mUser.ListenForFriends();
             mUser.SearchForFriends();
-            Thread.Sleep(100);
-
         }
 
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// Set the profile picture path
-        /// </summary>
-        public void SetProfilePicture(string path)
-        {
-            ProfilePicture = path;
-            Database.UpdateLocalDB(nameof(ProfilePicture), path);
-            var ThreadDelegate = new ThreadStart( () => mUser.SetProfilePicturePath(path));
-            var Thread = new Thread(ThreadDelegate);
-            Thread.Start();
-        }
-
         /// <summary>
         /// Set the default path of the Folder for the Downloads
         /// </summary>
@@ -149,7 +139,9 @@ namespace Movex.View.Core
         {
             Name = name;
             Database.UpdateLocalDB(nameof(Name), name);
-            mUser.SetUsername(name);
+            var ThreadDelegate = new ThreadStart(() => mUser.SetUsername(name));
+            var Thread = new Thread(ThreadDelegate);
+            Thread.Start();
         }
 
         /// <summary>
@@ -159,9 +151,22 @@ namespace Movex.View.Core
         {
             Message = message;
             Database.UpdateLocalDB(nameof(Message), message);
-            mUser.SetMessage(message);
+            var ThreadDelegate = new ThreadStart(() => mUser.SetMessage(message));
+            var Thread = new Thread(ThreadDelegate);
+            Thread.Start();
         }
 
+        /// <summary>
+        /// Set the profile picture path
+        /// </summary>
+        public void SetProfilePicture(string path)
+        {
+            ProfilePicture = path;
+            Database.UpdateLocalDB(nameof(ProfilePicture), path);
+            var ThreadDelegate = new ThreadStart(() => mUser.SetProfilePicturePath(path));
+            var Thread = new Thread(ThreadDelegate);
+            Thread.Start();
+        }
         /// <summary>
         /// Get the User Object of the Movex.Network Project
         /// </summary>
@@ -194,8 +199,53 @@ namespace Movex.View.Core
         {
             return mUser.GetUsernameByIpAddress(ipAddress);
         }
-        #endregion
-    }
 
+        public ManualResetEvent GetUpdateEvent()
+        {
+            return mUpdateEvent;
+        }
+
+        #endregion
+
+        private string SetDefaultProfilePicture(string sourceFilepath)
+        {
+            // Create the default directory for profile pictures if it does not exists
+            var currWorkingDirectory = Directory.GetCurrentDirectory();
+            var defaultDir = @"ProfilePictures";
+            var defaultDirPath = Path.Combine(currWorkingDirectory, defaultDir);
+            var sourceFileFullPath = Path.Combine(currWorkingDirectory, sourceFilepath);
+            if (!Directory.Exists(defaultDirPath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(defaultDir);
+                }
+                catch (Exception excep)
+                {
+                    MessageBox.Show(excep.Message);
+                }
+            }
+
+            // Set the tmp filename
+            var extension = Path.GetExtension(sourceFileFullPath);
+            var finalFilename = RandomString(12) + extension;
+            var finalFilePath = Path.Combine(defaultDirPath, finalFilename);
+
+            // Copy the file
+            File.Copy(sourceFileFullPath, finalFilePath, true);
+
+            return finalFilePath;
+
+        }
+
+        string RandomString(int length)
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+    }
 
 }

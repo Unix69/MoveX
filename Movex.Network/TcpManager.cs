@@ -183,17 +183,31 @@ namespace Movex.Network
                if (dataSize < DataSizeLimit)
                {
                    buffer = new byte[dataSize];
-                   stream.Read(buffer, 0, dataSize);
+                    var bytesRead = 0;
+                    var faultTolerance = 5;
 
-                   // Create the file
-                   var filepath = Path.Combine(DefaultPath, filename);
+                    while(bytesRead < dataSize && faultTolerance > 0)
+                    {
+                        bytesRead += stream.Read(buffer, bytesRead, dataSize - bytesRead);
+                        Console.WriteLine("I read " + bytesRead.ToString() + " bytes of data from the socket for the image.");
+                        if (bytesRead == 0)
+                        {
+                            faultTolerance--;
+                        }
+                    }
+
+                    Console.WriteLine("I finally read " + bytesRead.ToString() + " bytes of data from the socket for the image.");
+
+                    // Create the file
+                    var filepath = Path.Combine(DefaultPath, filename);
                    var fileStream = File.Open(filepath, FileMode.Create);
 
                    // Write the file.
                    var binarybuffer = new BinaryWriter(fileStream);
                    binarybuffer.Write(buffer, 0, dataSize);
-                   binarybuffer.Flush();
+                   // binarybuffer.Flush();
                    binarybuffer.Close();
+                   fileStream.Close();
                }
                else
                {
@@ -215,10 +229,13 @@ namespace Movex.Network
 
                        // Write the piece of file
                        var fileStream = File.Open(filepath, FileMode.Append);
-                       var binarybuffer = new BinaryWriter(fileStream);
-                       binarybuffer.Write(buffer, 0, toRead);
-                       binarybuffer.Flush();
-                       binarybuffer.Close();
+                       fileStream.Write(buffer, 0, toRead);
+
+                       //var binarybuffer = new BinaryWriter(fileStream);
+                       //binarybuffer.Write(buffer, 0, toRead);
+                       //binarybuffer.Flush();
+                       //binarybuffer.Close();
+                       fileStream.Close();
                    }
                }
             }
@@ -236,11 +253,13 @@ namespace Movex.Network
             TcpClientConnected.Set();
 
         }
-        public void ReceiveFile()
+        public void ReceiveFile(ManualResetEvent UpdateEvent)
         {
+            Receive:
             TcpClientConnected.Reset();
             mListener.BeginAcceptTcpClient(new AsyncCallback(BeginAcceptTcpClientCallback), mListener);
             TcpClientConnected.WaitOne();
+            UpdateEvent.Set();
 
             // Valid at application-shutdown
             if (mIsExit == true) { return; }
@@ -254,8 +273,7 @@ namespace Movex.Network
                 streamWriter.Close();
             }
             mNetworkLogPathMutex.ReleaseMutex();
-
-
+            goto Receive;
         }
         private static void BeginConnectCallback(IAsyncResult ar)
         {

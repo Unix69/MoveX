@@ -28,7 +28,7 @@ namespace Movex.Network
         /// <summary>
         /// Constructor for the User class
         /// </summary>
-        public User(string username, string message, string profilePicturePath, bool mPrivateMode)
+        public User(string username, string message, string profilePicturePath, bool mPrivateMode, ManualResetEvent UpdateEvent)
         {
             mUsername = username;
             mMessage = message;
@@ -36,7 +36,8 @@ namespace Movex.Network
             mIpAddress = new NetworkInformation().GetLocalNetworkInformation()[0];
 
             mFriendList = new List<RestrictedUser>();
-            mConnManager = new UdpManager(RestrictMe(), mPrivateMode);
+            mConnManager = new UdpManager(RestrictMe(), mPrivateMode, UpdateEvent);
+            mConnManager.WaitForProfilePictures(UpdateEvent);
         }
 
         #endregion
@@ -167,7 +168,6 @@ namespace Movex.Network
         /// </summary>
         public void SearchForFriends()
         {
-            mConnManager.WaitForProfilePictures();
             mConnManager.SendDiscoveryMessage();
         }
 

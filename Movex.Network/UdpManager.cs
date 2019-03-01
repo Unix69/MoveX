@@ -33,6 +33,7 @@ namespace Movex.Network
         public IPAddress mBROADCAST;
         private const string NetworkLogPath = @".\Log\Network.log";
         private Mutex mNetworkLogPathMutex;
+        private ManualResetEvent mUpdateEvent;
 
         #region Private members
         private UdpClient mUdpClient;
@@ -49,7 +50,7 @@ namespace Movex.Network
         /// <summary>
         /// Constructor for the UdpManager class
         /// </summary>
-        public UdpManager(RestrictedUser ru, bool privateMode)
+        public UdpManager(RestrictedUser ru, bool privateMode, ManualResetEvent UpdateEvent)
         {
 
             // Create folder Log (if not exists)
@@ -72,6 +73,7 @@ namespace Movex.Network
             mTcpManager = new TcpManager();
             mTcpManager.Init(1512, ref mNetworkLogPathMutex, NetworkLogPath);
             mPrivateMode = privateMode;
+            mUpdateEvent = UpdateEvent;
 
             using (var streamWriter = File.AppendText(NetworkLogPath))
             {
@@ -151,6 +153,7 @@ namespace Movex.Network
                         var message = new Message(Message.MSG_PRESENTATION, mRestrictedUser);
                         SendMessage(Jsonify(message), ipSender);
                         SendProfilePicture(ipSender, mRestrictedUser.mProfilePictureFilename);
+                        // mUpdateEvent.Set();
                     }
                     else if (messageReceived.GetMessageType().Equals(Message.MSG_PRESENTATION))
                     {
@@ -171,6 +174,10 @@ namespace Movex.Network
                             mRestrictedUsers.RemoveAt(i);
                         }
                         mRestrictedUsers.Add(candidate);
+                        mUpdateEvent.Set();
+
+                        // Wait for profile picture
+                        // WaitForProfilePictures(mUpdateEvent);
 
                         if (mPrivateMode) return;
 
@@ -200,6 +207,10 @@ namespace Movex.Network
                             mRestrictedUsers.RemoveAt(i);
                         }
                         mRestrictedUsers.Add(candidate);
+                        mUpdateEvent.Set();
+
+                        // Wait for profile picture
+                        // WaitForProfilePictures(mUpdateEvent);
                     }
                     else if (messageReceived.GetMessageType().Equals(Message.MSG_LEAVE))
                     {
@@ -213,11 +224,12 @@ namespace Movex.Network
                             var index = mRestrictedUsers.FindIndex(user => user.mIpAddress.Equals(ipSender.ToString()));
                             streamWriter.WriteLine("[" + currentTime + "] Removing user at Index: " + index.ToString());
                             try { mRestrictedUsers.RemoveAt(index); }
-                            catch(IndexOutOfRangeException ie) { Console.WriteLine(ie.Message); }
+                            catch(ArgumentOutOfRangeException ie) { Console.WriteLine(ie.Message); }
 
                             streamWriter.Close();
                         }
                         mNetworkLogPathMutex.ReleaseMutex();
+                        mUpdateEvent.Set();
                     }
                     else if (messageReceived.GetMessageType().Equals(Message.MSG_UPDATE))
                     {
@@ -231,13 +243,14 @@ namespace Movex.Network
                         }
                         mNetworkLogPathMutex.ReleaseMutex();
 
-                        // Wait for profile picture
-                        WaitForProfilePictures();
-
                         // Remove the user from the list
                         var index = mRestrictedUsers.FindIndex(user => user.mIpAddress.Equals(ipSender.ToString()));
                         mRestrictedUsers.RemoveAt(index);
                         mRestrictedUsers.Add(messageReceived.GetRestrictedUser());
+
+                        // Wait for profile picture
+                        // WaitForProfilePictures(mUpdateEvent);
+                        mUpdateEvent.Set();
                     }
                 }
 
@@ -324,11 +337,19 @@ namespace Movex.Network
                 return;
             };
 
-            // Send the file
-            mTcpManager.SendFile(ipReceiver, path);
+            try
+            {
+                // Send the file
+                mTcpManager.SendFile(ipReceiver, path);
 
-            // Stop the TCP Client and release resources
-            mTcpManager.StopClient();
+                // Stop the TCP Client and release resources
+                mTcpManager.StopClient();
+            }
+            catch(Exception Exception)
+            {
+                Console.WriteLine("[UdpManager] [SendProfilePicture] " + Exception.Message);
+            }
+            
 
             // Record the operation to Network Log
             mNetworkLogPathMutex.WaitOne();
@@ -344,10 +365,10 @@ namespace Movex.Network
         /// <summary>
         /// Open TCP Manager and user it receive asynchronously profile pictures 
         /// </summary>
-        public void WaitForProfilePictures()
+        public void WaitForProfilePictures(ManualResetEvent UpdateEvent)
         {
             mTcpManager.StartListener();
-            mReceivePictureThread = new Thread(() => mTcpManager.ReceiveFile())
+            mReceivePictureThread = new Thread(() => mTcpManager.ReceiveFile(UpdateEvent))
             {
                 Priority = ThreadPriority.Highest
             };

@@ -456,6 +456,11 @@ namespace Movex.FTP
                     throw new IOException("Bad tag");
                 }
 
+                foreach (var e in filepaths)
+                {
+                    Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPtree] filepath: " + e);
+                }
+
                 FTPfilesByTree(ref clientsocket, filepaths.ToArray(), path, tag, transfer, downloadTransferAvailability, windowAvailability);
                 return (true);
             }
@@ -550,7 +555,7 @@ namespace Movex.FTP
                 {
                     throw new IOException("Bad Filename");
                 }
-                var filename = Encoding.ASCII.GetString(bufferIn, 0, filenamelen);
+                var filename = UTF8Encoding.UTF8.GetString(bufferIn, 0, filenamelen);
                 filename = AdjustFilename(filename, dchan.Get_path());
                 return (filename);
             }
@@ -637,7 +642,7 @@ namespace Movex.FTP
                 {
                     throw new IOException("Bad element");
                 }
-                return (Encoding.ASCII.GetString(bufferIn, 0, elementlen));
+                return (UTF8Encoding.UTF8.GetString(bufferIn, 0, elementlen));
             }
             catch (SocketException e) { mLogger.Log(e.Message); throw e; }
             catch (Exception e) { mLogger.Log(e.Message); throw e; }
@@ -798,11 +803,12 @@ namespace Movex.FTP
                     dchan.Set_filepaths(paths);
                     for (var i = 0; i < numfile; i++)
                     {
+                        Console.WriteLine("[Movex.FTP] [FTPserver.cs] [FTPfilesByTree] Now processing: " + dchan.Get_filepaths()[i]);
                         tag = RecvTag(ref clientsocket);
                         if (!CheckTag(tag)) { throw new IOException("Bad tag"); }
-                        filename = RecvFilename(ref clientsocket, dchan, 0);
+                        filename = RecvFilename(ref clientsocket, dchan, i);
                         if (!CheckFilename(filename)) { throw new IOException("Bad filename"); }
-                        RecvFiledata(ref clientsocket, dchan, 0, filename);
+                        RecvFiledata(ref clientsocket, dchan, i, filename);
                     }
                 }
                 transfer.DetachFromInterface(dchan);
