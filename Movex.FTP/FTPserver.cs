@@ -555,7 +555,7 @@ namespace Movex.FTP
                 {
                     throw new IOException("Bad Filename");
                 }
-                var filename = UTF8Encoding.UTF8.GetString(bufferIn, 0, filenamelen);
+                var filename = Encoding.UTF8.GetString(bufferIn, 0, filenamelen);
                 filename = AdjustFilename(filename, dchan.Get_path());
                 return (filename);
             }
@@ -642,7 +642,7 @@ namespace Movex.FTP
                 {
                     throw new IOException("Bad element");
                 }
-                return (UTF8Encoding.UTF8.GetString(bufferIn, 0, elementlen));
+                return (Encoding.UTF8.GetString(bufferIn, 0, elementlen));
             }
             catch (SocketException e) { mLogger.Log(e.Message); throw e; }
             catch (Exception e) { mLogger.Log(e.Message); throw e; }

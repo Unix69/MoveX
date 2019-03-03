@@ -607,15 +607,15 @@ namespace Movex.FTP
         {
             try
             {
-                var element_buff = UTF8Encoding.UTF8.GetBytes(element);
+                var element_buff = Encoding.UTF8.GetBytes(element);
                 var elementlen_buff = BitConverter.GetBytes(element_buff.Length);
-                var bufferOut = new byte[FTPsupporter.Sizes.Elementlensize + element_buff.Length];
+                var bufferOut = new byte[elementlen_buff.Length + element_buff.Length];
 
                 elementlen_buff.CopyTo(bufferOut, 0);
-                element_buff.CopyTo(bufferOut, FTPsupporter.Sizes.Elementlensize);
+                element_buff.CopyTo(bufferOut, element_buff.Length);
 
                 var sended = Send(ref clientsocket, ref bufferOut, null, 0);
-                if (sended != (FTPsupporter.Sizes.Elementsizesize + element.Length))
+                if (sended != (elementlen_buff.Length + element_buff.Length))
                 {
                     throw new IOException("Cannot send element");
                 }
