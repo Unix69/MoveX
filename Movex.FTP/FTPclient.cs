@@ -539,8 +539,8 @@ namespace Movex.FTP
                 var filesize = uchan.Get_filesizes()[n];
                 var path = uchan.Get_paths()[n];
 
-                var filenamelen_buff = BitConverter.GetBytes(filename.Length);
                 var filename_buff = UTF8Encoding.UTF8.GetBytes(filename);
+                var filenamelen_buff = BitConverter.GetBytes(filename_buff.Length);
                 var filesize_buff = BitConverter.GetBytes(filesize);
 
                 bufferOut = new byte[filenamelen_buff.Length + filename_buff.Length + filesize_buff.Length];
