@@ -19,6 +19,7 @@ namespace Movex.View
     {
         #region Private members
         private List<string> mFilepaths;
+        private List<string> mEmptyFolders;
         private TransferItemListDesignModel mTransferItemList;
         private TransferItemViewModel mSelectedItem;
         private WindowRequester mWindowRequestr;
@@ -29,6 +30,7 @@ namespace Movex.View
         {
             InitializeComponent();
             mFilepaths = new List<string>();
+            mEmptyFolders = new List<string>();
 
             mWindowRequestr                     = ((App)(Application.Current)).GetWindowRequester();
             mTransferItemList                   = ViewModelLocator.TransferItemListDesignModel;
@@ -93,6 +95,10 @@ namespace Movex.View
             {
                 mFilepaths.Add(item);
                 var folderSize = Directory.GetFiles(item, "*", SearchOption.AllDirectories).Sum(t => (new FileInfo(t).Length));
+                if (folderSize == 0)
+                {
+                    mEmptyFolders.Add(item);
+                }
                 mTransferItemList.Items.Add(new TransferItemViewModel(++TransferItemListCount, item, folderSize));
                 TransferItemList.Items.Refresh();
                 mTransferItemList.TransferAvailable = true;
@@ -155,6 +161,21 @@ namespace Movex.View
         }
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
+
+            // Check validity
+            if (mEmptyFolders.Count > 0)
+            {
+                ((App)Application.Current).GetWindowRequester().AddMessageWindow("Rimuovi le cartelle vuote!");
+                return;
+            }
+
+            // Check validity
+            if (mFilepaths.Count == 0)
+            {
+                ((App)Application.Current).GetWindowRequester().AddMessageWindow("Nessuna selezione!");
+                return;
+            }
+
             // Get the FilePaths and FolderPaths selected by the user
             var filepaths = mFilepaths.ToArray();
 
@@ -228,6 +249,16 @@ namespace Movex.View
                     mTransferItemList.Items[i].AlternationIndex = mTransferItemList.Items[i].Index % 2;
                 }
 
+                // Delete item from lists
+                if (mEmptyFolders.Contains(mSelectedItem.Path))
+                {
+                    mEmptyFolders.Remove(mSelectedItem.Path);
+                }
+                if (mFilepaths.Contains(mSelectedItem.Path))
+                {
+                    mFilepaths.Remove(mSelectedItem.Path);
+                }
+
                 // Refresh the ViewModel
                 TransferItemList.Items.Refresh();
             }
@@ -246,7 +277,9 @@ namespace Movex.View
 
             // RELEASE the member(s)
             mFilepaths.Clear();
+            mEmptyFolders.Clear();
             mFilepaths = null;
+            mEmptyFolders = null;
 
             // Clear the selected users too
             ((App)(Application.Current)).GetUserListControl().ClearSelectedUsers();
