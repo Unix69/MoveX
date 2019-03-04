@@ -612,7 +612,7 @@ namespace Movex.FTP
                 var bufferOut = new byte[elementlen_buff.Length + element_buff.Length];
 
                 elementlen_buff.CopyTo(bufferOut, 0);
-                element_buff.CopyTo(bufferOut, element_buff.Length);
+                element_buff.CopyTo(bufferOut, elementlen_buff.Length);
 
                 var sended = Send(ref clientsocket, ref bufferOut, null, 0);
                 if (sended != (elementlen_buff.Length + element_buff.Length))
