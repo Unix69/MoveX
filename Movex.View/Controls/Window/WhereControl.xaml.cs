@@ -19,6 +19,7 @@ namespace Movex.View
         private ManualResetEvent mResponseAvailability;
         private WhereDesignModel mWhereDesignModel;
         private bool mOnExit;
+        private bool mIsFolderSelected;
         private ManualResetEvent mFolderSelected;
         #endregion
 
@@ -26,6 +27,7 @@ namespace Movex.View
         {
             InitializeComponent();
             DataContext = mWhereDesignModel = new WhereDesignModel();
+            mIsFolderSelected = false;
         }
 
         #region Getter(s) and Setter(s)
@@ -80,14 +82,20 @@ namespace Movex.View
                 {
                     builder.AppendLine(item);
                 }
+                mIsFolderSelected = true;
             }
 
             mWhereDesignModel.SetPath(builder.ToString());
             mFolderSelected.Set();
+            
         }
 
         private void ProseguiClick(object sender, RoutedEventArgs e)
         {
+            if (!mIsFolderSelected)
+            {
+                mWhereDesignModel.SetPath(IoC.User.DownloadDefaultFolder);
+            }
             mOnExit = true;
             mFolderSelected.Set();
             mWhereDesignModel.Save();
