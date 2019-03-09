@@ -133,7 +133,7 @@ namespace Movex.View
                     var UploadProgressWindowThread = new Thread(() =>
                     {
                         var w = new UploadProgressWindow(IPAddress.Parse(ipAddress), syncVariables[0]);
-                        if (windows.TryAdd(ipAddress, w))
+                        if (windows.TryAdd(ipAddress, w) == false)
                         {
                             windows.TryRemove(ipAddress, out Window oldWindow);
                             windows.TryAdd(ipAddress, w);
@@ -165,7 +165,7 @@ namespace Movex.View
                     var DownloadProgressWindowThread = new Thread(() =>
                     {
                         var w = new DownloadProgressWindow(IPAddress.Parse(ip), syncPrimitives[0]);
-                        if (windows.TryAdd(ip, w))
+                        if (windows.TryAdd(ip, w) == false)
                         {
                             windows.TryRemove(ip, out Window oldWindow);
                             windows.TryAdd(ip, w);
