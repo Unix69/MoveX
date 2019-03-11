@@ -883,11 +883,11 @@ namespace Movex.FTP
         }
         private bool CheckTotalBytes(long totalbytes)
         {
-            return (totalbytes > 0 && totalbytes <= int.MaxValue);
+            return (totalbytes > 0 && totalbytes <= long.MaxValue);
         }
         private bool CheckTotalNFiles(long nfiles)
         {
-            return (nfiles > 0 && nfiles <= int.MaxValue);
+            return (nfiles > 0 && nfiles <= long.MaxValue);
         }
         private bool CheckTag(int tag)
         {

@@ -180,6 +180,14 @@ namespace Movex.Network
         }
 
         /// <summary>
+        /// Clear the Friends List
+        /// </summary>
+        public void ClearMyFriendList()
+        {
+            mConnManager.ClearRestrictedUsers();
+        }
+
+        /// <summary>
         /// Add a new friend to the list of friends
         /// </summary>
         /// <returns></returns>

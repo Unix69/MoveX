@@ -49,15 +49,25 @@ namespace Movex.View.Core
             var ItemsSelected = new List<string>();
 
             Wait:
-            UpdateEvent.WaitOne();
-            Console.WriteLine("Now updating the Users List in the right-menu.");
+            var signaled = UpdateEvent.WaitOne(60000);
+            Console.WriteLine("Now updating the Users List in the left-side menu.");
             UpdateEvent.Reset();
+
+            // Timeout case: forget friends and send "hello" again
+            if (!signaled)
+            {
+                u.ClearMyFriendList();
+                u.SearchForFriends();
+
+                // Sleep a sec to wait for responses by users
+                Thread.Sleep(1000);
+            }
 
             // Collect the List of User from Network Discovering
             u.GetForFriend();
             var ItemsList = u.GetFriendList();
 
-            IoC.User.FriendsAvailable = ItemsList.Capacity == 0 ? false : true;
+            IoC.User.FriendsAvailable = ItemsList.Count == 0 ? false : true;
             if (ItemsList.Count == 0)
             {
                 if (Items != null) Items.Clear();

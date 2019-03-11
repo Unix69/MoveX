@@ -441,6 +441,17 @@ namespace Movex.Network
         }
 
         /// <summary>
+        /// Clear the list of RestrictedUsers
+        /// </summary>
+        public void ClearRestrictedUsers()
+        {
+            if (mRestrictedUsers.Count > 0)
+            {
+                mRestrictedUsers.Clear();
+            }
+        }
+
+        /// <summary>
         /// Get the local network informations
         /// </summary>
         /// <param name="ni"></param>
