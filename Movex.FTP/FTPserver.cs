@@ -175,7 +175,7 @@ namespace Movex.FTP
             string response;
             if (mAutomaticReception == false)
             {
-                var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
+                var message = "You received a request from " + client.RemoteEndPoint.ToString().Split(':')[0] + "\r\nDo you want to accept it?";
                 response = mWindowRequester.AddYesNoWindow(message);
             }
             else

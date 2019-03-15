@@ -25,19 +25,20 @@
 					Text="●"
 					Visibility="{Binding ItemsSelected, Converter = {local:IntegerToVisiblityConverter}}"/>
 
-				<TextBlock Text="{Binding ItemsSelected}"
+				<TextBlock Text="Utenti selezionati: "
+					   TextTrimming="CharacterEllipsis"
 					   Margin="5 5 0 5"
+					   HorizontalAlignment="Center"
+					   Foreground="{StaticResource ForegroundMainBrush}"
+					   FontFamily="{StaticResource LatoRegular}" />
+
+				<TextBlock Text="{Binding ItemsSelected}"
+					   Margin="0 5 10 5"
 					   TextTrimming="CharacterEllipsis"
 					   HorizontalAlignment="Center"
 					   Foreground="{StaticResource ForegroundMainBrush}"
 					   FontFamily="{StaticResource LatoRegular}" />
 
-				<TextBlock Text=" utenti selezionati."
-					   TextTrimming="CharacterEllipsis"
-					   Margin="0 5 10 5"
-					   HorizontalAlignment="Center"
-					   Foreground="{StaticResource ForegroundMainBrush}"
-					   FontFamily="{StaticResource LatoRegular}" />
 			</StackPanel>
 			<ScrollViewer VerticalScrollBarVisibility="Auto">
 				<ItemsControl ItemsSource="{Binding Items}">

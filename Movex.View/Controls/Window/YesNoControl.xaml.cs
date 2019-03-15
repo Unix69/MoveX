@@ -6,6 +6,7 @@ using System.Windows;
 using System.Threading;
 using System.Windows.Data;
 using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
 
 namespace Movex.View
 {
@@ -34,7 +35,19 @@ namespace Movex.View
         }
         public void SetMessage(string m)
         {
-            mYesNoDesignModel.SetText(m);
+            var Message = m;
+
+            var IpAddress = ExtractIpAddress(m);
+            if (IpAddress != null && IpAddress != "")
+            {
+                var UserName = IoC.User.GetUsernameByIpAddress(IpAddress);
+                if (UserName != null)
+                {
+                    Message = "Hai ricevuto una richiesta da " + UserName + ".\r\nVuoi accettarla?";
+                }
+            }
+            
+            mYesNoDesignModel.SetText(Message);
         }
         public void SetResponse(ConcurrentBag<string> r)
         {
@@ -51,5 +64,31 @@ namespace Movex.View
         {
             mYesNoDesignModel.Yes();
         }
+
+        #region Utility method(s)
+
+        private string ExtractIpAddress(string text)
+        {
+            var pattern = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+            try
+            {
+                var match = pattern.Matches(text);
+                if (match.Count > 0)
+                {
+                    return match[0].ToString();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(ArgumentNullException Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.VIEW] [YesNoControl.xaml.cs] [ExtractIpAddress] " + Message + ".");
+                return null;
+            }
+        }
+        #endregion
     }
 }
