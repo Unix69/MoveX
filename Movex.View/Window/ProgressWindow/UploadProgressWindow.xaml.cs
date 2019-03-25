@@ -62,7 +62,11 @@ namespace Movex.View
         {
             try
             {
-                mUTransferAvailability.WaitOne();
+                var signaled = mUTransferAvailability.WaitOne(10000);
+                if (!signaled)
+                {
+                    mCloseWindow.Set();
+                }
                 mUploadTransfer = IoC.FtpClient.GetTransfer(mAddress);
                 AssignTransferInfoToViewModel(mUploadTransfer);
             }
