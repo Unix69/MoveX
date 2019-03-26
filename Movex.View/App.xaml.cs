@@ -158,7 +158,7 @@ namespace Movex.View
         /// <summary>
         /// At application shutting down
         /// </summary>
-        private void ExitApplication()
+        public void ExitApplication()
         {
             var response = mWindowRequester.AddYesNoWindow("Vuoi sicuro di voler chiudere l'applicazione?");
             if (response.Equals("Yes"))

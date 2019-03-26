@@ -67,5 +67,10 @@ namespace Movex.View
 
             return IntPtr.Zero;
         }
+
+        private void Close_Event(object sender, RoutedEventArgs e)
+        {
+            ((App)Application.Current).ExitApplication();
+        }
     }
 }
