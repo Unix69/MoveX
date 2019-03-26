@@ -174,6 +174,9 @@ namespace Movex.View
                 ReleaseThreads();
                 IoC.Dispose();
                 Environment.Exit(Environment.ExitCode);
+            } else
+            {
+                ShowMainWindow();
             }
         }
         #endregion
@@ -245,6 +248,7 @@ namespace Movex.View
         public void SetArguments(string[] Arguments)
         {
             mArgs = new string[Arguments.Length];
+            mIndex = 0;
             foreach (var arg in Arguments)
             {
                 mArgs[mIndex++] = arg;
