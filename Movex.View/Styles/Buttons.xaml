@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/prentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Movex.View">
 
@@ -530,11 +530,11 @@
 					<Border x:Name="background" Background="{StaticResource ForegroundLightBrush}">
 						<Grid x:Name="container" Background="Transparent">
 
-							<TextBlock
+                            <TextBlock
 								FontFamily="{StaticResource LatoRegular}"
 								Foreground="{StaticResource WordBlueBrush}"
 								Padding="20 10 20 10"
-								HorizontalAlignment="Center">Yes</TextBlock>
+								HorizontalAlignment="Center">Sì</TextBlock>
 
 						</Grid>
 					</Border>

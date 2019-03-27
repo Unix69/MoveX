@@ -160,7 +160,7 @@ namespace Movex.View
         /// </summary>
         private void ExitApplication()
         {
-            var response = mWindowRequester.AddYesNoWindow("Vuoi sicuro di voler chiudere l'applicazione?");
+            var response = mWindowRequester.AddYesNoWindow("Sei sicuro di voler chiudere l'applicazione?");
             if (response.Equals("Yes"))
             {
                 MainWindow.Hide();
