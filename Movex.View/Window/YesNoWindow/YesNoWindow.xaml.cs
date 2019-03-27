@@ -12,21 +12,7 @@ namespace Movex.View
     /// </summary>
     public partial class YesNoWindow : Window
     {
-        public YesNoWindow()
-        {
-            InitializeComponent();
-            DataContext = new WindowViewModel(this);
-        }
-
-        public YesNoWindow(ManualResetEvent YesNoWindowAvailability)
-        {
-            InitializeComponent();
-            DataContext = new WindowViewModel(this);
-
-            // Passing a synchronization primitive to the YesNoControl
-            var control = YesNoWindow_ProgressControl;
-            control.SetResponseAvailability(YesNoWindowAvailability);
-        }
+        
 
         public YesNoWindow(ManualResetEvent YesNoWindowAvailability, string message, ConcurrentBag<string> response)
         {
@@ -40,7 +26,9 @@ namespace Movex.View
             control.SetResponse(response);
         }
 
-
-
+        private void Close_Event(object sender, RoutedEventArgs e)
+        {
+            YesNoWindow_ProgressControl.SetNoAsResponse();
+        }
     }
 }

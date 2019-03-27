@@ -89,6 +89,10 @@ namespace Movex.View
                 return null;
             }
         }
+        public void SetNoAsResponse()
+        {
+            mYesNoDesignModel.No();
+        }
         #endregion
     }
 }

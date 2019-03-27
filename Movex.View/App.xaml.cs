@@ -158,7 +158,7 @@ namespace Movex.View
         /// <summary>
         /// At application shutting down
         /// </summary>
-        private void ExitApplication()
+        public void ExitApplication()
         {
             var response = mWindowRequester.AddYesNoWindow("Sei sicuro di voler chiudere l'applicazione?");
             if (response.Equals("Yes"))
@@ -174,6 +174,9 @@ namespace Movex.View
                 ReleaseThreads();
                 IoC.Dispose();
                 Environment.Exit(Environment.ExitCode);
+            } else
+            {
+                ShowMainWindow();
             }
         }
         #endregion
@@ -245,6 +248,7 @@ namespace Movex.View
         public void SetArguments(string[] Arguments)
         {
             mArgs = new string[Arguments.Length];
+            mIndex = 0;
             foreach (var arg in Arguments)
             {
                 mArgs[mIndex++] = arg;
