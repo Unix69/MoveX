@@ -103,8 +103,6 @@
     <Compile Include="AttachedProperties\TextAttachedProperties.cs" />
     <Compile Include="AttachedProperties\ButtonAttachedProperty.cs" />
     <Compile Include="AttachedProperties\FrameworkElementAnimationAttachedProperties.cs" />
-    <Compile Include="AttachedProperties\NoFrameHistory.cs" />
-    <Compile Include="AttachedProperties\PasswordBoxAttachedProperties.cs" />
     <Compile Include="Controls\Input\TextEntryListControl.xaml.cs">
       <DependentUpon>TextEntryListControl.xaml</DependentUpon>
     </Compile>
@@ -116,12 +114,6 @@
     </Compile>
     <Compile Include="Controls\Input\TextEntryControl.xaml.cs">
       <DependentUpon>TextEntryControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Menu\MenuControl.xaml.cs">
-      <DependentUpon>MenuControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Menu\MenuItemControl.xaml.cs">
-      <DependentUpon>MenuItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PageHost.xaml.cs">
       <DependentUpon>PageHost.xaml</DependentUpon>
@@ -212,14 +204,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Input\TextEntryControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Menu\MenuControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Menu\MenuItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -419,6 +403,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Icons\301-startup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\Menu\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />
