@@ -203,6 +203,13 @@ namespace Movex.FTP
             {
                 Console.WriteLine("[MOVEX.FTP] [FTPclient.cs] [FTPsendAlltoClient] Trying to send data to client.");
 
+                //wait the ack
+                var ack = RecvAck(ref clientsocket);
+                if (!CheckAck(ack))
+                {
+                    ThrowSocketException();
+                }
+
                 if (!SendTag(ref clientsocket, tos))
                 {
                     return;
@@ -213,16 +220,7 @@ namespace Movex.FTP
                     return;
                 }
 
-
                 if (!SendTotNFiles(ref clientsocket, transfer.GetTotTransferToDo()))
-                {
-                    return;
-                }
-
-
-                //wait the ack
-                var ack = RecvAck(ref clientsocket);
-                if (!CheckAck(ack))
                 {
                     return;
                 }
@@ -1308,6 +1306,10 @@ namespace Movex.FTP
             catch (NotSupportedException e) { Console.WriteLine(e.Message); throw e; }
             catch (SocketException e) { Console.WriteLine(e.Message); throw e; }
             catch (ObjectDisposedException e) { Console.WriteLine(e.Message); throw e; }
+        }
+        private void ThrowSocketException()
+        {
+            throw new SocketException();
         }
         #endregion
     }

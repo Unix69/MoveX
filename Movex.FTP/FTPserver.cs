@@ -182,11 +182,6 @@ namespace Movex.FTP
             {
                 response = "Yes";
             }
-            if (!response.Equals("Yes"))
-            {
-                client.Close();
-                goto Accept;
-            }
 
             // SECOND STEP: Ask the user the download folder.
             string whereToSave;
@@ -199,6 +194,20 @@ namespace Movex.FTP
             else
             {
                 whereToSave = NormalizePath(mDownloadDefaultFolder);
+            }
+
+            if (!response.Equals("Yes"))
+            {
+                // Send the Nack
+                if (!SendAck(client, FTPsupporter.ProtocolAttributes.Nack)) { throw new IOException("Cannot send ack"); }
+
+                client.Close();
+                goto Accept;
+            }
+            else
+            {
+                // Send the ack
+                if (!SendAck(client, FTPsupporter.ProtocolAttributes.Ack)) { throw new IOException("Cannot send ack"); }
             }
 
             // THIRD STEP: Show the DownloadProgressBar
@@ -247,6 +256,8 @@ namespace Movex.FTP
             {
                 mLogger.Log("[Movex.FTP] [FTPserver.cs] [FTPrecv] Trying to receive data.");
 
+                
+
                 tos = RecvTag(ref clientsocket);
                 if (!CheckToS(tos)) { throw new IOException("Bad ToS"); }
 
@@ -271,7 +282,7 @@ namespace Movex.FTP
                 var transfer = new DTransfer(0, 0, tot);
                 mTransfer.TryAdd(ipAddress, transfer);
 
-                if (!SendAck(clientsocket, FTPsupporter.ProtocolAttributes.Ack)) { throw new IOException("Cannot send ack"); }
+                
 
                 Gettag:
 

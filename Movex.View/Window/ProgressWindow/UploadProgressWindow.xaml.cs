@@ -62,13 +62,12 @@ namespace Movex.View
         {
             try
             {
-                var signaled = mUTransferAvailability.WaitOne(10000);
-                if (!signaled)
+                mUTransferAvailability.WaitOne();
+                if (!mIsInterrupted)
                 {
-                    mCloseWindow.Set();
+                    mUploadTransfer = IoC.FtpClient.GetTransfer(mAddress);
+                    AssignTransferInfoToViewModel(mUploadTransfer);
                 }
-                mUploadTransfer = IoC.FtpClient.GetTransfer(mAddress);
-                AssignTransferInfoToViewModel(mUploadTransfer);
             }
              catch(Exception Exception)
             {
@@ -151,17 +150,27 @@ namespace Movex.View
         private void Window_Close(object sender, EventArgs e)
         {
             Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closing the UploadProgressWindow.");
+            try
+            {
+                mUTransferAvailability.Set();
+                Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closed the UploadProgressWindow and released UploadProgressWindow Thread.");
+                if (mIsInterrupted)
+                {
+                    ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
+                    IoC.FtpClient.Reset();
+                }
+            }
+            catch (Exception Exception)
+            {
+                var Message = Exception.Message;
+                Console.WriteLine("[MOVEX.View] [UploadProgressWindow.xaml.cs] [Window_Close]" + Message + ".");
+            }
             Dispatcher.BeginInvoke(new Action(() => {
 
                 try
                 {
+                    
                     Close();
-                    Console.WriteLine("[Movex.View] [UploadProgressWindow.xaml.cs] [Window_Close] Closed the UploadProgressWindow and released UploadProgressWindow Thread.");
-                    if (mIsInterrupted)
-                    {
-                        ((App)Application.Current).GetWindowRequester().AddMessageWindow("Il trasferimento è stato interrotto.");
-                        IoC.FtpClient.Reset();
-                    }
                     Thread.CurrentThread.Interrupt();
                 }
                 catch (Exception Exception)
@@ -182,6 +191,7 @@ namespace Movex.View
             TransferInterrupted.Invoke(this, EventArgs.Empty);
             ((App)Application.Current).RemoveThread("SendThread");
         }
+
         #endregion
 
         #region Utility method(s)

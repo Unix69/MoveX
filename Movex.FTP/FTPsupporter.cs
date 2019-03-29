@@ -64,6 +64,7 @@ namespace Movex.FTP
      class ProtocolAttributes {
             // general send protocol attributes and fields
             public const int Ack = 200;
+            public const int Nack = 201;
             public const int Parallel = 0;
             public const int Serial = 1;
             public const int Default_priority_limit = 50;
