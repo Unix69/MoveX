@@ -49,7 +49,7 @@ namespace Movex.View.Core
             var ItemsSelected = new List<string>();
 
             Wait:
-            var signaled = UpdateEvent.WaitOne(5*60000); //5 min
+            var signaled = UpdateEvent.WaitOne(12*60000); //12 min
             Console.WriteLine("Now updating the Users List in the left-side menu.");
             UpdateEvent.Reset();
 

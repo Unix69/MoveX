@@ -173,6 +173,7 @@ namespace Movex.FTP
 
             // FIRST STEP: Ask the user if he wants to accept the request.
             string response;
+            string whereToSave;
             if (mAutomaticReception == false)
             {
                 var message = "You received a request from " + client.RemoteEndPoint.ToString().Split(':')[0] + "\r\nDo you want to accept it?";
@@ -181,19 +182,6 @@ namespace Movex.FTP
             else
             {
                 response = "Yes";
-            }
-
-            // SECOND STEP: Ask the user the download folder.
-            string whereToSave;
-            if (mAutomaticSave == false)
-            {
-                var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
-                whereToSave = mWindowRequester.AddWhereWindow(message);
-                whereToSave = NormalizePath(whereToSave);
-            }
-            else
-            {
-                whereToSave = NormalizePath(mDownloadDefaultFolder);
             }
 
             if (!response.Equals("Yes"))
@@ -206,6 +194,18 @@ namespace Movex.FTP
             }
             else
             {
+                // SECOND STEP: Ask the user the download folder.
+                if (mAutomaticSave == false)
+                {
+                    var message = "You received a request from " + client.RemoteEndPoint.ToString() + "\r\nDo you want to accept it?";
+                    whereToSave = mWindowRequester.AddWhereWindow(message);
+                    whereToSave = NormalizePath(whereToSave);
+                }
+                else
+                {
+                    whereToSave = NormalizePath(mDownloadDefaultFolder);
+                }
+
                 // Send the ack
                 if (!SendAck(client, FTPsupporter.ProtocolAttributes.Ack)) { throw new IOException("Cannot send ack"); }
             }
